@@ -1,4 +1,6 @@
 <script>
+  import Chat from "./chatField.svelte";
+
   let recipientName = "";
   let settingState = 0;
   let peoplemass = [{
@@ -107,7 +109,7 @@
     {#if recipientName === ""}
       <h4 class="message">Please select a chat to start messaging</h4>
     {:else}
-      еще не готов :(
+      <Chat {recipientName}/>
     {/if}
   </div>
 </div>
@@ -135,13 +137,15 @@
     margin-top: 15px;
     margin-left: 15px;
   }
-  .settingInput{
+
+  .settingInput {
     margin-left: 10px;
     width: calc(40% - 60px);
     height: 30px;
     max-width: 240px;
     min-width: 140px;
   }
+
   .infoBox {
     display: flex;
     width: 100%;
@@ -170,12 +174,13 @@
     flex-direction: column;
   }
 
-  .SettingsTab{
+  .SettingsTab {
     display: flex;
     height: 50px;
     margin-top: 10px;
     /*background-color: #666666;*/
   }
+
   .SettingsTab:hover {
     background-color: whitesmoke;
   }
@@ -183,14 +188,16 @@
   .SettingsTab:active {
     background-color: rgb(238, 238, 238);
   }
-  .settingsIcon{
+
+  .settingsIcon {
     height: 45px;
     width: 45px;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
   }
-  .SettingsTab h3{
+
+  .SettingsTab h3 {
     color: #727272;
     margin-left: 15px;
     margin-top: 12px;
