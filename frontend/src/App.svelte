@@ -1,7 +1,14 @@
 <script>
   let recipientName = "";
   let settingState = 0;
-  let peoplemass = [];
+  let peoplemass = [{
+    name: "Фёдор",
+    img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
+  },
+    {
+      name: "Диана",
+      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
+    }];
 
   function funcChoiceChat(name) {
     recipientName = name;
@@ -12,33 +19,156 @@
   }
 </script>
 
-<div>
-  <div>
+<div class="mainBox">
+  <div class="controlPanel">
     <input class="settingInput" placeholder="Search">
   </div>
-  <div>
+  <div class="infoBox">
     {#if (!settingState)}
-      <div>
-        <div>
+      <div class="peopleColumn">
+        <div class="scrollable">
           {#each peoplemass as man}
-            <div on:click={() => funcChoiceChat(man.name)}>
-              <h4>Account name</h4>
+            <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
+              <img src={man.img} alt="">
+              <h4>{man.name}</h4>
             </div>
           {/each}
         </div>
       </div>
     {:else }
-      <div>
-        <div>
+      <div class="settingsColumn">
+        <div class="SettingsTab">
           <h3>Settings</h3>
         </div>
       </div>
     {/if}
 
     {#if recipientName === ""}
-      <h4>Please select a chat to start messaging</h4>
+      <h4 class="message">Please select a chat to start messaging</h4>
     {:else}
-      //тут будет чат
+      еще не готов :(
     {/if}
   </div>
 </div>
+
+
+<style>
+
+  .mainBox {
+    width: 520px;
+    height: 600px;
+    border: black solid 1px;
+    margin: auto;
+  }
+
+  .controlPanel {
+    height: 60px;
+    width: 100%;
+    min-width: 400px;
+    background-color: #73b9e8;
+  }
+
+  .settingInput{
+    margin-left: 10px;
+    width: calc(40% - 60px);
+    height: 30px;
+    max-width: 240px;
+    min-width: 140px;
+  }
+  .infoBox {
+    display: flex;
+    width: 100%;
+    height: calc(100% - 60px);
+    flex-direction: row;
+  }
+
+  .peopleColumn {
+    width: 40%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .settingsColumn {
+    width: 40%;
+    max-width: 300px;
+    min-width: 200px;
+    height: 100%;
+    border-right-color: #eee;
+    border-right-style: solid; /* Стиль линии */
+    border-right-width: 1px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .SettingsTab{
+    display: flex;
+    height: 50px;
+    margin-top: 10px;
+    /*background-color: #666666;*/
+  }
+  .SettingsTab:hover {
+    background-color: whitesmoke;
+  }
+
+  .SettingsTab:active {
+    background-color: rgb(238, 238, 238);
+  }
+
+  .SettingsTab h3{
+    color: #727272;
+    margin-left: 15px;
+    margin-top: 12px;
+  }
+
+  .scrollable {
+    flex: 1 1 auto;
+    margin: 0 0 0.5em 0;
+    overflow-y: auto;
+  }
+
+  .scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollable::-webkit-scrollbar {
+    width: 2px;
+    background-color: #eee;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: rgb(168, 168, 168);
+  }
+
+  .manBox {
+    height: 64px;
+    display: flex;
+  }
+
+  .manBox:hover {
+    background-color: whitesmoke;
+  }
+
+  .manBox:active {
+    background-color: rgb(238, 238, 238);
+  }
+
+  .manBox img {
+    height: 60px;
+    width: 60px;
+    border-radius: 60px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+
+  .manBox * {
+    margin-left: 10px;
+  }
+
+  .message {
+    margin: auto;
+    color: grey;
+  }
+</style>
