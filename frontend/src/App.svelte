@@ -74,7 +74,7 @@
       name: "Мистер Х",
       img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
     }];
-
+  let newPeopleMass = peoplemass;
   function funcChoiceChat(name) {
     recipientName = name;
   }
@@ -82,20 +82,37 @@
   function openSettings() {
     settingState = !settingState;
   }
+
+  function handleKeydown(event) {
+    if (event.key === 'Enter') {
+      let reqName = event.target.value;
+      if(reqName === ""){
+        newPeopleMass = peoplemass;
+      } else {
+        newPeopleMass = [];
+        peoplemass.forEach(element => {
+          let elName = element.name.toLowerCase();
+          if( elName.indexOf(reqName.toLowerCase()) !== -1){
+            newPeopleMass = newPeopleMass.concat(element);
+          }
+        })
+      }
+    }
+  }
 </script>
 
 <div class="mainBox" bind:this={target}>
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
-      <input class="settingInput" placeholder="Search">
+      <input on:keydown={handleKeydown} class="settingInput" placeholder="Search">
     {/if}
   </div>
   <div class="infoBox">
     {#if (!settingState)}
       <div class="peopleColumn">
         <div class="scrollable">
-          {#each peoplemass as man}
+          {#each newPeopleMass as man}
             <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
               <img src={man.img} alt="">
               <h4>{man.name}</h4>
