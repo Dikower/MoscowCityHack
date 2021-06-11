@@ -79,7 +79,9 @@
 <div class="mainBox">
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
-    <input class="settingInput" placeholder="Search">
+    {#if !settingState}
+      <input class="settingInput" placeholder="Search">
+    {/if}
   </div>
   <div class="infoBox">
     {#if (!settingState)}
@@ -96,6 +98,7 @@
     {:else }
       <div class="settingsColumn">
         <div class="SettingsTab">
+          <img src="settings.svg" class="settingsIcon" on:click={openSettings}>
           <h3>Settings</h3>
         </div>
       </div>
@@ -132,7 +135,6 @@
     margin-top: 15px;
     margin-left: 15px;
   }
-
   .settingInput{
     margin-left: 10px;
     width: calc(40% - 60px);
@@ -181,7 +183,13 @@
   .SettingsTab:active {
     background-color: rgb(238, 238, 238);
   }
-
+  .settingsIcon{
+    height: 45px;
+    width: 45px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+  }
   .SettingsTab h3{
     color: #727272;
     margin-left: 15px;
