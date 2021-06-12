@@ -46,8 +46,11 @@ config_var = TEST_TORTOISE_ORM
 
 @app.on_event('startup')
 async def startup():
-    await Tortoise.init(config=config_var)
-    await Tortoise.generate_schemas(safe=True)
+    try:
+        await Tortoise.init(config=config_var)
+        await Tortoise.generate_schemas(safe=True)
+    except Exception as ex:
+        print(ex)
     # await fill_db()
 
 

@@ -1,9 +1,6 @@
 import os
 from glob import glob
 import json
-from dotenv import load_dotenv
-
-load_dotenv()
 
 with open('.gitignore', 'r', encoding='utf8') as file:
     exclude = set(file.read().split('\n'))
@@ -24,8 +21,7 @@ folders = list(set([folder.strip('\\').strip('/') for folder in glob("*/")]) - e
 #     }
 # }
 
-BACKEND_ROOT = os.getenv('BACKEND_ROOT')
-apps = {folder: {'models': [f'{BACKEND_ROOT}{folder}.models']} for folder in folders}
+apps = {folder: {'models': [f'{folder}.models']} for folder in folders}
 PROD_TORTOISE_ORM = {
     'connections': {'default': 'sqlite://db/prod/db.sqlite3'},
     'apps': apps
