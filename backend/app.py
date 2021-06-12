@@ -1,11 +1,16 @@
+import json
 import shutil
 from pathlib import Path
 from fastapi import FastAPI
 from settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM
-from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
 from tortoise import Tortoise
 import uvicorn
+from rich.console import Console, COLOR_SYSTEMS
+# from pyngrok import ngrok
+
+# print(COLOR_SYSTEMS)
+console = Console(color_system='windows')
 
 app = FastAPI()
 
@@ -49,7 +54,12 @@ async def startup():
 @app.on_event('shutdown')
 async def shutdown():
     await Tortoise.close_connections()
-
+    # ngrok.kill()
 
 if __name__ == '__main__':
-    uvicorn.run('app:app', reload=True, use_colors=True)
+    with open('secrets.json', 'r', encoding='utf8') as file:
+        token = json.load(file)['ngrok']
+    # ngrok.set_auth_token(token)
+    # tunnel = ngrok.connect(8000, bind_tls=True)
+    # console.print(str(tunnel), style='bold blue')
+    uvicorn.run('app:app', reload=True, use_colors=True, host='0.0.0.0')

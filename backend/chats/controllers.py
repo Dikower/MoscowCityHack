@@ -12,3 +12,8 @@ async def websocket_endpoint(path: str, websocket: WebSocket):
     while True:
         data = await websocket.receive_text()
         await websocket.send_text(f"Message text was: {data}")
+
+
+@router.get('/all')
+async def get_chats():
+    ...
