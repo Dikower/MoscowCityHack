@@ -1,7 +1,7 @@
 import { writable } from 'svelte/store';
 
 function createCount() {
-  const { subscribe, set, update } = writable(1);
+  const { subscribe, set, update } = writable(0);
 
   return {
     subscribe,
@@ -12,3 +12,6 @@ function createCount() {
 }
 
 export const settingWindowState = createCount();
+export const groupWindowState = createCount();
+export const channelWindowState = createCount();
+export const contactsWindowState = createCount();
