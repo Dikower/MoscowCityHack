@@ -77,7 +77,12 @@
   </div>
   <div class="senderPanel">
     <input on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}>
-    <button class="sendMessage" on:click={send}></button>
+    <button class="sendMessage" on:click={send}>
+      <img src="message.svg" class="message-icon" alt="message-icon" />
+    </button>
+    <button class="sendPhoto" on:click={send}>
+      <img src="photo.svg" class="photo-icon" alt="photo-icon" />
+    </button>
   </div>
 </div>
 
@@ -124,12 +129,21 @@
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(190, 190, 190);
     border-radius: 20px;
   }
 
   article {
     margin: 0.5em 0;
+  }
+
+  .message-icon {
+    width: 16px;
+    height: 18px;
+  }
+
+  .photo-icon {
+    width: 18px;
+    height: 16px;
   }
 
   .user {
@@ -142,7 +156,7 @@
   }
 
   .recipient span {
-    background-color: #eee;
+    background-color: #343F48;
     border-radius: 1em 1em 1em 0;
   }
   .senderPanel{
@@ -153,13 +167,49 @@
   .senderPanel input{
     height: 40px;
     width: calc(100% - 40px);
+    background-color: #343F48;
+    color: rgba(255, 255, 255, 0.6);
+    border: none;
+    outline:none;
+    border-radius: 10px;
+    padding: 20px;
   }
-  .sendMessage{
+
+  .sendPhoto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
     height: 40px;
     width: 40px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background-color: #07CC85;
   }
+
+  .sendMessage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: -40px;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background: rgba(160, 160, 160, 0.3);
+  }
+
+  .sendMessage:hover {
+    background-color: #375EC9;
+  }
+
   .user span {
-    background: #00CE85;
+    background: #07CC85;
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
