@@ -4,9 +4,8 @@
   import Channel from "./modalWindows/channelModalWindow.svelte";
   import Contacts from "./modalWindows/contactsModalWindow.svelte";
   import Group from "./modalWindows/groupModalWindow.svelte";
+  // import Moveable from "svelte-moveable";
   import {fetches} from "./api";
-
-  import Moveable from "svelte-moveable";
   import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
 
   const frame = {
@@ -16,8 +15,8 @@
 
   let recipientName = "";
   let settingState = 0;
-  let peoplemass = fetches.get('/users/'); //TODO
-  let newPeopleMass = peoplemass;
+  let peoplemass = fetches.get('/users/all'); //TODO
+  let newPeopleMass = $peoplemass;
 
   function funcChoiceChat(name) {
     recipientName = name;
@@ -77,7 +76,7 @@
   </div>
 
   <div class="controlPanel">
-    <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
+    <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
       <input on:input={searchContact} class="settingInput" placeholder="Search">
     {/if}
@@ -86,12 +85,15 @@
     {#if (!settingState)}
       <div class="peopleColumn">
         <div class="scrollable">
-          {#each newPeopleMass as man}
-            <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
-              <img src={man.img} alt="">
-              <h4>{man.name}</h4>
-            </div>
-          {/each}
+          {#await $peoplemass}
+          {:then newPeopleMass}
+            {#each newPeopleMass as man}
+              <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
+                <img src={man.img} alt="Avatar">
+                <h4>{man.name}</h4>
+              </div>
+            {/each}
+          {/await}
         </div>
       </div>
     {:else }
@@ -123,35 +125,35 @@
   </div>
 </div>
 
-<Moveable
-    target={target}
-    resizable={true}
-    throttleResize={10}
-    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {
-        // Set origin if transform-origin use %.
-		setOrigin(["%", "%"]);
-        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)
-        const style = window.getComputedStyle(target);
-        const cssWidth = parseFloat(style.width);
-        const cssHeight = parseFloat(style.height);
-        set([cssWidth, cssHeight]);
+<!--<Moveable-->
+<!--    target={target}-->
+<!--    resizable={true}-->
+<!--    throttleResize={10}-->
+<!--    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {-->
+<!--        // Set origin if transform-origin use %.-->
+<!--		setOrigin(["%", "%"]);-->
+<!--        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)-->
+<!--        const style = window.getComputedStyle(target);-->
+<!--        const cssWidth = parseFloat(style.width);-->
+<!--        const cssHeight = parseFloat(style.height);-->
+<!--        set([cssWidth, cssHeight]);-->
 
-        // If a drag event has already occurred, there is no dragStart.
-        dragStart && dragStart.set(frame.translate);
-    }}
-    on:resize={({ detail: { target, width, height, drag }}) => {
-        target.style.width = `${width}px`;
-        target.style.height = `${height}px`;
+<!--        // If a drag event has already occurred, there is no dragStart.-->
+<!--        dragStart && dragStart.set(frame.translate);-->
+<!--    }}-->
+<!--    on:resize={({ detail: { target, width, height, drag }}) => {-->
+<!--        target.style.width = `${width}px`;-->
+<!--        target.style.height = `${height}px`;-->
 
-        // get drag event
-        frame.translate = drag.beforeTranslate;
-        target.style.transform
-            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
-    }}
-    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {
-        console.log("onResizeEnd", target, isDrag);
-    }}
-/>
+<!--        // get drag event-->
+<!--        frame.translate = drag.beforeTranslate;-->
+<!--        target.style.transform-->
+<!--            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;-->
+<!--    }}-->
+<!--    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {-->
+<!--        console.log("onResizeEnd", target, isDrag);-->
+<!--    }}-->
+<!--/>-->
 
 <style>
 

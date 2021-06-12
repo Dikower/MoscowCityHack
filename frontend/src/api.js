@@ -1,3 +1,5 @@
+import {writable} from 'svelte/store'
+
 export function storeFetch(url, method, data, token) {
   const store = writable(new Promise(() => {
   }));
@@ -46,13 +48,13 @@ export function storeFetch(url, method, data, token) {
 
 const apiUrl = 'https://b.sberchat.hackmasters.tech/'
 export const fetches = {
-  get: (apiPart, token=null) => {
+  get: (apiPart, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'get', {}, token)
   },
-  post: (apiPart, data, token=null) => {
+  post: (apiPart, data, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'post', data, token)
   },
-  delete: (apiPart, token=null) => {
+  delete: (apiPart, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'delete', {}, token)
   },
 }
