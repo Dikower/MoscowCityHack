@@ -9,7 +9,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.front.entrypoints=https"
       - "traefik.http.routers.front.rule=Host(`sberchat.hackmasters.tech`)"
-#      - "traefik.http.routers.front.rule=Host(`sberchat.localhost`)"
+#      - "traefik.http.routers.front.rule=Host(`localhost`)"
       - "traefik.http.routers.front.tls=true"
       - "traefik.http.routers.front.tls.certresolver=letsEncrypt"
       - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
@@ -47,7 +47,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
       - "traefik.http.routers.traefik.entrypoints=https"
-      #	      - "traefik.http.routers.traefik.rule=Host(``)"  TODO
+      - "traefik.http.routers.traefik.rule=Host(`t.sberchat.hackmasters.tech`)"
+#      - "traefik.http.routers.traefik.rule=Host(`t.localhost`)"
       - "traefik.http.routers.traefik.tls=true"
       - "traefik.http.routers.traefik.tls.certresolver=letsEncrypt"
       - "traefik.http.routers.traefik.service=api@internal"
