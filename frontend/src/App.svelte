@@ -24,6 +24,9 @@
   $: console.log('update', $peoplemass)
 
   function funcChoiceChat(name, img) {
+    if(h>w){
+      stateDopTap = !stateDopTap;
+    }
     recipientName = name;
     recipientImg = img;
   }
@@ -62,9 +65,15 @@
       })
     }
   }
+  let stateDopTap = false;
+  function openDopTap(){
+    stateDopTap = !stateDopTap;
+  }
+  let w;
+  let h;
 </script>
 
-
+<svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
 <div class="mainBox" bind:this={target}>
   <div class="boxForModalWindow">
     {#if $settingWindowState === 1}
@@ -82,55 +91,116 @@
   </div>
 
   <div class="controlPanel">
-    <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-    {#if !settingState}
-      <input on:input={searchContact} class="settingInput" placeholder="Search">
-    {/if}
-  </div>
-  <div class="infoBox">
-    {#if (!settingState)}
-      <div class="peopleColumn">
-        <div class="scrollable">
-          {#await $peoplemass}
-          {:then data}
-            {#each newPeopleMass as man}
-              <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                <img src={man.img} alt="Avatar">
-                <div class="person-info">
-                  <h4>{man.name}</h4>
-                  <p>Online</p>
-                </div>
-              </div>
-              <hr>
-            {/each}
-          {/await}
-        </div>
-      </div>
-    {:else }
-      <div class="settingsColumn">
-        <div class="SettingsTab" on:click={openGroupWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>New Group</h3>
-        </div>
-        <div class="SettingsTab" on:click={openChannelWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>New Channel</h3>
-        </div>
-        <div class="SettingsTab" on:click={openContactsWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>Contacts</h3>
-        </div>
-        <div class="SettingsTab" on:click={openSettingsWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>Settings</h3>
-        </div>
-      </div>
+    {#if h<w}
+      <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+      {#if !settingState}
+        <input on:input={searchContact} class="settingInput" placeholder="Search">
+      {/if}
+    {:else}
+      {#if !stateDopTap}
+        <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
+      {:else}
+        <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+        {#if !settingState}
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
+        {/if}
+      {/if}
     {/if}
 
-    {#if recipientName === ""}
-      <h4 class="message">Please select a chat to start messaging</h4>
+  </div>
+  <div class="infoBox">
+    {#if h<w}
+      {#if (!settingState)}
+        <div class="peopleColumn">
+          <div class="scrollable">
+            {#await $peoplemass}
+            {:then data}
+              {#each newPeopleMass as man}
+                <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
+                  <img src={man.img} alt="Avatar">
+                  <div class="person-info">
+                    <h4>{man.name}</h4>
+                    <p>Online</p>
+                  </div>
+                </div>
+                <hr>
+              {/each}
+            {/await}
+          </div>
+        </div>
+      {:else }
+        <div class="settingsColumn">
+          <div class="SettingsTab" on:click={openGroupWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>New Group</h3>
+          </div>
+          <div class="SettingsTab" on:click={openChannelWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>New Channel</h3>
+          </div>
+          <div class="SettingsTab" on:click={openContactsWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>Contacts</h3>
+          </div>
+          <div class="SettingsTab" on:click={openSettingsWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>Settings</h3>
+          </div>
+        </div>
+      {/if}
+
+      {#if recipientName === ""}
+        <h4 class="message">Please select a chat to start messaging</h4>
+      {:else}
+        <Chat {recipientName} {recipientImg}/>
+      {/if}
     {:else}
-      <Chat {recipientName} {recipientImg}/>
+      {#if !stateDopTap}
+        {#if recipientName === ""}
+          <h4 class="message">Please select a chat to start messaging</h4>
+        {:else}
+          <Chat {recipientName} {recipientImg}/>
+        {/if}
+      {:else}
+        {#if !settingState}
+          <div class="peopleColumn" style="width: 100%">
+            <div class="scrollable">
+              {#await $peoplemass}
+              {:then data}
+                {#each newPeopleMass as man}
+                  <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
+                    <img src={man.img} alt="Avatar">
+                    <div class="person-info">
+                      <h4>{man.name}</h4>
+                      <p>Online</p>
+                    </div>
+                  </div>
+                  <hr>
+                {/each}
+              {/await}
+            </div>
+          </div>
+        {:else}
+          <div class="settingsColumn" style="width: 100%">
+            <div class="SettingsTab" on:click={openGroupWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>New Group</h3>
+            </div>
+            <div class="SettingsTab" on:click={openChannelWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>New Channel</h3>
+            </div>
+            <div class="SettingsTab" on:click={openContactsWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>Contacts</h3>
+            </div>
+            <div class="SettingsTab" on:click={openSettingsWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>Settings</h3>
+            </div>
+          </div>
+        {/if}
+      {/if}
     {/if}
   </div>
 </div>
@@ -229,7 +299,7 @@
 
   .peopleColumn {
     width: 40%;
-    max-width: 300px;
+    /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
     display: flex;
@@ -238,7 +308,7 @@
 
   .settingsColumn {
     width: 40%;
-    max-width: 300px;
+    /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
     border-right-color: #343F48;
