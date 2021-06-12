@@ -4,7 +4,8 @@ from tortoise import Model, Tortoise, fields
 class User(Model):
     id_ = fields.UUIDField(pk=True)
     fio = fields.CharField(null=True, max_length=128)
-    auth_token  = fields.CharField(null=True, max_length=1024)
+    auth_token = fields.CharField(null=True, max_length=1024)
+    profile_pic = fields.CharField(null=True, max_length=512)
 
     # channels: fields.ManyToManyRelation['channels.Channel']
     # bots: fields.ManyToManyRelation['bots.Bot']
@@ -13,4 +14,4 @@ class User(Model):
         return str(self.fio)
 
     class PydanticMeta:
-        exclude = ['hashed_password']
+        exclude = ["hashed_password"]
