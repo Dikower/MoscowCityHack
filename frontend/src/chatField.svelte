@@ -159,8 +159,8 @@
     width: 40px;
   }
   .user span {
-    background-color: #0074D9;
-    color: white;
+    background: #00CE85;
+    color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
   }

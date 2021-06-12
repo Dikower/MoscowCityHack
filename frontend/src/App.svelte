@@ -92,6 +92,7 @@
                 <img src={man.img} alt="Avatar">
                 <h4>{man.name}</h4>
               </div>
+              <hr>
             {/each}
           {/await}
         </div>
@@ -170,6 +171,11 @@
   /*  width: 100%;*/
   /*  height: 100%;*/
   /*}*/
+
+  hr {
+    border: 0.05px solid rgba(60, 60, 67, 0.29);
+    width: 95%;
+  }
 
   .controlPanel {
     height: 60px;
@@ -272,10 +278,14 @@
   .manBox {
     height: 64px;
     display: flex;
+    text-align: center;
+    padding: 2px;
+    align-items: center;
   }
 
   .manBox:hover {
-    background-color: whitesmoke;
+    background-color: #00CE85;
+    color: #fff;
   }
 
   .manBox:active {
