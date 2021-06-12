@@ -1,26 +1,13 @@
+import os
 from glob import glob
 import json
 
 with open('.gitignore', 'r', encoding='utf8') as file:
     exclude = set(file.read().split('\n'))
 
-folders = list(set([folder.strip('\\') for folder in glob("*/")]) - exclude)
-# apps = {
-#     'bots': {
-#         'models': ['backend.bots.models'],
-#     },
-#     'chats': {
-#         'models': ['backend.chats.models'],
-#     },
-#     'users': {
-#         'models': ['backend.users.models'],
-#     },
-#     'channels': {
-#         'models': ['backend.channels.models'],
-#     }
-# }
+folders = list(set([folder.strip('\\').strip('/') for folder in glob("*/")]) - exclude)
 
-apps = {folder: {'models': [f'backend.{folder}.models']} for folder in folders}
+apps = {folder: {'models': [f'{folder}.models']} for folder in folders}
 PROD_TORTOISE_ORM = {
     'connections': {'default': 'sqlite://db/prod/db.sqlite3'},
     'apps': apps

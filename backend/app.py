@@ -1,4 +1,3 @@
-import json
 import shutil
 from pathlib import Path
 from fastapi import FastAPI
@@ -7,7 +6,6 @@ from fastapi.middleware.cors import CORSMiddleware
 from tortoise import Tortoise
 import uvicorn
 from rich.console import Console, COLOR_SYSTEMS
-# from pyngrok import ngrok
 
 # print(COLOR_SYSTEMS)
 console = Console(color_system='windows')
@@ -46,20 +44,17 @@ config_var = TEST_TORTOISE_ORM
 
 @app.on_event('startup')
 async def startup():
-    await Tortoise.init(config=config_var)
-    await Tortoise.generate_schemas(safe=True)
+    try:
+        await Tortoise.init(config=config_var)
+        await Tortoise.generate_schemas(safe=True)
+    except Exception as ex:
+        print(ex)
     # await fill_db()
 
 
 @app.on_event('shutdown')
 async def shutdown():
     await Tortoise.close_connections()
-    # ngrok.kill()
 
 if __name__ == '__main__':
-    with open('secrets.json', 'r', encoding='utf8') as file:
-        token = json.load(file)['ngrok']
-    # ngrok.set_auth_token(token)
-    # tunnel = ngrok.connect(8000, bind_tls=True)
-    # console.print(str(tunnel), style='bold blue')
     uvicorn.run('app:app', reload=True, use_colors=True)
