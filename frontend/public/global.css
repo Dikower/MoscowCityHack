@@ -4,8 +4,17 @@ html, body {
 	height: 100%;
 }
 
+:root {
+	--darkgreen: #00EA95;
+}
+
 h1, h2, h3, h4, p {
 	font-family: Roboto;
+}
+
+h4 {
+	font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1440 - 300)));
+	font-weight: 500;
 }
 
 body {

@@ -76,6 +76,12 @@
     {/each}
   </div>
   <div class="senderPanel">
+    <button class="sendEmoji">
+      <img src="Emoji.svg" class="emoji-icon" alt="emoji-icon" />
+    </button>
+    <button class="sendEmoji">
+      <img src="Audio.svg" class="audio-icon" alt="audio-icon" />
+    </button>
     <input on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}>
     <button class="sendMessage" on:click={send}>
       <img src="message.svg" class="message-icon" alt="message-icon" />
@@ -88,6 +94,7 @@
 
 
 <style>
+
   .chat {
     display: flex;
     flex-direction: column;
@@ -131,16 +138,26 @@
 
   .scrollable::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
   }
 
   article {
     margin: 0.5em 0;
   }
+  
+  .emoji-icon {
+    height: 27px;
+    width: 27px;
+  }
 
   .message-icon {
     width: 16px;
     height: 18px;
+  }
+
+  .audio-icon {
+    height: 24px;
+    width: 40px;
   }
 
   .photo-icon {
@@ -168,16 +185,17 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 5px;
   }
   .senderPanel input{
     height: 40px;
-    width: calc(90% - 40px);
+    width: calc(75% - 40px);
     background-color: #343F48;
     color: rgba(255, 255, 255, 0.6);
     border: none;
     outline:none;
     border-radius: 10px;
-    padding: 20px;
+    padding: 15px;
   }
 
   .sendPhoto {
@@ -191,8 +209,22 @@
     border-radius: 10px;
     outline: none;
     border: none;
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
     margin-left: 10px;
+  }
+
+  .sendEmoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    width: 30px;
+    margin-right: 5px;
+    background-color: transparent;
+    border: none;
+    outline: none;
   }
 
   .sendMessage{
@@ -215,7 +247,7 @@
   }
 
   .user span {
-    background: #07CC85;
+    background: var(--darkgreen);
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;

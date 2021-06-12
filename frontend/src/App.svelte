@@ -180,14 +180,13 @@
 
   hr {
     border: 0.05px solid rgba(60, 60, 67, 0.29);
-    width: 95%;
   }
 
   .controlPanel {
     height: 60px;
     width: 100%;
     min-width: 400px;
-    background: #07CC85;
+    background: var(--darkgreen);
   }
 
   .settingIcon {
@@ -290,7 +289,7 @@
   }
 
   .manBox:hover {
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
     color: #fff;
   }
 
