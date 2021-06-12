@@ -3,17 +3,39 @@
   let checkMat = false;
   let checkToxic = false;
   let checkPrInfo = false;
+  let changeState = false;
+
+  let userData = {name: "Димочка", img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"}
+  let name = userData.name;
   function closeWindow(){
     settingWindowState.decrement();
   }
   function saveSettings(){
     alert("Saving...")
   }
+  function changeName(){
+    changeState = !changeState;
+  }
+  function saveName(){
+    userData.name = name;
+    changeState = !changeState;
+  }
 </script>
 
 <div class="WindowBox">
   <div class="BoxForSetting">
-    <h1>settings</h1>
+    <div class="userInfo">
+      <img src={userData.img}>
+      {#if !changeState}
+        <h1>{userData.name}</h1>
+        <button on:click={changeName}>Изменить</button>
+      {:else}
+        <input bind:value={name}>
+        <button on:click={saveName}>Сохранить</button>
+      {/if}
+
+    </div>
+
     <div class="oneSettingBox">
       <h4>Скрытие матов - </h4>
       <input type=checkbox class="checkbox" checked={checkMat}>
@@ -33,6 +55,34 @@
 </div>
 
 <style>
+  h1, h4 {
+    color: #1B1B1B;
+  }
+  .userInfo{
+    display: flex;
+  }
+  .userInfo h1{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10px;
+  }
+  .userInfo input{
+    height: 30px;
+    width: 100px;
+    margin-top: auto;
+    margin-bottom: auto;
+  }
+  .userInfo button{
+    height: 50px;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+  }
+  img{
+    height: 100px;
+    width: 100px;
+    border-radius: 100px;
+  }
   .WindowBox{
     position: absolute;
     height: 100%;
