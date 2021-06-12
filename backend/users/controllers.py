@@ -8,7 +8,7 @@ from fastapi.routing import APIRouter
 from jose import jwt
 from starlette import status
 
-from ..settings import SECRET_KEY
+from settings import SECRET_KEY
 from .models import User
 
 credentials_exception = HTTPException(
@@ -44,7 +44,7 @@ async def login(auth_method: str):
 
 
 # FIXME Delete crunch after we got sessions and users
-with open("users/test.json", "r", encoding="utf8") as file:
+with open("users/mock.json", "r", encoding="utf8") as file:
     data = json.load(file)
 
 
