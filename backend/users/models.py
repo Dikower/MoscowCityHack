@@ -7,8 +7,8 @@ class User(Model):
     hashed_password = fields.CharField(max_length=512)
     fio = fields.CharField(null=True, max_length=128)
 
-    channels: fields.ManyToManyRelation['channels.Channel']
-    bots: fields.ManyToManyRelation['bots.Bot']
+    # channels: fields.ManyToManyRelation['channels.Channel']
+    # bots: fields.ManyToManyRelation['bots.Bot']
 
     def __repr__(self):
         return str(self.email)

@@ -1,10 +1,11 @@
+import json
 from datetime import datetime, timedelta
 from typing import Any, Optional, Union
 
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from models import User
+from users.models import User
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from settings import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
@@ -28,7 +29,7 @@ PublicUser = pydantic_model_creator(
     User, name='PublicUser', exclude=excluded, include=included
 )
 PrivateUser = pydantic_model_creator(
-    User, name='PrivateUser', include=('fio', 'email', 'role', 'avatar')
+    User, name='PrivateUser'
 )
 EditUser = pydantic_model_creator(User, name='EditUser', include=('fio', 'avatar'))
 
@@ -142,9 +143,14 @@ async def destroy(user=Depends(get_user)):
     return {'ok': True}
 
 
+# FIXME Delete crunch after we got sessions and users
+with open('users/test.json', 'r', encoding='utf8') as file:
+    data = json.load(file)
+
+
 @router.get('/all')
 async def all_users():
-    return await PrivateUser.from_queryset(User.all())
+    return data
 
 
 @router.get('/{user_id}', response_model=PublicUser)
