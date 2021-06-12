@@ -1,6 +1,12 @@
 <script>
   import Chat from "./chatField.svelte";
+  import Settings from "./modalWindows/settingsModalWindow.svelte";
+  import Channel from "./modalWindows/channelModalWindow.svelte";
+  import Contacts from "./modalWindows/contactsModalWindow.svelte";
+  import Group from "./modalWindows/groupModalWindow.svelte";
+
   import Moveable from "svelte-moveable";
+  import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
 
   const frame = {
     translate: [0, 0],
@@ -83,6 +89,19 @@
     settingState = !settingState;
   }
 
+  function openSettingsWindow(){
+    settingWindowState.increment();
+  }
+  function openGroupWindow(){
+    groupWindowState.increment();
+  }
+  function openChannelWindow(){
+    channelWindowState.increment();
+  }
+  function openContactsWindow(){
+    contactsWindowState.increment();
+  }
+
   function handleKeydown(event) {
     if (event.key === 'Enter') {
       let reqName = event.target.value;
@@ -101,7 +120,23 @@
   }
 </script>
 
+
 <div class="mainBox" bind:this={target}>
+  <div class="boxForModalWindow">
+    {#if $settingWindowState === 1}
+      <Settings/>
+    {/if}
+    {#if $channelWindowState === 1}
+      <Channel/>
+    {/if}
+    {#if $contactsWindowState === 1}
+      <Contacts/>
+    {/if}
+    {#if $groupWindowState === 1}
+      <Group/>
+    {/if}
+  </div>
+
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
@@ -122,8 +157,20 @@
       </div>
     {:else }
       <div class="settingsColumn">
-        <div class="SettingsTab">
-          <img src="settings.svg" class="settingsIcon" on:click={openSettings}>
+        <div class="SettingsTab" on:click={openGroupWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>New Group</h3>
+        </div>
+        <div class="SettingsTab" on:click={openChannelWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>New Channel</h3>
+        </div>
+        <div class="SettingsTab" on:click={openContactsWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>Contacts</h3>
+        </div>
+        <div class="SettingsTab" on:click={openSettingsWindow}>
+          <img src="settings.svg" class="settingsIcon">
           <h3>Settings</h3>
         </div>
       </div>
@@ -175,6 +222,13 @@
     border: black solid 1px;
     margin: auto;
   }
+
+  /*.boxForModalWindow{*/
+  /*  !*background-color: red;*!*/
+  /*  position: absolute;*/
+  /*  width: 100%;*/
+  /*  height: 100%;*/
+  /*}*/
 
   .controlPanel {
     height: 60px;
