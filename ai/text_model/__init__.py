@@ -6,6 +6,9 @@ import validators
 from filters import FILTER, SPECIAL_SYMBOLS
 
 
+CURRENT_PATH = os.path.dirname(__file__)
+
+
 """
 Ищет персональные данные, мат и проверяет текст на токсичность.
 """
@@ -14,7 +17,7 @@ from filters import FILTER, SPECIAL_SYMBOLS
 class TextModel:
 
     def __init__(self):
-        self.classifier = joblib.load('text_model/model.pkl')
+        self.classifier = joblib.load(CURRENT_PATH + '/model.pkl')
 
     def preprocess_text_(self, text):
         text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL', text)
