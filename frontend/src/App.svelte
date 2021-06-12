@@ -181,7 +181,7 @@
     height: 60px;
     width: 100%;
     min-width: 400px;
-    background-color: #00CE85;
+    background: #07CC85;
   }
 
   .settingIcon {
@@ -235,11 +235,11 @@
   }
 
   .SettingsTab:hover {
-    background-color: whitesmoke;
+    background-color: #343F48;
   }
 
   .SettingsTab:active {
-    background-color: rgb(238, 238, 238);
+    background-color: #343F48;
   }
 
   .settingsIcon {
@@ -284,12 +284,12 @@
   }
 
   .manBox:hover {
-    background-color: #00CE85;
+    background-color: #07CC85;
     color: #fff;
   }
 
   .manBox:active {
-    background-color: rgb(238, 238, 238);
+    background-color: #343F48;
   }
 
   .manBox img {

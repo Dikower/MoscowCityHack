@@ -124,7 +124,6 @@
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(190, 190, 190);
     border-radius: 20px;
   }
 
@@ -142,7 +141,7 @@
   }
 
   .recipient span {
-    background-color: #eee;
+    background-color: #343F48;
     border-radius: 1em 1em 1em 0;
   }
   .senderPanel{
@@ -153,13 +152,22 @@
   .senderPanel input{
     height: 40px;
     width: calc(100% - 40px);
+    background-color: #343F48;
+    color: rgba(255, 255, 255, 0.6);
+    border: none;
+    outline:none;
+    border-radius: 10px;
+    padding: 20px;
   }
+
   .sendMessage{
     height: 40px;
     width: 40px;
+    border-radius: 10px;
+    background: #373E4E;
   }
   .user span {
-    background: #00CE85;
+    background: #07CC85;
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
