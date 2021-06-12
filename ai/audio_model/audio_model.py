@@ -1,7 +1,10 @@
 import os
 import json
 
-
+"""
+Конвертирует аудиофайл в текст, возвращает текст.
+На вход подавать путь к .wav файлу.
+"""
 class AudioModel:
 
     def __init__(self):
@@ -12,4 +15,5 @@ class AudioModel:
 
         with open('res.json') as f:
             d = json.load(f)
-            return json.dumps({'success': True, 'content': d['text']}), 200, {'ContentType': 'application/json'}
+            return d['text']
+            # return json.dumps({'success': True, 'content': d['text']}), 200, {'ContentType': 'application/json'}

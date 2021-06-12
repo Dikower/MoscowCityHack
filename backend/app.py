@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from tortoise import Tortoise
 import uvicorn
 from rich.console import Console, COLOR_SYSTEMS
+from users.controllers import router as user_router
 
 # print(COLOR_SYSTEMS)
 console = Console(color_system='windows')
@@ -40,6 +41,8 @@ for path in ['db/test']:
 
 # config_var = PROD_TORTOISE_ORM
 config_var = TEST_TORTOISE_ORM
+
+app.include_router(user_router, prefix='/users', tags=['Users'])
 
 
 @app.on_event('startup')

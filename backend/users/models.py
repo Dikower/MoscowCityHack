@@ -6,8 +6,8 @@ class User(Model):
     fio = fields.CharField(null=True, max_length=128)
     auth_token  = fields.CharField(null=True, max_length=1024)
 
-    channels: fields.ManyToManyRelation['channels.Channel']
-    bots: fields.ManyToManyRelation['bots.Bot']
+    # channels: fields.ManyToManyRelation['channels.Channel']
+    # bots: fields.ManyToManyRelation['bots.Bot']
 
     def __repr__(self):
         return str(self.fio)
