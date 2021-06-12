@@ -11,17 +11,19 @@ import os
 import sys
 
 
+CURRENT_PATH = os.path.dirname(__file__)
+MODEL_PATH = CURRENT_PATH + '/model'
+
 """
 Конвертирует аудиофайл в текст, возвращает текст.
 На вход подавать путь к .wav файлу.
 """
 
-
 class AudioModel:
     def __init__(self):
         SetLogLevel(0)
         self.sample_rate = 16000
-        self.model = Model("model")
+        self.model = Model(MODEL_PATH)
         self.rec = KaldiRecognizer(self.model, self.sample_rate)
 
     def upload_file(self, path):
