@@ -6,7 +6,8 @@
   let channelName = "";
   // let stateWindow = true;
   let peoplemass = fetches.get('/users/all'); //TODO
-  let newPeopleMass = peoplemass;
+  let newPeopleMass = [];
+  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {$peoplemass = v; newPeopleMass = $peoplemass;})
 
   function closeWindow() {
     contactsWindowState.decrement();
@@ -20,16 +21,15 @@
   function searchContact(event) {
     let reqName = event.target.value;
     if (reqName === "") {
-      newPeopleMass = peoplemass;
+      newPeopleMass = $peoplemass;
     } else {
       newPeopleMass = [];
-      peoplemass.forEach(element => {
+      $peoplemass.forEach(element => {
         let elName = element.name.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
         }
       });
-      console.log(newPeopleMass);
     }
   }
 </script>
@@ -42,7 +42,7 @@
       <div class="peopleColumn">
         <div class="scrollable">
           {#await $peoplemass}
-          {:then newPeopleMass}
+          {:then data}
             {#each newPeopleMass as man}
               <div class="manBox">
                 <img src={man.img} alt="">
