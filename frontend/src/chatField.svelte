@@ -77,7 +77,12 @@
   </div>
   <div class="senderPanel">
     <input on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}>
-    <button class="sendMessage" on:click={send}></button>
+    <button class="sendMessage" on:click={send}>
+      <img src="message.svg" class="message-icon" alt="message-icon" />
+    </button>
+    <button class="sendPhoto" on:click={send}>
+      <img src="photo.svg" class="photo-icon" alt="photo-icon" />
+    </button>
   </div>
 </div>
 
@@ -131,6 +136,16 @@
     margin: 0.5em 0;
   }
 
+  .message-icon {
+    width: 16px;
+    height: 18px;
+  }
+
+  .photo-icon {
+    width: 18px;
+    height: 16px;
+  }
+
   .user {
     text-align: right;
   }
@@ -160,12 +175,39 @@
     padding: 20px;
   }
 
-  .sendMessage{
+  .sendPhoto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
     height: 40px;
     width: 40px;
     border-radius: 10px;
-    background: #373E4E;
+    outline: none;
+    border: none;
+    background-color: #07CC85;
   }
+
+  .sendMessage{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    margin-left: -40px;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    background: rgba(160, 160, 160, 0.3);
+  }
+
+  .sendMessage:hover {
+    background-color: #375EC9;
+  }
+
   .user span {
     background: #07CC85;
     color: #fff;
