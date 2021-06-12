@@ -9,4 +9,4 @@ RUN yarn run build && for i in `find | grep -E "\.css$|\.html$|\.js$|\.svg$|\.tx
     && brotli -fZ "$i" ; done
 
 FROM alexxxnf/nginx-spa
-COPY --from=builder /app/public /etc/nginx/html/
+COPY --from=builder /public /etc/nginx/html/
