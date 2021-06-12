@@ -62,4 +62,4 @@ if __name__ == '__main__':
     # ngrok.set_auth_token(token)
     # tunnel = ngrok.connect(8000, bind_tls=True)
     # console.print(str(tunnel), style='bold blue')
-    uvicorn.run('app:app', reload=True, use_colors=True, host='0.0.0.0')
+    uvicorn.run('app:app', reload=True, use_colors=True)

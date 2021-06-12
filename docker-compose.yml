@@ -44,7 +44,7 @@ version: '3.9'
 	    volumes:
 	      - /etc/localtime:/etc/localtime:ro
 	      - /var/run/docker.sock:/var/run/docker.sock:ro
-	      - ./traefik/traefik.yaml:/traefik.yaml:ro
+	      - ./traefik/traefik.yaml:/traefik.yml:ro
 	      - ./traefik/acme.json:/acme.json
 
 	    labels:
