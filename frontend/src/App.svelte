@@ -1,6 +1,8 @@
 <script>
   import Chat from "./chatField.svelte";
+  import Settings from "./settingsModalWindow.svelte";
   import Moveable from "svelte-moveable";
+  import { settingWindowState } from './storage.js';
 
   const frame = {
     translate: [0, 0],
@@ -83,6 +85,10 @@
     settingState = !settingState;
   }
 
+  function openSettingsWindow(){
+    settingWindowState.increment();
+  }
+
   function handleKeydown(event) {
     if (event.key === 'Enter') {
       let reqName = event.target.value;
@@ -101,7 +107,14 @@
   }
 </script>
 
+
 <div class="mainBox" bind:this={target}>
+  <div class="boxForModalWindow">
+    {#if $settingWindowState === 1}
+      <Settings/>
+    {/if}
+  </div>
+
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
@@ -122,8 +135,8 @@
       </div>
     {:else }
       <div class="settingsColumn">
-        <div class="SettingsTab">
-          <img src="settings.svg" class="settingsIcon" on:click={openSettings}>
+        <div class="SettingsTab" on:click={openSettingsWindow}>
+          <img src="settings.svg" class="settingsIcon">
           <h3>Settings</h3>
         </div>
       </div>
@@ -175,6 +188,13 @@
     border: black solid 1px;
     margin: auto;
   }
+
+  /*.boxForModalWindow{*/
+  /*  !*background-color: red;*!*/
+  /*  position: absolute;*/
+  /*  width: 100%;*/
+  /*  height: 100%;*/
+  /*}*/
 
   .controlPanel {
     height: 60px;
