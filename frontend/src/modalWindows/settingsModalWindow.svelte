@@ -39,6 +39,10 @@
     <div class="oneSettingBox">
       <h4>Скрытие матов - </h4>
       <input type=checkbox class="checkbox" checked={checkMat}>
+      <label class="switch">
+        <input type="checkbox" checked={checkMat}>
+        <span class="slider round"></span>
+      </label>
     </div>
     <div class="oneSettingBox">
       <h4>Проверка на токсичность - </h4>
