@@ -49,20 +49,25 @@
 <div class="WindowBox">
   {#if stateWindow}
     <div class="mainBox">
-      <h3>Group name</h3>
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+      </button>
+      <h3>Название группы</h3>
       <input bind:value={groupName}>
       {#if errorMessage !== ""}
         <h5>{errorMessage}</h5>
       {/if}
       <div class="buttons">
-        <button on:click={nextStep}>next</button>
-        <button on:click={closeWindow}>exit</button>
+        <button on:click={nextStep} class="main-button">Далее</button>
       </div>
     </div>
   {:else}
     <div class="mainBoxSecond">
-      <h3>Add Members to {groupName}</h3>
-      <input on:input={searchContact}>
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+      </button>
+      <h3>Добавить участников</h3>
+      <input on:input={searchContact} placeholder="Поиск">
       <div class="peopleColumn">
         <div class="scrollable">
           {#await $peoplemass}
@@ -77,8 +82,8 @@
         </div>
       </div>
       <div class="buttonsBox">
-        <button on:click={prevStep}>cancel</button>
-        <button on:click={createFunc}>create</button>
+        <button on:click={createFunc} class="main-button">Создать</button>
+        <button on:click={prevStep} class="second-button">Отмена</button>
       </div>
     </div>
   {/if}
@@ -95,43 +100,78 @@
   }
 
   .mainBox {
-    background-color: whitesmoke;
+    background-color: #343F48;
+    border-radius: 8px;
     width: 300px;
-    /*margin-top: calc(50% - 60px);*/
-    /*margin-left: calc(50% - 150px);*/
-    margin-top: 10%;
-    margin-left: 6%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   .mainBoxSecond {
     background-color: whitesmoke;
     width: 300px;
     height: 450px;
-    /*margin-top: 20%;*/
-    /*margin-left: calc(50% - 150px);*/
-    margin-top: 10%;
-    margin-left: 6%;
+    background-color: #343F48;
+    /*margin-top: 20%;
+    margin-left: calc(50% - 150px);*/
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 
   h5 {
-    color: #ff3e00;
+    color: #E84E58;
     margin-top: 0;
     margin-bottom: 5px;
     text-align: center;
   }
 
-  .buttons {
-    /*background-color: #73b9e8;*/
-    width: 100px;
-    margin-left: auto;
+  .main-button {
+    background: #07E897;
+    color: #343F48;
+    font-weight: 500;
+    border-radius: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+
+  .second-button {
+    border: 1px solid #07E897;
+    color: #fff;
+    background-color: transparent;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    outline: none;
+    border-radius: 24px;
+  }
+
+  .cancel-button {
+    align-self: flex-end;
+    width: 32px;
+    height: 16px;
+    border: none;
+    outline: none;
+    background-color: transparent;
   }
 
   input {
     width: 80%;
+    background-color: #1B1B1B;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    outline: none;
+    border: none;
   }
 
   .peopleColumn {
@@ -139,10 +179,6 @@
     height: 65%;
     display: flex;
     flex-direction: column;
-  }
-
-  .buttonsBox {
-    height: 20px;
   }
 
   .scrollable {
@@ -156,12 +192,12 @@
   }
 
   .scrollable::-webkit-scrollbar {
-    width: 2px;
-    background-color: #eee;
+    width: 3px;
+    background-color: #1B1B1B;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(168, 168, 168);
+    background-color: var(--darkgreen);
   }
 
   .manBox {
@@ -170,7 +206,7 @@
   }
 
   .manBox:hover {
-    background-color: whitesmoke;
+    background-color: var(--darkgreen);
   }
 
   .manBox:active {

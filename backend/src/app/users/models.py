@@ -1,9 +1,11 @@
+from enum import unique
 from tortoise import Model, Tortoise, fields
 
 
 class User(Model):
     id_ = fields.UUIDField(pk=True)
     fio = fields.CharField(null=True, max_length=128)
+    email = fields.CharField(unique=True, max_length=512)
     auth_token = fields.CharField(null=True, max_length=1024)
     profile_pic = fields.CharField(null=True, max_length=512)
 

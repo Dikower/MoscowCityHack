@@ -37,16 +37,25 @@
     </div>
 
     <div class="oneSettingBox">
-      <h4>Скрытие матов - </h4>
-      <input type=checkbox class="checkbox" checked={checkMat}>
+      <h3>Скрытие матов</h3>
+      <label class="switch">
+        <input type="checkbox" checked={checkMat}>
+        <span class="slider round"></span>
+      </label>
     </div>
     <div class="oneSettingBox">
-      <h4>Проверка на токсичность - </h4>
-      <input type=checkbox class="checkbox" checked={checkToxic}>
+      <h3>Проверка на токсичность</h3>
+      <label class="switch">
+        <input type="checkbox" checked={checkToxic}>
+        <span class="slider round"></span>
+      </label>
     </div>
     <div class="oneSettingBox">
-      <h4>Проверка на приватную информацию - </h4>
-      <input type=checkbox class="checkbox" checked={checkPrInfo}>
+      <h3>Проверка на приватную информацию</h3>
+      <label class="switch">
+        <input type="checkbox" checked={checkPrInfo}>
+        <span class="slider round"></span>
+      </label>
     </div>
     <button on:click={closeWindow}>exit</button>
     <button on:click={saveSettings}>save</button>
@@ -56,11 +65,13 @@
 
 <style>
   h1, h4 {
-    color: #1B1B1B;
+    color: #fff;
   }
-  .userInfo{
+
+  .userInfo {
     display: flex;
   }
+
   .userInfo h1{
     margin-top: auto;
     margin-bottom: auto;
@@ -88,19 +99,30 @@
     height: 100%;
     width: 100%;
   }
+
+  .switch {
+    margin-top: 0;
+    line-height: 0;
+  }
+
+  h4 {
+    margin-bottom: 5px;
+  }
+
+  .oneSettingBox {
+    display: flex;
+    flex-direction: column;
+  }
   .BoxForSetting{
-    background-color: whitesmoke;
-    margin-top: 6%;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #343F48;
     margin-left: 6%;
     height: 500px;
     width: 300px;
-  }
-  .oneSettingBox{
     display: flex;
-  }
-  .checkbox{
-    margin-top: auto;
-    margin-bottom: auto;
-    margin-left: 10px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
   }
 </style>
