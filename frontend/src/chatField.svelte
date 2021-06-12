@@ -82,7 +82,7 @@
     <button class="sendEmoji">
       <img src="Audio.svg" class="audio-icon" alt="audio-icon" />
     </button>
-    <input on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}>
+    <textarea on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}></textarea>
     <button class="sendMessage" on:click={send}>
       <img src="message.svg" class="message-icon" alt="message-icon" />
     </button>
@@ -189,15 +189,18 @@
     text-align: center;
     padding: 10px;
   }
-  .senderPanel input{
+  .senderPanel textarea{
     height: 40px;
-    width: calc(75% - 40px);
+    width: calc(80% - 40px);
     background-color: #343F48;
     color: rgba(255, 255, 255, 0.6);
     border: none;
     outline:none;
     border-radius: 10px;
-    padding: 15px;
+    overflow: hidden;
+    resize:none;
+    padding-right: 40px;
+    padding-left: 10px;
     font-size: calc(10px + (12 - 10) * ((100vw - 300px) / (1440 - 300)));
   }
 
@@ -235,7 +238,7 @@
     align-items: center;
     justify-content: center;
     margin-top: 1px;
-    margin-left: -40px;
+    margin-left: -37px;
     height: 40px;
     width: 40px;
     border-radius: 10px;
