@@ -6,6 +6,7 @@
   import Group from "./modalWindows/groupModalWindow.svelte";
   // import Moveable from "svelte-moveable";
   import {fetches} from "./api";
+  import {onMount} from 'svelte';
   import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
 
   const frame = {
@@ -14,12 +15,17 @@
   let target;
 
   let recipientName = "";
+  let recipientImg = "";
   let settingState = 0;
-  let peoplemass = fetches.get('/users/all'); //TODO
-  let newPeopleMass = $peoplemass;
 
-  function funcChoiceChat(name) {
+  let peoplemass = fetches.get('/users/all');
+  let newPeopleMass = [];
+  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {$peoplemass = v; newPeopleMass = $peoplemass;})
+  $: console.log('update', $peoplemass)
+
+  function funcChoiceChat(name, img) {
     recipientName = name;
+    recipientImg = img;
   }
 
   function openSettings() {
@@ -45,10 +51,10 @@
   function searchContact(event) {
     let reqName = event.target.value;
     if (reqName === "") {
-      newPeopleMass = peoplemass;
+      newPeopleMass = $peoplemass;
     } else {
       newPeopleMass = [];
-      peoplemass.forEach(element => {
+      $peoplemass.forEach(element => {
         let elName = element.name.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
@@ -86,12 +92,13 @@
       <div class="peopleColumn">
         <div class="scrollable">
           {#await $peoplemass}
-          {:then newPeopleMass}
+          {:then data}
             {#each newPeopleMass as man}
-              <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
+              <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
                 <img src={man.img} alt="Avatar">
                 <h4>{man.name}</h4>
               </div>
+              <hr>
             {/each}
           {/await}
         </div>
@@ -120,7 +127,7 @@
     {#if recipientName === ""}
       <h4 class="message">Please select a chat to start messaging</h4>
     {:else}
-      <Chat {recipientName}/>
+      <Chat {recipientName} {recipientImg}/>
     {/if}
   </div>
 </div>
@@ -170,6 +177,11 @@
   /*  width: 100%;*/
   /*  height: 100%;*/
   /*}*/
+
+  hr {
+    border: 0.05px solid rgba(60, 60, 67, 0.29);
+    width: 95%;
+  }
 
   .controlPanel {
     height: 60px;
@@ -272,10 +284,14 @@
   .manBox {
     height: 64px;
     display: flex;
+    text-align: center;
+    padding: 2px;
+    align-items: center;
   }
 
   .manBox:hover {
-    background-color: whitesmoke;
+    background-color: #00CE85;
+    color: #fff;
   }
 
   .manBox:active {

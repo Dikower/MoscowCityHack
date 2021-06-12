@@ -21,7 +21,7 @@
   ];
 
   export let recipientName = "Имя";
-
+  export let recipientImg = "";
   let div;
   let autoscroll;
   let messageField;
@@ -65,7 +65,7 @@
   <div class="header">
     <h1>{recipientName}</h1>
     <img
-        src="http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
+        src={recipientImg}
         alt="">
   </div>
   <div class="scrollable" bind:this={div}>
@@ -159,8 +159,8 @@
     width: 40px;
   }
   .user span {
-    background-color: #0074D9;
-    color: white;
+    background: #00CE85;
+    color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
   }
