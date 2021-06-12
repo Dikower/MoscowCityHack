@@ -9,6 +9,8 @@ from filters import FILTER, SPECIAL_SYMBOLS
 """
 Ищет персональные данные, мат и проверяет текст на токсичность.
 """
+
+
 class TextModel:
 
     def __init__(self):
@@ -49,7 +51,7 @@ class TextModel:
             processed = self.preprocess_text_(word)
             if processed in FILTER:
                 obscene_vocab += 1
-            if is_personal_(word):
+            if self.is_personal_(word):
                 updated_text.append('********')
             else:
                 updated_text.append(word)
