@@ -4,7 +4,7 @@ import json
 with open('.gitignore', 'r', encoding='utf8') as file:
     exclude = set(file.read().split('\n'))
 
-folders = list(set([folder.strip('\\') for folder in glob("*/")]) - exclude)
+folders = list(set([folder.strip('\\').strip('/') for folder in glob("*/")]) - exclude)
 # apps = {
 #     'bots': {
 #         'models': ['backend.bots.models'],
