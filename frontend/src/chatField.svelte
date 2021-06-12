@@ -113,9 +113,10 @@
 
   .scrollable {
     flex: 1 1 auto;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #343F48;
     margin: 0 0 0.5em 0;
     overflow-y: auto;
+    padding: 10px;
     /* scrollbar-width: auto; "auto" or "thin"  */
   }
 
@@ -124,12 +125,13 @@
   }
 
   .scrollable::-webkit-scrollbar {
-    width: 7px;
-    background-color: #eee;
+    width: 5px;
+    background-color: #343F48;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
     border-radius: 20px;
+    background-color: #07CC85;
   }
 
   article {
@@ -163,10 +165,13 @@
     /*background-color: #73b9e8;*/
     height: 50px;
     display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
   }
   .senderPanel input{
     height: 40px;
-    width: calc(100% - 40px);
+    width: calc(90% - 40px);
     background-color: #343F48;
     color: rgba(255, 255, 255, 0.6);
     border: none;
@@ -187,6 +192,7 @@
     outline: none;
     border: none;
     background-color: #07CC85;
+    margin-left: 10px;
   }
 
   .sendMessage{
