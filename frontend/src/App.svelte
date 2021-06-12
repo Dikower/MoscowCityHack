@@ -187,21 +187,24 @@
     width: 100%;
     min-width: 400px;
     background: var(--darkgreen);
+    display: flex;
+    align-items: center;
   }
 
   .settingIcon {
     height: 30px;
     width: 30px;
-    margin-top: 15px;
-    margin-left: 15px;
   }
 
   .settingInput {
     margin-left: 10px;
     width: calc(40% - 60px);
     height: 30px;
-    max-width: 240px;
-    min-width: 140px;
+    background-color: #343F48;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .infoBox {

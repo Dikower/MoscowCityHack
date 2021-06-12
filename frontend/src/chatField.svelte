@@ -232,8 +232,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    vertical-align: middle;
+    margin-top: 1px;
     margin-left: -40px;
     height: 40px;
     width: 40px;
