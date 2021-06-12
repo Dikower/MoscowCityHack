@@ -1,161 +1,53 @@
 import json
 from datetime import datetime, timedelta
-from typing import Any, Optional, Union
+from typing import Optional
+from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from users.models import User
-from passlib.context import CryptContext
-from pydantic import BaseModel
-from settings import ACCESS_TOKEN_EXPIRE_MINUTES, ALGORITHM, SECRET_KEY
-from tortoise.contrib.pydantic import pydantic_model_creator
+from fastapi.exceptions import HTTPException
+from fastapi.routing import APIRouter
+from jose import jwt
+from starlette import status
+
+from ..settings import SECRET_KEY
+from .models import User
+
+credentials_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
 
 router = APIRouter()
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated='auto')
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/users/token')
-
-included = (
-    # 'fio', 'email', 'level', 'avatar', 'about', 'tags', 'tags.name',
-    # 'as_leader', 'as_leader.projects', 'as_leader.projects.project_link', 'as_leader.projects.title',
-    # 'as_leader.projects.participants_count', 'as_leader.projects.participants_target', 'as_leader.projects.project_img',
-    # 'as_leader.projects.tags', 'as_leader.projects.tags.name',
-    # 'as_member', 'as_member.projects', 'as_member.projects.project_link', 'as_member.projects.title'
-)
-
-excluded = ()
-
-PublicUser = pydantic_model_creator(
-    User, name='PublicUser', exclude=excluded, include=included
-)
-PrivateUser = pydantic_model_creator(
-    User, name='PrivateUser'
-)
-EditUser = pydantic_model_creator(User, name='EditUser', include=('fio', 'avatar'))
 
 
-class TokenAndRole(BaseModel):
-    access_token: str
-    token_type: str
-    user_id: int
-    role: str
-
-
-class PublicHash(BaseModel):
-    hash: str
-
-
-class Success(BaseModel):
-    ok: bool
-    payload: Optional[Any] = None
-
-
-async def authenticate_user(username: str, password: str) -> Union[User, None]:
-    user = await User.get_or_none(email=username)
-    if user is None:
-        return None
-    if not pwd_context.verify(password, user.hashed_password):
-        return None
-    return user
-
-
-async def get_user(token: str = Depends(oauth2_scheme)) -> User:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail='Could not validate credentials',
-        headers={'WWW-Authenticate': 'Bearer'},
-    )
-
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get('sub')
-        if username is None:
-            raise credentials_exception
-    except JWTError:
-        raise credentials_exception
-
-    user = await User.get_or_none(email=username)
-    if user is None:
-        raise credentials_exception
-    return user
-
-
-def create_access_token(data, expires_data: Optional[timedelta] = None):
-    to_encode = data.copy()
-    if expires_data is not None:
-        expire = datetime.utcnow() + expires_data
+async def _generate_auth_token(user_id, expires_date: Optional[timedelta] = None):
+    if expires_date is not None:
+        expire = datetime.utcnow() + expires_date
     else:
-        expire = datetime.utcnow() + timedelta(minutes=30)
-    to_encode.update({'exp': expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, ALGORITHM)
-    return encoded_jwt
+        expire = datetime.utcnow() + timedelta(minutes=60)
+
+    return jwt.encode({"id": user_id, "exp": expire}, SECRET_KEY, algorithm="HS256")
 
 
-async def create_user_and_token(email: str, password: str):
-    user = await User.create(email=email, hashed_password=pwd_context.hash(password))
-
-    expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    return user, create_access_token(data={'sub': user.email}, expires_data=expires)
-
-
-@router.post('/token', response_model=TokenAndRole)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await authenticate_user(form_data.username, form_data.password)
-    if not user:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Incorrect username or password',
-            headers={'WWW-Authenticate': 'Bearer'},
-        )
-    expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(data={'sub': user.email}, expires_data=expires)
-    return TokenAndRole(
-        access_token=access_token, token_type='bearer', user_id=user.id, role=user.role
-    )
+async def _get_user_by_auth_token(token):
+    user_data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+    user = await User.get_or_none(id_=user_data["id_"])
+    return user
 
 
-@router.post('/create', response_model=TokenAndRole)
-async def new_user(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await User.get_or_none(email=form_data.username)
-    if user is not None:
-        raise HTTPException(400, 'User already exists')
-    user, token = await create_user_and_token(form_data.username, form_data.password)
-    return TokenAndRole(
-        access_token=token, token_type='bearer', user_id=user.id, role=user.role
-    )
-
-
-@router.get('/profile', response_model=PrivateUser)
-async def profile(user: User = Depends(get_user)):
-    return await PrivateUser.from_tortoise_orm(user)
-
-
-@router.put('/edit', response_model=PrivateUser)
-async def edit(edited: EditUser, user=Depends(get_user)):
-    user = await user.update_from_dict(edited.dict())
-    await user.save()
-    return await PrivateUser.from_tortoise_orm(user)
-
-
-@router.delete('/')
-async def destroy(user=Depends(get_user)):
-    await user.delete()
-    return {'ok': True}
+# TODO make models
+@router.post("/users/auth")
+async def login(auth_method: str):
+    user = await User.create(id_=uuid4(), fio="Zalupkin A. I")
+    user_token = _generate_auth_token(user.id_)
+    return 1
 
 
 # FIXME Delete crunch after we got sessions and users
-with open('users/test.json', 'r', encoding='utf8') as file:
+with open("users/test.json", "r", encoding="utf8") as file:
     data = json.load(file)
 
 
-@router.get('/all')
+@router.get("/all")
 async def all_users():
     return data
-
-
-@router.get('/{user_id}', response_model=PublicUser)
-async def user_by_id(user_id: int):
-    user = await User.get_or_none(id=user_id)
-    if user:
-        return await PublicUser.from_tortoise_orm(user)
-    raise HTTPException(404, 'User not found')

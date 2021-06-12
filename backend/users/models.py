@@ -2,7 +2,7 @@ from tortoise import Model, Tortoise, fields
 
 
 class User(Model):
-    id = fields.IntField(pk=True)
+    id_ = fields.UUIDField(pk=True)
     fio = fields.CharField(null=True, max_length=128)
     auth_token  = fields.CharField(null=True, max_length=1024)
 
