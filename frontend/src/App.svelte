@@ -18,6 +18,7 @@
   let settingState = 0;
   let peoplemass = fetches.get('/users/'); //TODO
   let newPeopleMass = peoplemass;
+
   function funcChoiceChat(name) {
     recipientName = name;
   }
@@ -26,33 +27,34 @@
     settingState = !settingState;
   }
 
-  function openSettingsWindow(){
+  function openSettingsWindow() {
     settingWindowState.increment();
   }
-  function openGroupWindow(){
+
+  function openGroupWindow() {
     groupWindowState.increment();
   }
-  function openChannelWindow(){
+
+  function openChannelWindow() {
     channelWindowState.increment();
   }
-  function openContactsWindow(){
+
+  function openContactsWindow() {
     contactsWindowState.increment();
   }
 
-  function handleKeydown(event) {
-    if (event.key === 'Enter') {
-      let reqName = event.target.value;
-      if(reqName === ""){
-        newPeopleMass = peoplemass;
-      } else {
-        newPeopleMass = [];
-        peoplemass.forEach(element => {
-          let elName = element.name.toLowerCase();
-          if( elName.indexOf(reqName.toLowerCase()) !== -1){
-            newPeopleMass = newPeopleMass.concat(element);
-          }
-        })
-      }
+  function searchContact(event) {
+    let reqName = event.target.value;
+    if (reqName === "") {
+      newPeopleMass = peoplemass;
+    } else {
+      newPeopleMass = [];
+      peoplemass.forEach(element => {
+        let elName = element.name.toLowerCase();
+        if (elName.indexOf(reqName.toLowerCase()) !== -1) {
+          newPeopleMass = newPeopleMass.concat(element);
+        }
+      })
     }
   }
 </script>
@@ -77,7 +79,7 @@
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
-      <input on:keydown={handleKeydown} class="settingInput" placeholder="Search">
+      <input on:input={searchContact} class="settingInput" placeholder="Search">
     {/if}
   </div>
   <div class="infoBox">
