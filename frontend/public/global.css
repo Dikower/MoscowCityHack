@@ -16,6 +16,11 @@ h1 {
 	font-size: calc(16px + (18 - 16) * ((100vw - 300px) / (1440 - 300)));
 }
 
+h3 {
+	font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1440 - 300)));
+	font-weight: 500;
+}
+
 h4 {
 	font-size: calc(10px + (12 - 10) * ((100vw - 300px) / (1440 - 300)));
 	font-weight: 500;
