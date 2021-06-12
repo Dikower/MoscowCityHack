@@ -1,74 +1,11 @@
 <script>
   import {channelWindowState} from '../storage.js';
+  import {fetches} from "../api";
 
   let errorMessage = "";
   let channelName = "";
   let stateWindow = true;
-  let peoplemass = [{
-    name: "Фёдор",
-    img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-  },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Федор",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Федор",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    }];
+  let peoplemass = fetches.get('/users/all'); //TODO
   let newPeopleMass = peoplemass;
 
   function closeWindow() {
@@ -127,12 +64,15 @@
       <input on:input={searchContact}>
       <div class="peopleColumn">
         <div class="scrollable">
-          {#each newPeopleMass as man}
-            <div class="manBox">
-              <img src={man.img} alt="">
-              <h4>{man.name}</h4>
-            </div>
-          {/each}
+          {#await $peoplemass}
+            {:then newPeopleMass}
+              {#each newPeopleMass as man}
+                <div class="manBox">
+                  <img src={man.img} alt="">
+                  <h4>{man.name}</h4>
+                </div>
+              {/each}
+          {/await}
         </div>
       </div>
       <div class="buttonsBox">
@@ -156,8 +96,10 @@
   .mainBox {
     background-color: whitesmoke;
     width: 300px;
-    margin-top: calc(50% - 60px);
-    margin-left: calc(50% - 150px);
+    /*margin-top: calc(50% - 60px);*/
+    /*margin-left: calc(50% - 150px);*/
+    margin-top: 10%;
+    margin-left: 6%;
     display: flex;
     flex-direction: column;
   }
@@ -166,8 +108,10 @@
     background-color: whitesmoke;
     width: 300px;
     height: 450px;
-    margin-top: 20%;
-    margin-left: calc(50% - 150px);
+    /*margin-top: 20%;*/
+    /*margin-left: calc(50% - 150px);*/
+    margin-top: 10%;
+    margin-left: 6%;
     display: flex;
     flex-direction: column;
   }
