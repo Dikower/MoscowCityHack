@@ -1,4 +1,5 @@
 import os
+import json
 
 
 class AudioModel:
@@ -11,6 +12,4 @@ class AudioModel:
 
         with open('res.json') as f:
             d = json.load(f)
-            print(d['text'])
-            print(key_words.find_key_words(d['text']))
             return json.dumps({'success': True, 'content': d['text']}), 200, {'ContentType': 'application/json'}
