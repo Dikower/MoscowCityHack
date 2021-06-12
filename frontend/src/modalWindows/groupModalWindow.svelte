@@ -82,41 +82,44 @@
     }
     stateWindow = !stateWindow;
   }
+
   function prevStep() {
     stateWindow = !stateWindow;
   }
-  function createFunc(){
+
+  function createFunc() {
     //тут запрос с добавлением чата
     closeWindow();
   }
+
   function searchContact(event) {
-      let reqName = event.target.value;
-      if(reqName === ""){
-        newPeopleMass = peoplemass;
-      } else {
-        newPeopleMass = [];
-        peoplemass.forEach(element => {
-          let elName = element.name.toLowerCase();
-          if( elName.indexOf(reqName.toLowerCase()) !== -1){
-            newPeopleMass = newPeopleMass.concat(element);
-          }
-        })
-      }
+    let reqName = event.target.value;
+    if (reqName === "") {
+      newPeopleMass = peoplemass;
+    } else {
+      newPeopleMass = [];
+      peoplemass.forEach(element => {
+        let elName = element.name.toLowerCase();
+        if (elName.indexOf(reqName.toLowerCase()) !== -1) {
+          newPeopleMass = newPeopleMass.concat(element);
+        }
+      })
+    }
   }
 </script>
 
 <div class="WindowBox">
   {#if stateWindow}
     <div class="mainBox">
-        <h3>Group name</h3>
-        <input bind:value={groupName}>
-        {#if errorMessage !== ""}
-          <h5>{errorMessage}</h5>
-        {/if}
-        <div class="buttons">
-          <button on:click={nextStep}>next</button>
-          <button on:click={closeWindow}>exit</button>
-        </div>
+      <h3>Group name</h3>
+      <input bind:value={groupName}>
+      {#if errorMessage !== ""}
+        <h5>{errorMessage}</h5>
+      {/if}
+      <div class="buttons">
+        <button on:click={nextStep}>next</button>
+        <button on:click={closeWindow}>exit</button>
+      </div>
     </div>
   {:else}
     <div class="mainBoxSecond">
@@ -158,7 +161,8 @@
     display: flex;
     flex-direction: column;
   }
-  .mainBoxSecond{
+
+  .mainBoxSecond {
     background-color: whitesmoke;
     width: 300px;
     height: 450px;
@@ -167,29 +171,35 @@
     display: flex;
     flex-direction: column;
   }
-  h5{
+
+  h5 {
     color: #ff3e00;
     margin-top: 0;
     margin-bottom: 5px;
     text-align: center;
   }
+
   .buttons {
     /*background-color: #73b9e8;*/
     width: 100px;
     margin-left: auto;
   }
+
   input {
     width: 80%;
   }
+
   .peopleColumn {
     width: 100%;
     height: 65%;
     display: flex;
     flex-direction: column;
   }
-  .buttonsBox{
+
+  .buttonsBox {
     height: 20px;
   }
+
   .scrollable {
     flex: 1 1 auto;
     margin: 0 0 0.5em 0;

@@ -81,6 +81,7 @@
       img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
     }];
   let newPeopleMass = peoplemass;
+
   function funcChoiceChat(name) {
     recipientName = name;
   }
@@ -89,33 +90,34 @@
     settingState = !settingState;
   }
 
-  function openSettingsWindow(){
+  function openSettingsWindow() {
     settingWindowState.increment();
   }
-  function openGroupWindow(){
+
+  function openGroupWindow() {
     groupWindowState.increment();
   }
-  function openChannelWindow(){
+
+  function openChannelWindow() {
     channelWindowState.increment();
   }
-  function openContactsWindow(){
+
+  function openContactsWindow() {
     contactsWindowState.increment();
   }
 
-  function handleKeydown(event) {
-    if (event.key === 'Enter') {
-      let reqName = event.target.value;
-      if(reqName === ""){
-        newPeopleMass = peoplemass;
-      } else {
-        newPeopleMass = [];
-        peoplemass.forEach(element => {
-          let elName = element.name.toLowerCase();
-          if( elName.indexOf(reqName.toLowerCase()) !== -1){
-            newPeopleMass = newPeopleMass.concat(element);
-          }
-        })
-      }
+  function searchContact(event) {
+    let reqName = event.target.value;
+    if (reqName === "") {
+      newPeopleMass = peoplemass;
+    } else {
+      newPeopleMass = [];
+      peoplemass.forEach(element => {
+        let elName = element.name.toLowerCase();
+        if (elName.indexOf(reqName.toLowerCase()) !== -1) {
+          newPeopleMass = newPeopleMass.concat(element);
+        }
+      })
     }
   }
 </script>
@@ -140,7 +142,7 @@
   <div class="controlPanel">
     <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
-      <input on:keydown={handleKeydown} class="settingInput" placeholder="Search">
+      <input on:input={searchContact} class="settingInput" placeholder="Search">
     {/if}
   </div>
   <div class="infoBox">
