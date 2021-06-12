@@ -160,7 +160,7 @@
   .mainBox {
     width: 520px;
     height: 600px;
-    border: black solid 1px;
+    border: #e4e4e4 solid 1px;
     margin: auto;
   }
 
@@ -175,7 +175,7 @@
     height: 60px;
     width: 100%;
     min-width: 400px;
-    background-color: #73b9e8;
+    background-color: #00CE85;
   }
 
   .settingIcon {
