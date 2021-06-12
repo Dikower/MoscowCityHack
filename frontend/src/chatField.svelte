@@ -185,7 +185,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    padding: 5px;
+    padding: 10px;
   }
   .senderPanel input{
     height: 40px;
@@ -196,6 +196,7 @@
     outline:none;
     border-radius: 10px;
     padding: 15px;
+    font-size: calc(10px + (12 - 10) * ((100vw - 300px) / (1440 - 300)));
   }
 
   .sendPhoto {
