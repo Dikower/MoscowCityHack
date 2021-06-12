@@ -148,8 +148,8 @@
   }
   
   .emoji-icon {
-    height: 27px;
-    width: 27px;
+    height: 24px;
+    width: 24px;
   }
 
   .message-icon {
@@ -159,12 +159,12 @@
 
   .audio-icon {
     height: 24px;
-    width: 40px;
+    width: 24px;
   }
 
   .photo-icon {
-    width: 18px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
   }
 
   .user {
@@ -217,6 +217,10 @@
     border: none;
     background-color: var(--darkgreen);
     margin-left: 10px;
+  }
+
+  .sendPhoto:hover {
+    background-color: #375EC9;
   }
 
   .sendEmoji {
