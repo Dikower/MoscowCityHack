@@ -107,12 +107,14 @@
     height: 80px;
     display: flex;
     flex-direction: row;
+    padding: 10px;
     justify-content: space-around;
+    align-items: center;
   }
 
   img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;

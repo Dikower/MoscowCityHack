@@ -96,7 +96,10 @@
             {#each newPeopleMass as man}
               <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
                 <img src={man.img} alt="Avatar">
-                <h4>{man.name}</h4>
+                <div class="person-info">
+                  <h4>{man.name}</h4>
+                  <p>Online</p>
+                </div>
               </div>
               <hr>
             {/each}
@@ -167,7 +170,7 @@
   .mainBox {
     width: 520px;
     height: 600px;
-    border: #e4e4e4 solid 1px;
+    border: #343F48 solid 0.5px;
     margin: auto;
   }
 
@@ -194,6 +197,16 @@
   .settingIcon {
     height: 30px;
     width: 30px;
+  }
+
+  .person-info {
+    align-items: left;
+    text-align: left;
+    line-height: 0;
+  }
+
+  .scrollable p {
+    font-size: calc(8px + (10 - 8) * ((100vw - 300px) / (1440 - 300)));
   }
 
   .settingInput {
@@ -228,7 +241,7 @@
     max-width: 300px;
     min-width: 200px;
     height: 100%;
-    border-right-color: #eee;
+    border-right-color: #343F48;
     border-right-style: solid; /* Стиль линии */
     border-right-width: 1px;
     display: flex;
@@ -276,11 +289,11 @@
 
   .scrollable::-webkit-scrollbar {
     width: 2px;
-    background-color: #eee;
+    background-color: #343F48;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(168, 168, 168);
+    background-color: #00EA95;
   }
 
   .manBox {
@@ -301,15 +314,15 @@
   }
 
   .manBox img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;
   }
 
   .manBox * {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 
   .message {
