@@ -156,15 +156,6 @@
     border-radius: 24px;
   }
 
-  .cancel-button {
-    align-self: flex-end;
-    width: 32px;
-    height: 16px;
-    border: none;
-    outline: none;
-    background-color: transparent;
-  }
-
   input {
     width: 80%;
     background-color: #1B1B1B;
@@ -224,5 +215,20 @@
   .manBox * {
     margin-left: 10px;
   }
+
+  .cancel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    width: auto;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
 
 </style>

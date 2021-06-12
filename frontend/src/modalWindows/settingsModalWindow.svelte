@@ -24,11 +24,18 @@
 
 <div class="WindowBox">
   <div class="BoxForSetting">
+    <button on:click={closeWindow} class="cancel-button">
+      <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+    </button>
     <div class="userInfo">
       <img src={userData.img}>
       {#if !changeState}
+        <div class="user-name">
         <h1>{userData.name}</h1>
-        <button on:click={changeName}>Изменить</button>
+          <button on:click={changeName} class="edit-button">
+            <img src="edit.svg" class="edit-icon" alt="edit-icon" />
+          </button>
+        </div>
       {:else}
         <input bind:value={name}>
         <button on:click={saveName}>Сохранить</button>
@@ -68,9 +75,33 @@
     color: #fff;
   }
 
-  .userInfo {
+  .edit-icon {
+    height: 16px;
+    width: 16px;
+  }
+
+  .user-name {
     display: flex;
   }
+
+  .edit-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+
+  .cancel-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    width: auto;
+    height: 16px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+}
 
   .userInfo h1{
     margin-top: auto;
@@ -113,12 +144,16 @@
     display: flex;
     flex-direction: column;
   }
+
+  .cancel-icon {
+    width: 16px;
+  }
   .BoxForSetting{
     padding: 20px;
     border-radius: 10px;
     background-color: #343F48;
     margin-left: 6%;
-    height: 500px;
+    height: auto;
     width: 300px;
     display: flex;
     flex-direction: column;
