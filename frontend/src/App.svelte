@@ -4,8 +4,8 @@
   import Channel from "./modalWindows/channelModalWindow.svelte";
   import Contacts from "./modalWindows/contactsModalWindow.svelte";
   import Group from "./modalWindows/groupModalWindow.svelte";
-
-  import Moveable from "svelte-moveable";
+  // import Moveable from "svelte-moveable";
+  import {fetches} from "./api";
   import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
 
   const frame = {
@@ -15,72 +15,9 @@
 
   let recipientName = "";
   let settingState = 0;
-  let peoplemass = [{
-    name: "Фёдор",
-    img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-  },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Федор",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
+  let peoplemass = fetches.get('/users/all'); //TODO
+  let newPeopleMass = $peoplemass;
 
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Федор",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Диана",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Света",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Иван",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    },
-    {
-      name: "Мистер Х",
-      img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
-    }];
-  let newPeopleMass = peoplemass;
   function funcChoiceChat(name) {
     recipientName = name;
   }
@@ -89,33 +26,34 @@
     settingState = !settingState;
   }
 
-  function openSettingsWindow(){
+  function openSettingsWindow() {
     settingWindowState.increment();
   }
-  function openGroupWindow(){
+
+  function openGroupWindow() {
     groupWindowState.increment();
   }
-  function openChannelWindow(){
+
+  function openChannelWindow() {
     channelWindowState.increment();
   }
-  function openContactsWindow(){
+
+  function openContactsWindow() {
     contactsWindowState.increment();
   }
 
-  function handleKeydown(event) {
-    if (event.key === 'Enter') {
-      let reqName = event.target.value;
-      if(reqName === ""){
-        newPeopleMass = peoplemass;
-      } else {
-        newPeopleMass = [];
-        peoplemass.forEach(element => {
-          let elName = element.name.toLowerCase();
-          if( elName.indexOf(reqName.toLowerCase()) !== -1){
-            newPeopleMass = newPeopleMass.concat(element);
-          }
-        })
-      }
+  function searchContact(event) {
+    let reqName = event.target.value;
+    if (reqName === "") {
+      newPeopleMass = peoplemass;
+    } else {
+      newPeopleMass = [];
+      peoplemass.forEach(element => {
+        let elName = element.name.toLowerCase();
+        if (elName.indexOf(reqName.toLowerCase()) !== -1) {
+          newPeopleMass = newPeopleMass.concat(element);
+        }
+      })
     }
   }
 </script>
@@ -138,21 +76,24 @@
   </div>
 
   <div class="controlPanel">
-    <img src="setting-lines.svg" class="settingIcon" on:click={openSettings}>
+    <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
     {#if !settingState}
-      <input on:keydown={handleKeydown} class="settingInput" placeholder="Search">
+      <input on:input={searchContact} class="settingInput" placeholder="Search">
     {/if}
   </div>
   <div class="infoBox">
     {#if (!settingState)}
       <div class="peopleColumn">
         <div class="scrollable">
-          {#each newPeopleMass as man}
-            <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
-              <img src={man.img} alt="">
-              <h4>{man.name}</h4>
-            </div>
-          {/each}
+          {#await $peoplemass}
+          {:then newPeopleMass}
+            {#each newPeopleMass as man}
+              <div class="manBox" on:click={() => funcChoiceChat(man.name)}>
+                <img src={man.img} alt="Avatar">
+                <h4>{man.name}</h4>
+              </div>
+            {/each}
+          {/await}
         </div>
       </div>
     {:else }
@@ -184,35 +125,35 @@
   </div>
 </div>
 
-<Moveable
-    target={target}
-    resizable={true}
-    throttleResize={10}
-    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {
-        // Set origin if transform-origin use %.
-		setOrigin(["%", "%"]);
-        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)
-        const style = window.getComputedStyle(target);
-        const cssWidth = parseFloat(style.width);
-        const cssHeight = parseFloat(style.height);
-        set([cssWidth, cssHeight]);
+<!--<Moveable-->
+<!--    target={target}-->
+<!--    resizable={true}-->
+<!--    throttleResize={10}-->
+<!--    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {-->
+<!--        // Set origin if transform-origin use %.-->
+<!--		setOrigin(["%", "%"]);-->
+<!--        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)-->
+<!--        const style = window.getComputedStyle(target);-->
+<!--        const cssWidth = parseFloat(style.width);-->
+<!--        const cssHeight = parseFloat(style.height);-->
+<!--        set([cssWidth, cssHeight]);-->
 
-        // If a drag event has already occurred, there is no dragStart.
-        dragStart && dragStart.set(frame.translate);
-    }}
-    on:resize={({ detail: { target, width, height, drag }}) => {
-        target.style.width = `${width}px`;
-        target.style.height = `${height}px`;
+<!--        // If a drag event has already occurred, there is no dragStart.-->
+<!--        dragStart && dragStart.set(frame.translate);-->
+<!--    }}-->
+<!--    on:resize={({ detail: { target, width, height, drag }}) => {-->
+<!--        target.style.width = `${width}px`;-->
+<!--        target.style.height = `${height}px`;-->
 
-        // get drag event
-        frame.translate = drag.beforeTranslate;
-        target.style.transform
-            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
-    }}
-    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {
-        console.log("onResizeEnd", target, isDrag);
-    }}
-/>
+<!--        // get drag event-->
+<!--        frame.translate = drag.beforeTranslate;-->
+<!--        target.style.transform-->
+<!--            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;-->
+<!--    }}-->
+<!--    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {-->
+<!--        console.log("onResizeEnd", target, isDrag);-->
+<!--    }}-->
+<!--/>-->
 
 <style>
 
