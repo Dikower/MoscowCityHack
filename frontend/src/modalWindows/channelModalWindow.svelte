@@ -1,7 +1,7 @@
 <script>
-  import { settingWindowState } from './storage.js';
+  import { channelWindowState } from '../storage.js';
   function closeWindow(){
-    settingWindowState.decrement();
+    channelWindowState.decrement();
   }
 </script>
 
@@ -9,7 +9,7 @@
   <div class="BoxForSetting">
 
   </div>
-  <h1>modal window</h1>
+  <h1>channel</h1>
   <button on:click={closeWindow}>exit</button>
 </div>
 

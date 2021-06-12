@@ -1,8 +1,12 @@
 <script>
   import Chat from "./chatField.svelte";
-  import Settings from "./settingsModalWindow.svelte";
+  import Settings from "./modalWindows/settingsModalWindow.svelte";
+  import Channel from "./modalWindows/channelModalWindow.svelte";
+  import Contacts from "./modalWindows/contactsModalWindow.svelte";
+  import Group from "./modalWindows/groupModalWindow.svelte";
+
   import Moveable from "svelte-moveable";
-  import { settingWindowState } from './storage.js';
+  import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
 
   const frame = {
     translate: [0, 0],
@@ -88,6 +92,15 @@
   function openSettingsWindow(){
     settingWindowState.increment();
   }
+  function openGroupWindow(){
+    groupWindowState.increment();
+  }
+  function openChannelWindow(){
+    channelWindowState.increment();
+  }
+  function openContactsWindow(){
+    contactsWindowState.increment();
+  }
 
   function handleKeydown(event) {
     if (event.key === 'Enter') {
@@ -113,6 +126,15 @@
     {#if $settingWindowState === 1}
       <Settings/>
     {/if}
+    {#if $channelWindowState === 1}
+      <Channel/>
+    {/if}
+    {#if $contactsWindowState === 1}
+      <Contacts/>
+    {/if}
+    {#if $groupWindowState === 1}
+      <Group/>
+    {/if}
   </div>
 
   <div class="controlPanel">
@@ -135,6 +157,18 @@
       </div>
     {:else }
       <div class="settingsColumn">
+        <div class="SettingsTab" on:click={openGroupWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>New Group</h3>
+        </div>
+        <div class="SettingsTab" on:click={openChannelWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>New Channel</h3>
+        </div>
+        <div class="SettingsTab" on:click={openContactsWindow}>
+          <img src="settings.svg" class="settingsIcon">
+          <h3>Contacts</h3>
+        </div>
         <div class="SettingsTab" on:click={openSettingsWindow}>
           <img src="settings.svg" class="settingsIcon">
           <h3>Settings</h3>
