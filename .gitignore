@@ -2,3 +2,5 @@
 /public/build/
 .idea
 KeyPair-9b72.pem
+venv
+env

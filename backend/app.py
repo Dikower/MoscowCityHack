@@ -57,9 +57,9 @@ async def shutdown():
     # ngrok.kill()
 
 if __name__ == '__main__':
-    with open('secrets.json', 'r', encoding='utf8') as file:
-        token = json.load(file)['ngrok']
+    # with open('secrets.json', 'r', encoding='utf8') as file:
+    #     token = json.load(file)['ngrok']
     # ngrok.set_auth_token(token)
     # tunnel = ngrok.connect(8000, bind_tls=True)
     # console.print(str(tunnel), style='bold blue')
-    uvicorn.run('app:app', reload=True, use_colors=True)
+    uvicorn.run('app:app', port=8001, use_colors=True)
