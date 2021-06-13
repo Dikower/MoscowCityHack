@@ -38,3 +38,4 @@ tortoise-orm==0.17.4
 typing-extensions==3.10.0.0
 uvicorn==0.14.0
 wincertstore==0.2
+randomuser

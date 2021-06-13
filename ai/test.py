@@ -8,4 +8,4 @@
 from text_model import TextModel
 
 tm = TextModel()
-print(tm.user_msg('Привет Петя'))
+print(tm.user_msg('Привет Петя dmitriy1d01@gmail.com'))
