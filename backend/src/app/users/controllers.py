@@ -36,7 +36,7 @@ class LoginData(BaseModel):
     login_method: LoginOptions
     fio: Optional[str] = None
     email: Optional[str] = None
-    profile_picture: Optional[str] = None
+    avatar: Optional[str] = None
 
     class Config:
         use_enum_values = True
@@ -75,7 +75,7 @@ async def auth(auth_token: str):
             await get_user_data_by_auth_token(user.auth_token)
         except jwt.ExpiredSignatureError:
             # перегенерируем токен если он протух
-            user_auth_token = await generate_auth_token(user.id_)
+            user_auth_token = await generate_auth_token(user.id)
             await user.update_from_dict({"auth_token": user_auth_token})
             await user.save()
 
@@ -84,7 +84,7 @@ async def auth(auth_token: str):
 
     # если юзер есть но токена нет, то генерируем токен
     elif user and not user.auth_token:
-        user_auth_token = await generate_auth_token(user.id_)
+        user_auth_token = await generate_auth_token(user.id)
         await user.update_from_dict({"auth_token": user_auth_token})
         await user.save()
         return user_auth_token
