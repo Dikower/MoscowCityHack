@@ -63,7 +63,7 @@
     } else {
       newPeopleMass = [];
       $peoplemass.forEach(element => {
-        let elName = element.name.toLowerCase();
+        let elName = element.fio.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
         }
@@ -123,10 +123,10 @@
               {#await $peoplemass}
               {:then data}
                 {#each newPeopleMass as man}
-                  <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                    <img src={man.img} alt="Avatar" class="man-img-online">
+                  <div class="manBox" on:click={() => funcChoiceChat(man.fio, man.avatar)}>
+                    <img src={man.avatar} alt="Avatar" class="man-img-online">
                     <div class="person-info">
-                      <h3>{man.name}</h3>
+                      <h3>{man.fio}</h3>
                       <p>Online</p>
                     </div>
                   </div>
