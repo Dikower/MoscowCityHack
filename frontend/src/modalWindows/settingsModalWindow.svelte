@@ -38,7 +38,7 @@
         </div>
       {:else}
         <input bind:value={name}>
-        <button on:click={saveName}>Сохранить</button>
+        <button on:click={saveName} class="saveButton">Сохранить</button>
       {/if}
 
     </div>
@@ -64,8 +64,7 @@
         <span class="slider round"></span>
       </label>
     </div>
-    <button on:click={closeWindow}>exit</button>
-    <button on:click={saveSettings}>save</button>
+    <button on:click={saveSettings} class="main-button">Сохранить</button>
   </div>
 
 </div>
@@ -109,16 +108,29 @@
     margin-left: 10px;
   }
   .userInfo input{
+    margin-left: 10px;
+    width: auto;
     height: 30px;
-    width: 100px;
-    margin-top: auto;
-    margin-bottom: auto;
+    background-color: #1B1B1B;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
   }
   .userInfo button{
-    height: 50px;
+    height: 30px;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
+  }
+  .saveButton{
+    border: 1px solid #07E897;
+    color: #fff;
+    background-color: transparent;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    outline: none;
+    border-radius: 24px;
   }
   img{
     height: 100px;
@@ -152,12 +164,28 @@
     padding: 20px;
     border-radius: 10px;
     background-color: #343F48;
-    margin-left: 6%;
+    margin-top: 10%;
+    margin-left: calc(50% - 150px);
     height: auto;
     width: 300px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+  }
+  .main-button {
+    background: #07E897;
+    color: #343F48;
+    font-weight: 500;
+    border-radius: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-left: auto;
   }
 </style>
