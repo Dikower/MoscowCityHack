@@ -2,22 +2,22 @@
   import {beforeUpdate, afterUpdate} from 'svelte';
 
   let comments = [
-    {author: 'user', text: "Привет"},
-    {author: 'recipient', text: "Привет"},
-    {author: 'user', text: "Как дела?"},
-    {author: 'recipient', text: "Пока не родила!"},
-    {author: 'user', text: "Привет"},
-    {author: 'recipient', text: "Привет"},
-    {author: 'user', text: "Как дела?"},
-    {author: 'recipient', text: "Пока не родила!"},
-    {author: 'user', text: "Привет"},
-    {author: 'recipient', text: "Привет"},
-    {author: 'user', text: "Как дела?"},
-    {author: 'recipient', text: "Пока не родила!"},
-    {author: 'user', text: "Привет"},
-    {author: 'recipient', text: "Привет"},
-    {author: 'user', text: "Как дела?"},
-    {author: 'recipient', text: "Пока не родила!"}
+    {author: 'user', text: "Привет", like: false},
+    {author: 'recipient', text: "Привет", like: false},
+    {author: 'user', text: "Как дела?", like: false},
+    {author: 'recipient', text: "Пока не родила!", like: false},
+    {author: 'user', text: "Привет", like: false},
+    {author: 'recipient', text: "Привет", like: false},
+    {author: 'user', text: "Как дела?", like: false},
+    {author: 'recipient', text: "Пока не родила!", like: false},
+    {author: 'user', text: "Привет", like: false},
+    {author: 'recipient', text: "Привет", like: false},
+    {author: 'user', text: "Как дела?", like: false},
+    {author: 'recipient', text: "Пока не родила!", like: false},
+    {author: 'user', text: "Привет", like: false},
+    {author: 'recipient', text: "Привет", like: false},
+    {author: 'user', text: "Как дела?", like: false},
+    {author: 'recipient', text: "Пока не родила!", like: false}
   ];
 
   export let recipientName = "Имя";
@@ -59,6 +59,16 @@
 
     messageField = '';
   }
+
+
+
+  function handleClick(number) {
+    console.log(number);
+    let m = comments;
+    m[number].like = !m[number].like;
+    comments = m;
+  }
+
 </script>
 
 
@@ -70,10 +80,15 @@
     </div>
   </div>
   <div class="scrollable" bind:this={div}>
-    {#each comments as comment}
-      <article class={comment.author}>
+    {#each comments as comment, number}
+      <article class={comment.author} on:dblclick={() => handleClick(number)}>
         <span>{comment.text}</span>
       </article>
+      {#if (comment.like)&&(comment.author)==="user"}
+        <img src="heart.svg" class="userLikeImg">
+      {:else if (comment.like)&&(comment.author)==="recipient"}
+        <img src="heart.svg" class="recipientLikeImg">
+      {/if}
     {/each}
   </div>
   <div class="senderPanel">
@@ -113,7 +128,7 @@
     align-items: center;
   }
 
-  img {
+  .header img {
     height: 60px;
     width: 60px;
     border-radius: 60px;
@@ -181,13 +196,29 @@
 
   .user {
     text-align: right;
+    margin-bottom: -25px;
+    margin-top: 35px;
   }
-
+  .userLikeImg{
+    margin-left: calc(100% - 30px);
+    margin-bottom: -20px;
+    height: 20px;
+    width: 20px;
+  }
   span {
     padding: 0.5em 1em;
     display: inline-block;
   }
-
+  .recipient{
+    margin-bottom: -25px;
+    margin-top: 35px;
+  }
+  .recipientLikeImg{
+    margin-left: 10px;
+    margin-bottom: -20px;
+    height: 20px;
+    width: 20px;
+  }
   .recipient span {
     background-color: #343F48;
     border-radius: 1em 1em 1em 0;
