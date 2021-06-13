@@ -1,13 +1,20 @@
 import joblib
 import re
-
+import os
 import validators
 
-from filters import FILTER, SPECIAL_SYMBOLS, SBER_DOMAINS
+FILTER = {'бля', 'блядский', 'впиздячить', 'выблядок', 'наблядовал', 'ебать', 'выебываться', 'доебаться', 'доёбываться',
+          'доебываться', 'ебало', 'ебнуться', 'ебануться', 'ебануть', 'ебашить', 'заебал', 'заебись', 'заебаться',
+          'ебаться', 'изъебаться', 'наебашиться', 'наебнуться', 'отъебать', 'объебать', 'козлоеб', 'козлоёб',
+          'остоебать', 'опиздоуметь', 'оскотоебиться', 'оскотоёбиться', 'подъебка', 'подъёбка', 'поебать', 'поебень',
+          'уебаться', 'уебище', 'уёбище', 'хитровыебанный', 'шароебиться', 'шароёбиться', 'пизда', 'пиздец',
+          'испиздеться', 'пиздабол', 'пиздатый', 'пиздобратия', 'пиздопляска', 'пиздит', 'подпиздывает', 'распиздяй',
+          'спиздил', 'хуй', 'хуйня', 'однохуйственно', 'хуево', 'хуёво'}
 
+SPECIAL_SYMBOLS = ['@', '/']
+SBER_DOMAINS = ['sberbank.ru', 'sbrf.ru', 'omega.sbrf.ru', 'ca.sbrf.ru', 'sigma.sbrf.ru']
 
 CURRENT_PATH = os.path.dirname(__file__)
-
 
 """
 Ищет персональные данные, мат и проверяет текст на токсичность.
@@ -20,11 +27,11 @@ class TextModel:
         self.classifier = joblib.load(CURRENT_PATH + '/model.pkl')
 
     def preprocess_text_(self, text):
-        text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL', text)
-        text = re.sub('@[^\s]+','USER', text)
+        text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text)
+        text = re.sub('@[^\s]+', 'USER', text)
         text = text.lower().replace("ё", "е")
         text = re.sub('[^a-zA-Zа-яА-Я1-9]+', ' ', text)
-        text = re.sub(' +',' ', text)
+        text = re.sub(' +', ' ', text)
         return text.strip()
 
     def predict_toxic_(self, samples):
