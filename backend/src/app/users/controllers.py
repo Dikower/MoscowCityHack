@@ -53,7 +53,7 @@ async def login(login_data: LoginData, request: Request):
             expires_date=timedelta(minutes=5),
         )
         login_link = request.url_for("auth", **{"auth_token": user_token})
-        #send_mail(login_link, login_data.email)
+        # send_mail(login_link, login_data.email)
         return login_link
     else:
         return "NO known login method"
@@ -68,7 +68,6 @@ async def auth(auth_token: str):
     except jwt.JWTError:
         raise credentials_exception
 
-    print(await User.all())
     user = await User.get_or_none(email=user_data.get("email"))
 
     # если пользователь и токен уже существуют
@@ -103,7 +102,7 @@ async def auth(auth_token: str):
         avatar=user_data.get("avatar"),
     )
 
-    return auth_token
+    return user_auth_token
 
 
 @router.get("/get_me")
