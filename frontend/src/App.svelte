@@ -110,13 +110,17 @@
 
       {#if h < w}
         <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+        {#if !settingState}
         <input on:input={searchContact} class="settingInput" placeholder="Search">
+        {/if}
       {:else}
         {#if !stateDopTap}
           <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
         {:else}
           <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-          <input on:input={searchContact} class="settingInput" placeholder="Search">
+          {#if !settingState}
+            <input on:input={searchContact} class="settingInput" placeholder="Search">
+          {/if}
 
         {/if}
       {/if}
@@ -180,9 +184,9 @@
                 {:then data}
                   {#each newPeopleMass as man}
                     <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                      <img src={man.img} alt="Avatar">
+                      <img src={man.avatar} alt="Avatar">
                       <div class="person-info">
-                        <h4>{man.name}</h4>
+                        <h4>{man.fio}</h4>
                         <p>Online</p>
                       </div>
                     </div>
@@ -203,7 +207,7 @@
                 <h3>Контакты</h3>
               </div>
               <div class="SettingsTab" on:click={openSettingsWindow}>
-                <h1>Настройки</h1>
+                <h3>Настройки</h3>
               </div>
             </div>
           {/if}
