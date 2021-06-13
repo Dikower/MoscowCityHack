@@ -5,9 +5,11 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from rich.console import COLOR_SYSTEMS, Console
 from tortoise import Tortoise
-
-from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM
+from randomuser import RandomUser
+from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM, IS_PROD
 from .users.controllers import router as user_router
+from .users.models import User
+
 
 # print(COLOR_SYSTEMS)
 console = Console(color_system="windows")
@@ -41,7 +43,17 @@ async def startup():
         await Tortoise.generate_schemas(safe=True)
     except Exception as ex:
         print(ex)
-    # await fill_db()
+
+    if not IS_PROD:
+        users = [
+            {
+                'avatar': user.get_picture(),
+                'fio': user.get_full_name(),
+                'email': user.get_email()
+            } for user in RandomUser.generate_users(10)
+        ]
+        for user in users:
+            await User.create(**user)
 
 
 async def shutdown():
@@ -49,7 +61,6 @@ async def shutdown():
 
 
 def create_app():
-
     app = FastAPI()
 
     app.add_middleware(

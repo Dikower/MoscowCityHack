@@ -38,3 +38,4 @@ class Token(Model):
     is_used = fields.BooleanField(default=False)
 
 
+# Tortoise.init_models(["app.users.models"], "user")

@@ -22,6 +22,7 @@ pycparser==2.20
 pydantic==1.8.2
 Pygments==2.9.0
 pyngrok==5.0.5
+pymemcache-3.4.4
 pypika-tortoise==0.1.1
 python-jose==3.3.0
 python-multipart==0.0.5

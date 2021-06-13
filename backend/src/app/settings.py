@@ -12,7 +12,8 @@ with open(os.path.join(current_path, ".gitignore"), "r", encoding="utf8") as fil
 folders = list(
     set([folder.replace('\\', '/').strip('/') for folder in glob("src/app/*/")]) - exclude
 )
-
+# model_paths = [f"{}path.replace('/', '.').replace('src.', '')" for path in folders]
+# print(model_paths)
 apps = {
     folder.rsplit("/", maxsplit=1)[1]: {
         "models": [f"{folder.replace('/', '.').replace('src.', '')}.models"]
@@ -24,11 +25,13 @@ apps = {
 PROD_TORTOISE_ORM = {
     "connections": {"default": f"sqlite://{current_path}/db/prod/db.sqlite3"},
     "apps": apps,
+    # "apps": {'models': model_paths},
 }
 
 TEST_TORTOISE_ORM = {
     "connections": {"default": f"sqlite://{current_path}/db/test/db.sqlite3"},
     "apps": apps,
+    # "apps": {'models': model_paths},
 }
 
 
@@ -39,3 +42,4 @@ SECRET_KEY = secrets.get("SECRET_KEY")
 MAIL_PASSWORD = secrets.get("password")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+IS_PROD = os.getenv('IS_PROD', False)

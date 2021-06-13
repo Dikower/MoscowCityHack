@@ -2,14 +2,14 @@ import json
 import os
 from datetime import timedelta
 from enum import Enum
-from typing import Optional
+from typing import Optional, List
 from uuid import uuid4
 
 from fastapi import APIRouter, Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import BaseModel
-
+# from .schemas import PublicUser
 from .core import generate_auth_token, get_user_data_by_auth_token
 from .models import User, Token
 from .mailer import send_mail
@@ -49,9 +49,19 @@ class LoginData(BaseModel):
         use_enum_values = True
 
 
+async def get_user(auth_token=Depends(oauth2_scheme)):
+    try:
+        user_data = await get_user_data_by_auth_token(auth_token)
+    except jwt.JWTError:
+        raise credentials_exception
+    user = await User.get_or_none(id=user_data["id"])
+    if user is None:
+        raise HTTPException(404, 'User not found')
+    return user
+
+
 @router.post("/login")
 async def login(login_data: LoginData, request: Request):
-
     if login_data.login_method == LoginOptions.EMAIL.value:
 
         user_token = await generate_auth_token(
@@ -72,7 +82,6 @@ async def login(login_data: LoginData, request: Request):
 
 @router.get("/auth/{auth_token}")
 async def auth(auth_token: str):
-
     # если токен уже существует, второй раз он не сработает
     stored_token = await Token.get_or_none(login_token=auth_token)
     if stored_token:
@@ -126,13 +135,14 @@ async def auth(auth_token: str):
 
 @router.get("/get_me")
 async def get_me(auth_token: str = Depends(oauth2_scheme)):
-
     try:
         user_data = await get_user_data_by_auth_token(auth_token)
     except jwt.JWTError:
         raise credentials_exception
 
     user = await User.get_or_none(id=user_data["id"])
+    if user is None:
+        raise HTTPException(404, 'User not found')
 
     if not user.auth_token:
         return "Found you, evil hacker!"
@@ -143,7 +153,6 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
 
 @router.post("/logout")
 async def logout(auth_token: str = Depends(oauth2_scheme)):
-
     user = await User.get_or_none(auth_token=auth_token)
 
     if user:
@@ -155,11 +164,9 @@ async def logout(auth_token: str = Depends(oauth2_scheme)):
     return user
 
 
-# FIXME Delete crunch after we got sessions and users
-with open(os.path.join(current_path, "test.json"), "r", encoding="utf8") as file:
-    data = json.load(file)
-
-
-@router.get("/all")
+@router.get("/all",
+            # response_model=List[PublicUser]
+            )
 async def all_users():
-    return data
+    # return await PublicUser.from_queryset(User.all())
+    ...
