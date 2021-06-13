@@ -49,9 +49,11 @@
           {:then data}
             {#each newPeopleMass as man}
               <div class="manBox">
-                <img src={man.img} alt="">
+                <img src={man.img} alt="" class="manbox-img">
                 <h4>{man.name}</h4>
-                <button class="deleteButton"></button>
+                <button on:click={closeWindow} class="delete-button">
+                  <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+                </button>
               </div>
             {/each}
           {/await}
@@ -118,11 +120,16 @@
     text-align: center;
   }
 
-  .deleteButton{
-    background-color: #ff3e00;
+  .delete-button {
+    background-color: transparent;
+    outline: none;
+    border: none;
     width: 15px;
     height: 15px;
-    margin-left: auto;
+    margin-left: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   input {
@@ -157,17 +164,20 @@
   }
 
   .scrollable::-webkit-scrollbar {
-    width: 2px;
-    background-color: #eee;
+    width: 3px;
+    background-color: #1B1B1B;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(168, 168, 168);
+    background-color: var(--darkgreenwithopacity);
   }
 
   .manBox {
     height: 64px;
+    width: 100%;
     display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .manBox:hover {
@@ -193,16 +203,18 @@
     margin-bottom: 15px;
   }
 
-  .manBox img {
-    height: 60px;
-    width: 60px;
+  .manbox-img {
+    height: 50px;
+    width: 50px;
+    margin-right: 20px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;
   }
 
-  .manBox * {
-    margin-left: 10px;
+  .cancel-icon {
+    height: 16px;
+    width: 16px;
   }
 
 </style>
