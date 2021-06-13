@@ -12,6 +12,7 @@ FILTER = {'бля', 'блядский', 'впиздячить', 'выблядо�
           'спиздил', 'хуй', 'хуйня', 'однохуйственно', 'хуево', 'хуёво'}
 
 SPECIAL_SYMBOLS = ['@', '/']
+SBER_DOMAINS = ['sberbank.ru', 'sbrf.ru', 'omega.sbrf.ru', 'ca.sbrf.ru', 'sigma.sbrf.ru']
 
 CURRENT_PATH = os.path.dirname(__file__)
 
@@ -38,14 +39,24 @@ class TextModel:
         return self.classifier.predict_proba(samples)
 
     def is_personal_(self, text):
-        # Проверяет, содержит ли текст >= 3 цифер и специальные символы
+        # Проверяет, содержит ли текст >= 5 цифер и специальные символы
         num_of_digits = 0
         special_symbols = 0
+
         for let in text:
             num_of_digits += int(let.isdigit())
             if let in SPECIAL_SYMBOLS:
                 special_symbols += 1
-        if num_of_digits >= 3 or special_symbols > 0 or validators.url(text):
+
+        sber_domains = False
+        domain = text.split['.'][-1]
+        email = text.split['@'][-1]
+        if email or domain in SBER_DOMAINS:
+            sber_domains = True
+
+        if sber_domains:
+            return False
+        if num_of_digits >= 5 or special_symbols > 0 or validators.url(text):
             return True
         return False
 
