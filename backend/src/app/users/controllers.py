@@ -12,6 +12,7 @@ from pydantic import BaseModel
 
 from .core import generate_auth_token, get_user_data_by_auth_token
 from .models import User
+from .mailer import send_mail
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -36,7 +37,7 @@ class LoginData(BaseModel):
     login_method: LoginOptions
     fio: Optional[str] = None
     email: Optional[str] = None
-    profile_picture: Optional[str] = None
+    avatar: Optional[str] = None
 
     class Config:
         use_enum_values = True
@@ -52,7 +53,7 @@ async def login(login_data: LoginData, request: Request):
             expires_date=timedelta(minutes=5),
         )
         login_link = request.url_for("auth", **{"auth_token": user_token})
-        # TODO send to email
+        send_mail(login_link, login_data.email)
         return login_link
     else:
         return "NO known login method"
@@ -75,7 +76,7 @@ async def auth(auth_token: str):
             await get_user_data_by_auth_token(user.auth_token)
         except jwt.ExpiredSignatureError:
             # перегенерируем токен если он протух
-            user_auth_token = await generate_auth_token(user.id_)
+            user_auth_token = await generate_auth_token(user.id)
             await user.update_from_dict({"auth_token": user_auth_token})
             await user.save()
 
@@ -84,7 +85,7 @@ async def auth(auth_token: str):
 
     # если юзер есть но токена нет, то генерируем токен
     elif user and not user.auth_token:
-        user_auth_token = await generate_auth_token(user.id_)
+        user_auth_token = await generate_auth_token(user.id)
         await user.update_from_dict({"auth_token": user_auth_token})
         await user.save()
         return user_auth_token
@@ -94,11 +95,11 @@ async def auth(auth_token: str):
     user_auth_token = await generate_auth_token(user_id)
 
     await User.create(
-        id_=user_id,
+        id=user_id,
         fio=user_data.get("fio"),
         email=user_data.get("email"),
         auth_token=user_auth_token,
-        profile_pic=user_data.get("profile_picture"),
+        avatar=user_data.get("avatar"),
     )
 
     return auth_token
@@ -112,10 +113,10 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
     except jwt.JWTError:
         raise credentials_exception
 
-    user = await User.get_or_none(id_=user_data["id"])
+    user = await User.get_or_none(id=user_data["id"])
 
     if not user.auth_token:
-        "Found you, evil hacker!"
+        return "Found you, evil hacker!"
         # залогировать злобного хакера
 
     return user

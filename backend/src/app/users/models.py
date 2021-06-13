@@ -3,11 +3,11 @@ from tortoise import Model, Tortoise, fields
 
 
 class User(Model):
-    id_ = fields.UUIDField(pk=True)
+    id = fields.UUIDField(pk=True)
     fio = fields.CharField(null=True, max_length=128)
     email = fields.CharField(unique=True, max_length=512)
     auth_token = fields.CharField(null=True, max_length=1024)
-    profile_pic = fields.CharField(null=True, max_length=512)
+    avatar = fields.CharField(null=True, max_length=512)
 
     # channels: fields.ManyToManyRelation['channels.Channel']
     # bots: fields.ManyToManyRelation['bots.Bot']
