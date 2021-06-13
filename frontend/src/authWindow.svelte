@@ -11,9 +11,9 @@
     <h1>Войти при помощи</h1>
     <button on:click={auth}>Sber Id</button>
     <div class="moreMethod">
-      <img src="email.svg" on:click={auth}>
-      <img src="github.svg" on:click={auth}>
-      <img src="google.svg" on:click={auth}>
+      <img src="email.svg" alt="email-icon" on:click={auth}>
+      <img src="github.svg" alt="github-icon" on:click={auth}>
+      <img src="google.svg" alt="google-icon" on:click={auth}>
     </div>
   </div>
 </div>
