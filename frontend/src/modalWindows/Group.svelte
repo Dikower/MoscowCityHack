@@ -1,9 +1,10 @@
 <script>
-  import {channelWindowState} from '../storage.js';
+  import Modal from './Modal.svelte'
+  import {groupWindowState} from '../storage.js';
   import {fetches} from "../api";
 
   let errorMessage = "";
-  let channelName = "";
+  let groupName = "";
   let stateWindow = true;
   let peoplemass = fetches.get('/users/all'); //TODO
   let newPeopleMass = [];
@@ -13,11 +14,11 @@
   })
 
   function closeWindow() {
-    channelWindowState.decrement();
+    groupWindowState.decrement();
   }
 
   function nextStep() {
-    if (channelName === "") {
+    if (groupName === "") {
       errorMessage = "Введите название группы!";
       return;
     }
@@ -40,7 +41,7 @@
     } else {
       newPeopleMass = [];
       $peoplemass.forEach(element => {
-        let elName = element.fio.toLowerCase();
+        let elName = element.name.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
         }
@@ -49,78 +50,57 @@
   }
 </script>
 
-<div id="TB_overlay">
-</div>
-
-<div class="wrapper">
-  <div class="WindowBox">
-    {#if stateWindow}
-      <div class="mainBox">
-        <button on:click={closeWindow} class="cancel-button">
-          <img src="cancel.svg" class="cancel-icon" alt="cancel-icon"/>
-        </button>
-        <h3>Название канала</h3>
-        <input bind:value={channelName}>
-        {#if errorMessage !== ""}
-          <h5>{errorMessage}</h5>
-        {/if}
-        <div class="buttons">
-          <button on:click={nextStep} class="main-button">Далее</button>
+<Modal>
+  {#if stateWindow}
+    <div class="mainBox">
+      <h3>Название группы</h3>
+      <input bind:value={groupName}>
+      {#if errorMessage !== ""}
+        <h5>{errorMessage}</h5>
+      {/if}
+      <div class="buttons">
+        <button on:click={nextStep} class="main-button">Далее</button>
+      </div>
+    </div>
+  {:else}
+    <div class="mainBoxSecond">
+      <h3>Добавить участников</h3>
+      <input on:input={searchContact} placeholder="Поиск">
+      <div class="peopleColumn">
+        <div class="scrollable">
+          {#await $peoplemass}
+          {:then data}
+            {#each newPeopleMass as man}
+              <div class="manBox">
+                <img src={man.img} alt="">
+                <h4>{man.name}</h4>
+              </div>
+            {/each}
+          {/await}
         </div>
       </div>
-    {:else}
-      <div class="mainBoxSecond">
-        <button on:click={closeWindow} class="cancel-button">
-          <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" style="margin-top: 40px"/>
-        </button>
-        <h3>Добавление участников в {channelName}</h3>
-        <input on:input={searchContact}>
-        <div class="peopleColumn">
-          <div class="scrollable">
-            {#await $peoplemass}
-            {:then data}
-              {#each newPeopleMass as man}
-                <div class="manBox">
-                  <img src={man.avatar} alt="">
-                  <h4>{man.fio}</h4>
-                </div>
-              {/each}
-            {/await}
-          </div>
-        </div>
-        <div class="buttonsBox">
-          <button on:click={createFunc} class="main-button">Создать</button>
-          <button on:click={prevStep} class="second-button">Отмена</button>
-        </div>
+      <div class="buttonsBox">
+        <button on:click={createFunc} class="main-button">Создать</button>
+        <button on:click={prevStep} class="second-button">Отмена</button>
       </div>
-    {/if}
-  </div>
-</div>
+    </div>
+  {/if}
+</Modal>
 
 <style>
-  #TB_overlay {
-    background-color: #000; /* Чёрный фон */
-    height: 100%; /* Высота максимальна */
-    left: 0; /* Нулевой отступ слева */
-    opacity: 0.50; /* Степень прозрачности */
-    position: fixed; /* Фиксированное положение */
-    top: 0; /* Нулевой отступ сверху */
-    width: 100%; /* Ширина максимальна */
-    z-index: 100; /* Заведомо быть НАД другими элементами */
-  }
-
   .wrapper {
     position: relative;
   }
-
   .WindowBox {
     position: absolute;
+    /*background-color: #999999;*/
+    /*opacity: 0.7;*/
     top: 0;
     left: 0;
     height: 500px; /* FIXME подумать, как сделать лучше */
     width: 100%;
+    /*z-index:3;*/
     display: grid;
-    z-index: 101;
     place-items: center;
   }
 
@@ -132,16 +112,16 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /*margin-top: 20%;*/
-    /*margin-left: calc(50% - 150px);*/
+    /*margin-top: 10%;*/
+    /*margin-left: 100px;*/
   }
 
   .mainBoxSecond {
     width: 300px;
-    height: 450px;
+    height: 350px;
     background-color: #343F48;
     margin-top: 20%;
-    /*margin-left: calc(50% - 150px);*/
+    margin-left: calc(50% - 150px);
     display: flex;
     flex-direction: column;
     justify-content: center;

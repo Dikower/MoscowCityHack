@@ -1,75 +1,131 @@
 <script>
-  import { settingWindowState } from '../storage.js';
+  import {settingWindowState} from '../storage.js';
+
   let checkMat = false;
   let checkToxic = false;
   let checkPrInfo = false;
   let changeState = false;
 
-  let userData = {name: "Димочка", img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"}
+  let userData = {
+    name: "Димочка",
+    img: "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
+  }
   let name = userData.name;
-  function closeWindow(){
+
+  function closeWindow() {
     settingWindowState.decrement();
   }
-  function saveSettings(){
+
+  function saveSettings() {
     alert("Saving...")
   }
-  function changeName(){
+
+  function changeName() {
     changeState = !changeState;
   }
-  function saveName(){
+
+  function saveName() {
     userData.name = name;
     changeState = !changeState;
   }
 </script>
 
-<div class="WindowBox">
-  <div class="BoxForSetting">
-    <button on:click={closeWindow} class="cancel-button">
-      <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
-    </button>
-    <div class="userInfo">
-      <img src={userData.img}>
-      {#if !changeState}
-        <div class="user-name">
-        <h1>{userData.name}</h1>
-          <button on:click={changeName} class="edit-button">
-            <img src="edit.svg" class="edit-icon" alt="edit-icon" />
-          </button>
-        </div>
-      {:else}
-        <input bind:value={name}>
-        <button on:click={saveName} class="saveButton">Сохранить</button>
-      {/if}
-
-    </div>
-
-    <div class="oneSettingBox">
-      <h3>Скрытие матов</h3>
-      <label class="switch">
-        <input type="checkbox" checked={checkMat}>
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div class="oneSettingBox">
-      <h3>Проверка на токсичность</h3>
-      <label class="switch">
-        <input type="checkbox" checked={checkToxic}>
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <div class="oneSettingBox">
-      <h3>Проверка на приватную информацию</h3>
-      <label class="switch">
-        <input type="checkbox" checked={checkPrInfo}>
-        <span class="slider round"></span>
-      </label>
-    </div>
-    <button on:click={saveSettings} class="main-button">Сохранить</button>
-  </div>
-
+<div id="TB_overlay">
 </div>
 
+<div class="wrapper">
+  <div class="WindowBox">
+    <div class="BoxForSetting">
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon"/>
+      </button>
+      <div class="userInfo">
+        <img src={userData.img}>
+        {#if !changeState}
+          <div class="user-name">
+            <h1>{userData.name}</h1>
+            <button on:click={changeName} class="edit-button">
+              <img src="edit.svg" class="edit-icon" alt="edit-icon"/>
+            </button>
+          </div>
+        {:else}
+          <input bind:value={name}>
+          <button on:click={saveName} class="saveButton">Сохранить</button>
+        {/if}
+
+      </div>
+
+      <div class="oneSettingBox">
+        <h3>Скрытие матов</h3>
+        <label class="switch">
+          <input type="checkbox" checked={checkMat}>
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="oneSettingBox">
+        <h3>Проверка на токсичность</h3>
+        <label class="switch">
+          <input type="checkbox" checked={checkToxic}>
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <div class="oneSettingBox">
+        <h3>Проверка на приватную информацию</h3>
+        <label class="switch">
+          <input type="checkbox" checked={checkPrInfo}>
+          <span class="slider round"></span>
+        </label>
+      </div>
+      <button on:click={saveSettings} class="main-button">Сохранить</button>
+    </div>
+
+  </div>
+</div>
+
+
 <style>
+
+  #TB_overlay {
+    background-color: #000; /* Чёрный фон */
+    height: 100%; /* Высота максимальна */
+    left: 0; /* Нулевой отступ слева */
+    opacity: 0.50; /* Степень прозрачности */
+    position: fixed; /* Фиксированное положение */
+    top: 0; /* Нулевой отступ сверху */
+    width: 100%; /* Ширина максимальна */
+    z-index: 100; /* Заведомо быть НАД другими элементами */
+  }
+
+  .wrapper {
+    position: relative;
+
+  }
+
+  .WindowBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 500px; /* FIXME подумать, как сделать лучше */
+    width: 100%;
+    display: grid;
+    place-items: center;
+    z-index: 101;
+  }
+
+  .BoxForSetting {
+    padding: 20px;
+    border-radius: 10px;
+    background-color: #343F48;
+    margin-top: 10%;
+    height: auto;
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+  }
+
+
   h1, h4 {
     color: #fff;
   }
@@ -100,14 +156,15 @@
     border: none;
     outline: none;
     background-color: transparent;
-}
+  }
 
-  .userInfo h1{
+  .userInfo h1 {
     margin-top: auto;
     margin-bottom: auto;
     margin-left: 10px;
   }
-  .userInfo input{
+
+  .userInfo input {
     margin-left: 10px;
     width: auto;
     height: 30px;
@@ -117,13 +174,15 @@
     border-radius: 10px;
     color: rgba(255, 255, 255, 0.6);
   }
-  .userInfo button{
+
+  .userInfo button {
     height: 30px;
     margin-top: auto;
     margin-bottom: auto;
     margin-left: auto;
   }
-  .saveButton{
+
+  .saveButton {
     border: 1px solid #07E897;
     color: #fff;
     background-color: transparent;
@@ -132,16 +191,13 @@
     outline: none;
     border-radius: 24px;
   }
-  img{
+
+  img {
     height: 100px;
     width: 100px;
     border-radius: 100px;
   }
-  .WindowBox{
-    position: absolute;
-    height: 100%;
-    width: 100%;
-  }
+
 
   .switch {
     margin-top: 0;
@@ -160,19 +216,8 @@
   .cancel-icon {
     width: 16px;
   }
-  .BoxForSetting{
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #343F48;
-    margin-top: 10%;
-    margin-left: calc(50% - 150px);
-    height: auto;
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-  }
+
+
   .main-button {
     background: #07E897;
     color: #343F48;

@@ -2,8 +2,10 @@
   import Chat from "./chatField.svelte";
   import Settings from "./modalWindows/settingsModalWindow.svelte";
   import Channel from "./modalWindows/channelModalWindow.svelte";
+  // import  Channel from "./modalWindows/Channel.svelte";
   import Contacts from "./modalWindows/contactsModalWindow.svelte";
   import Group from "./modalWindows/groupModalWindow.svelte";
+  // import Group from "./modalWindows/Group.svelte";
   import Auth from './authWindow.svelte';
   import Moveable from "svelte-moveable";
   import {fetches} from "./api";
@@ -18,18 +20,21 @@
   let recipientName = "";
   let recipientImg = "";
   let settingState = 0;
-  onMount(async () =>{
+  onMount(async () => {
     ID.set(localStorage.getItem("ID"));
   });
   // let userID = "тут мог быть ваш уникальный ID";
 
   let peoplemass = fetches.get('/users/all');
   let newPeopleMass = [];
-  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {$peoplemass = v; newPeopleMass = $peoplemass;})
+  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {
+    $peoplemass = v;
+    newPeopleMass = $peoplemass;
+  })
   $: console.log('update', $peoplemass)
 
   function funcChoiceChat(name, img) {
-    if(h>w){
+    if (h > w) {
       stateDopTap = !stateDopTap;
     }
     recipientName = name;
@@ -70,17 +75,20 @@
       })
     }
   }
+
   let stateDopTap = false;
-  function openDopTap(){
+
+  function openDopTap() {
     stateDopTap = !stateDopTap;
   }
+
   let w;
   let h;
 </script>
 
 <svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
 <div class="mainBox" bind:this={target}>
-  {#if ($ID === "")||($ID === null)}
+  {#if ($ID === "") || ($ID === null)}
     <Auth/>
   {:else}
     <div class="boxForModalWindow">
@@ -100,7 +108,7 @@
 
     <div class="controlPanel">
 
-      {#if h<w}
+      {#if h < w}
         <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
         <input on:input={searchContact} class="settingInput" placeholder="Search">
       {:else}
@@ -112,11 +120,11 @@
 
         {/if}
       {/if}
-      <img src="logo.svg" class="logo" alt="logo" />
+      <img src="logo.svg" class="logo" alt="logo"/>
 
     </div>
     <div class="infoBox">
-      {#if h<w}
+      {#if h < w}
         {#if (!settingState)}
           <div class="peopleColumn">
             <div class="scrollable">
@@ -236,7 +244,7 @@
 <!--    }}-->
 <!--/>-->
 
-<style >
+<style>
   .mainBox {
     width: 520px;
     height: 600px;
@@ -257,12 +265,13 @@
   /*  width: 100%;*/
   /*  height: 100%;*/
   /*}*/
-  h4{
+  h4 {
     white-space: nowrap;
     /*overflow: hidden;*/
     text-overflow: ellipsis;
     width: 120px;
   }
+
   hr {
     border: 0.05px solid rgba(60, 60, 67, 0.29);
   }

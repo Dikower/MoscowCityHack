@@ -7,7 +7,10 @@
   // let stateWindow = true;
   let peoplemass = fetches.get('/users/all'); //TODO
   let newPeopleMass = [];
-  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {$peoplemass = v; newPeopleMass = $peoplemass;})
+  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {
+    $peoplemass = v;
+    newPeopleMass = $peoplemass;
+  })
 
   function closeWindow() {
     contactsWindowState.decrement();
@@ -25,7 +28,7 @@
     } else {
       newPeopleMass = [];
       $peoplemass.forEach(element => {
-        let elName = element.name.toLowerCase();
+        let elName = element.fio.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
         }
@@ -34,12 +37,14 @@
   }
 </script>
 
-<div id="TB_overlay"></div>
-<div class="WindowBox">
+<div id="TB_overlay">
+</div>
 
+<div class="wrapper">
+  <div class="WindowBox">
     <div class="mainBoxSecond">
       <button on:click={closeWindow} class="cancel-button">
-        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon"/>
       </button>
       <h3>Контакты</h3>
       <input on:input={searchContact}>
@@ -49,10 +54,10 @@
           {:then data}
             {#each newPeopleMass as man}
               <div class="manBox">
-                <img src={man.img} alt="" class="manbox-img">
-                <h4>{man.name}</h4>
+                <img src={man.avatar} alt="" class="manbox-img">
+                <h4>{man.fio}</h4>
                 <button on:click={closeWindow} class="delete-button">
-                  <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+                  <img src="cancel.svg" class="cancel-icon" alt="cancel-icon"/>
                 </button>
               </div>
             {/each}
@@ -63,27 +68,54 @@
         <button class="main-button">Добавить контакт</button>
       </div>
     </div>
+  </div>
 </div>
+
 
 <style>
   #TB_overlay {
-  background-color: #000; /* Чёрный фон */
-  height: 100%; /* Высота максимальна */
-  left: 0; /* Нулевой отступ слева */
-  opacity: 0.50; /* Степень прозрачности */
-  position: fixed; /* Фиксированное положение */
-  top: 0; /* Нулевой отступ сверху */
-  width: 100%; /* Ширина максимальна */
-  z-index: 100; /* Заведомо быть НАД другими элементами */
-}
+    background-color: #000; /* Чёрный фон */
+    height: 100%; /* Высота максимальна */
+    left: 0; /* Нулевой отступ слева */
+    opacity: 0.50; /* Степень прозрачности */
+    position: fixed; /* Фиксированное положение */
+    top: 0; /* Нулевой отступ сверху */
+    width: 100%; /* Ширина максимальна */
+    z-index: 100; /* Заведомо быть НАД другими элементами */
+  }
+
+  .wrapper {
+    position: relative;
+  }
 
   .WindowBox {
     position: absolute;
-    /*background-color: #999999;*/
-    /*opacity: 0.7;*/
+    top: 0;
+    left: 0;
+    height: 500px; /* FIXME подумать, как сделать лучше */
+    width: 100%;
+    display: grid;
+    place-items: center;
     z-index: 101;
-    /*z-index:3;*/
   }
+
+
+  .mainBoxSecond {
+    /*position: absolute;*/
+    background-color: #343F48;
+    width: 300px;
+    height: 450px;
+    margin-top: 10%;
+    /*margin-left: calc(50% - 150px);*/
+    /*left: 50%;*/
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 8px;
+    padding: 10px;
+
+  }
+
 
   .cancel-button {
     display: flex;
@@ -98,19 +130,6 @@
     border: none;
     outline: none;
     background-color: transparent;
-  }
-
-  .mainBoxSecond {
-    position: absolute;
-    background-color: #343F48;
-    width: 300px;
-    height: 500px;
-    left: 50%;
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    border-radius: 8px;
-    padding: 10px;
   }
 
   h5 {
@@ -177,7 +196,7 @@
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
   }
 
   .manBox:hover {
