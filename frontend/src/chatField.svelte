@@ -81,14 +81,17 @@
   </div>
   <div class="scrollable" bind:this={div}>
     {#each comments as comment, number}
-      <article class={comment.author} on:dblclick={() => handleClick(number)}>
-        <span>{comment.text}</span>
-      </article>
-      {#if (comment.like)&&(comment.author)==="user"}
-        <img src="heart.svg" class="userLikeImg">
-      {:else if (comment.like)&&(comment.author)==="recipient"}
-        <img src="heart.svg" class="recipientLikeImg">
-      {/if}
+      <div on:dblclick={() => handleClick(number)}>
+        <article class={comment.author}>
+          <span>{comment.text}</span>
+        </article>
+        {#if (comment.like)&&(comment.author)==="user"}
+          <img src="heart.svg" class="userLikeImg">
+        {:else if (comment.like)&&(comment.author)==="recipient"}
+          <img src="heart.svg" class="recipientLikeImg">
+        {/if}
+      </div>
+
     {/each}
   </div>
   <div class="senderPanel">
