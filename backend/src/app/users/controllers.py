@@ -95,11 +95,11 @@ async def auth(auth_token: str):
     user_auth_token = await generate_auth_token(user_id)
 
     await User.create(
-        id_=user_id,
+        id=user_id,
         fio=user_data.get("fio"),
         email=user_data.get("email"),
         auth_token=user_auth_token,
-        profile_pic=user_data.get("profile_picture"),
+        avatar=user_data.get("avatar"),
     )
 
     return auth_token
@@ -113,7 +113,7 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
     except jwt.JWTError:
         raise credentials_exception
 
-    user = await User.get_or_none(id_=user_data["id"])
+    user = await User.get_or_none(id=user_data["id"])
 
     if not user.auth_token:
         return "Found you, evil hacker!"
