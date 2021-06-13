@@ -47,8 +47,8 @@ export function storeFetch(url, method, data, token) {
 }
 
 
-// const apiUrl = 'https://b.sberchat.hackmaasters.tech/'
-const apiUrl = 'http://localhost:8000/'
+const apiUrl = 'https://b.sberchat.hackmasters.tech/'
+// const apiUrl = 'http://localhost:8000/'
 export const fetches = {
   get: (apiPart, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'get', {}, token)
