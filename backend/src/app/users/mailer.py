@@ -29,7 +29,6 @@ def send_mail(link, to_address="dmitriy1d01@gmail.com"):
     msg.attach(MIMEText(body, "html"))
 
     server = smtplib.SMTP_SSL("smtp.mail.ru", 465)
-    # server.starttls()
     server.login(from_address, MAIL_PASSWORD)
     text = msg.as_string()
     server.sendmail(from_address, to_address, text)

@@ -16,8 +16,8 @@ class User(Model):
     avatar = fields.CharField(null=True, max_length=512)
     type: UserType = fields.CharEnumField(UserType, default=UserType.PERSON)
 
-    as_chat_admin: fields.ForeignKeyRelation['users.ChatAdmin']
-    chats: fields.ForeignKeyRelation['chats.Chat']
+    # as_chat_admin: fields.ForeignKeyRelation['users.ChatAdmin']
+    # chats: fields.ForeignKeyRelation['chats.Chat']
 
     def __repr__(self):
         return str(self.fio)
@@ -29,7 +29,7 @@ class User(Model):
 class ChatAdmin(Model):
     id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField('users.User', related_name='as_chat_admin')
-    chats: fields.ForeignKeyRelation['chats.Chat']
+    # chats: fields.ForeignKeyRelation['chats.Chat']
 
 
 class Token(Model):
@@ -38,4 +38,4 @@ class Token(Model):
     is_used = fields.BooleanField(default=False)
 
 
-# Tortoise.init_models(["app.users.models"], "user")
+Tortoise.init_models(["app.users.models"], "users")
