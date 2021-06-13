@@ -11,13 +11,20 @@ from jose import jwt
 from pydantic import BaseModel
 
 from .core import generate_auth_token, get_user_data_by_auth_token
-from .models import User
+from .models import User, Token
+from .mailer import send_mail
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 
 credentials_exception = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail="Could not validate credentials",
+    headers={"WWW-Authenticate": "Bearer"},
+)
+
+token_expired_exception = HTTPException(
+    status_code=status.HTTP_401_UNAUTHORIZED,
+    detail="Token has expired",
     headers={"WWW-Authenticate": "Bearer"},
 )
 
@@ -36,7 +43,7 @@ class LoginData(BaseModel):
     login_method: LoginOptions
     fio: Optional[str] = None
     email: Optional[str] = None
-    profile_picture: Optional[str] = None
+    avatar: Optional[str] = None
 
     class Config:
         use_enum_values = True
@@ -46,13 +53,18 @@ class LoginData(BaseModel):
 async def login(login_data: LoginData, request: Request):
 
     if login_data.login_method == LoginOptions.EMAIL.value:
+
         user_token = await generate_auth_token(
             uuid4(),
             **login_data.dict(),  # TODO redaundant values
             expires_date=timedelta(minutes=5),
         )
+
+        await Token.create(login_token=user_token)
+
         login_link = request.url_for("auth", **{"auth_token": user_token})
-        # TODO send to email
+        # send_mail(login_link, login_data.email)
+
         return login_link
     else:
         return "NO known login method"
@@ -60,7 +72,15 @@ async def login(login_data: LoginData, request: Request):
 
 @router.get("/auth/{auth_token}")
 async def auth(auth_token: str):
-    # TODO invalidate token after using
+
+    # если токен уже существует, второй раз он не сработает
+    stored_token = await Token.get_or_none(login_token=auth_token)
+    if stored_token:
+        if stored_token.is_used:
+            raise token_expired_exception
+        else:
+            await stored_token.update_from_dict({"is_used": True})
+            await stored_token.save()
 
     try:
         user_data = await get_user_data_by_auth_token(auth_token)
@@ -75,7 +95,7 @@ async def auth(auth_token: str):
             await get_user_data_by_auth_token(user.auth_token)
         except jwt.ExpiredSignatureError:
             # перегенерируем токен если он протух
-            user_auth_token = await generate_auth_token(user.id_)
+            user_auth_token = await generate_auth_token(user.id)
             await user.update_from_dict({"auth_token": user_auth_token})
             await user.save()
 
@@ -84,7 +104,7 @@ async def auth(auth_token: str):
 
     # если юзер есть но токена нет, то генерируем токен
     elif user and not user.auth_token:
-        user_auth_token = await generate_auth_token(user.id_)
+        user_auth_token = await generate_auth_token(user.id)
         await user.update_from_dict({"auth_token": user_auth_token})
         await user.save()
         return user_auth_token
@@ -94,17 +114,17 @@ async def auth(auth_token: str):
     user_auth_token = await generate_auth_token(user_id)
 
     await User.create(
-        id_=user_id,
+        id=user_id,
         fio=user_data.get("fio"),
         email=user_data.get("email"),
         auth_token=user_auth_token,
-        profile_pic=user_data.get("profile_picture"),
+        avatar=user_data.get("avatar"),
     )
 
-    return auth_token
+    return user_auth_token
 
 
-@router.post("/get_me")
+@router.get("/get_me")
 async def get_me(auth_token: str = Depends(oauth2_scheme)):
 
     try:
@@ -112,10 +132,10 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
     except jwt.JWTError:
         raise credentials_exception
 
-    user = await User.get_or_none(id_=user_data["id"])
+    user = await User.get_or_none(id=user_data["id"])
 
     if not user.auth_token:
-        "Found you, evil hacker!"
+        return "Found you, evil hacker!"
         # залогировать злобного хакера
 
     return user

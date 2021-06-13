@@ -11,6 +11,8 @@ function createCount() {
   };
 }
 
+export const ID = writable("");
+
 export const settingWindowState = createCount();
 export const groupWindowState = createCount();
 export const channelWindowState = createCount();
