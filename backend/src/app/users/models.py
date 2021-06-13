@@ -16,7 +16,7 @@ class User(Model):
     avatar = fields.CharField(null=True, max_length=512)
     type: UserType = fields.CharEnumField(UserType, default=UserType.PERSON)
 
-    as_chat_admin: fields.ForeignKeyRelation['users.Admin']
+    as_chat_admin: fields.ForeignKeyRelation['users.ChatAdmin']
     chats: fields.ForeignKeyRelation['chats.Chat']
 
     def __repr__(self):
@@ -30,3 +30,11 @@ class ChatAdmin(Model):
     id = fields.UUIDField(pk=True)
     user = fields.ForeignKeyField('users.User', related_name='as_chat_admin')
     chats: fields.ForeignKeyRelation['chats.Chat']
+
+
+class Token(Model):
+    id = fields.IntField(pk=True)
+    login_token = fields.CharField(max_length=2048)
+    is_used = fields.BooleanField(default=False)
+
+
