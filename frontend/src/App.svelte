@@ -4,7 +4,7 @@
   import Channel from "./modalWindows/channelModalWindow.svelte";
   import Contacts from "./modalWindows/contactsModalWindow.svelte";
   import Group from "./modalWindows/groupModalWindow.svelte";
-  // import Moveable from "svelte-moveable";
+  import Moveable from "svelte-moveable";
   import {fetches} from "./api";
   import {onMount} from 'svelte';
   import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState} from './storage.js';
@@ -24,6 +24,9 @@
   $: console.log('update', $peoplemass)
 
   function funcChoiceChat(name, img) {
+    if(h>w){
+      stateDopTap = !stateDopTap;
+    }
     recipientName = name;
     recipientImg = img;
   }
@@ -62,9 +65,15 @@
       })
     }
   }
+  let stateDopTap = false;
+  function openDopTap(){
+    stateDopTap = !stateDopTap;
+  }
+  let w;
+  let h;
 </script>
 
-
+<svelte:window bind:innerHeight={h} bind:innerWidth={w}/>
 <div class="mainBox" bind:this={target}>
   <div class="boxForModalWindow">
     {#if $settingWindowState === 1}
@@ -82,92 +91,156 @@
   </div>
 
   <div class="controlPanel">
-    <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-    {#if !settingState}
-      <input on:input={searchContact} class="settingInput" placeholder="Search">
-    {/if}
-  </div>
-  <div class="infoBox">
-    {#if (!settingState)}
-      <div class="peopleColumn">
-        <div class="scrollable">
-          {#await $peoplemass}
-          {:then data}
-            {#each newPeopleMass as man}
-              <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                <img src={man.img} alt="Avatar">
-                <h4>{man.name}</h4>
-              </div>
-              <hr>
-            {/each}
-          {/await}
-        </div>
-      </div>
-    {:else }
-      <div class="settingsColumn">
-        <div class="SettingsTab" on:click={openGroupWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>New Group</h3>
-        </div>
-        <div class="SettingsTab" on:click={openChannelWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>New Channel</h3>
-        </div>
-        <div class="SettingsTab" on:click={openContactsWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>Contacts</h3>
-        </div>
-        <div class="SettingsTab" on:click={openSettingsWindow}>
-          <img src="settings.svg" class="settingsIcon">
-          <h3>Settings</h3>
-        </div>
-      </div>
+    {#if h<w}
+      <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+      {#if !settingState}
+        <input on:input={searchContact} class="settingInput" placeholder="Search">
+      {/if}
+    {:else}
+      {#if !stateDopTap}
+        <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
+      {:else}
+        <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+        {#if !settingState}
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
+        {/if}
+      {/if}
     {/if}
 
-    {#if recipientName === ""}
-      <h4 class="message">Please select a chat to start messaging</h4>
+  </div>
+  <div class="infoBox">
+    {#if h<w}
+      {#if (!settingState)}
+        <div class="peopleColumn">
+          <div class="scrollable">
+            {#await $peoplemass}
+            {:then data}
+              {#each newPeopleMass as man}
+                <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
+                  <img src={man.img} alt="Avatar">
+                  <div class="person-info">
+                    <h4>{man.name}</h4>
+                    <p>Online</p>
+                  </div>
+                </div>
+                <hr>
+              {/each}
+            {/await}
+          </div>
+        </div>
+      {:else }
+        <div class="settingsColumn">
+          <div class="SettingsTab" on:click={openGroupWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>New Group</h3>
+          </div>
+          <div class="SettingsTab" on:click={openChannelWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>New Channel</h3>
+          </div>
+          <div class="SettingsTab" on:click={openContactsWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>Contacts</h3>
+          </div>
+          <div class="SettingsTab" on:click={openSettingsWindow}>
+            <img src="settings.svg" class="settingsIcon">
+            <h3>Settings</h3>
+          </div>
+        </div>
+      {/if}
+
+      {#if recipientName === ""}
+        <h4 class="message">Please select a chat to start messaging</h4>
+      {:else}
+        <Chat {recipientName} {recipientImg}/>
+      {/if}
     {:else}
-      <Chat {recipientName} {recipientImg}/>
+      {#if !stateDopTap}
+        {#if recipientName === ""}
+          <h4 class="message">Please select a chat to start messaging</h4>
+        {:else}
+          <Chat {recipientName} {recipientImg}/>
+        {/if}
+      {:else}
+        {#if !settingState}
+          <div class="peopleColumn" style="width: 100%">
+            <div class="scrollable">
+              {#await $peoplemass}
+              {:then data}
+                {#each newPeopleMass as man}
+                  <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
+                    <img src={man.img} alt="Avatar">
+                    <div class="person-info">
+                      <h4>{man.name}</h4>
+                      <p>Online</p>
+                    </div>
+                  </div>
+                  <hr>
+                {/each}
+              {/await}
+            </div>
+          </div>
+        {:else}
+          <div class="settingsColumn" style="width: 100%">
+            <div class="SettingsTab" on:click={openGroupWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>New Group</h3>
+            </div>
+            <div class="SettingsTab" on:click={openChannelWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>New Channel</h3>
+            </div>
+            <div class="SettingsTab" on:click={openContactsWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>Contacts</h3>
+            </div>
+            <div class="SettingsTab" on:click={openSettingsWindow}>
+              <img src="settings.svg" class="settingsIcon">
+              <h3>Settings</h3>
+            </div>
+          </div>
+        {/if}
+      {/if}
     {/if}
   </div>
 </div>
 
-<!--<Moveable-->
-<!--    target={target}-->
-<!--    resizable={true}-->
-<!--    throttleResize={10}-->
-<!--    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {-->
-<!--        // Set origin if transform-origin use %.-->
-<!--		setOrigin(["%", "%"]);-->
-<!--        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)-->
-<!--        const style = window.getComputedStyle(target);-->
-<!--        const cssWidth = parseFloat(style.width);-->
-<!--        const cssHeight = parseFloat(style.height);-->
-<!--        set([cssWidth, cssHeight]);-->
+<Moveable
+    target={target}
+    resizable={true}
+    throttleResize={10}
+    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {
+        // Set origin if transform-origin use %.
+		setOrigin(["%", "%"]);
+        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)
+        const style = window.getComputedStyle(target);
+        const cssWidth = parseFloat(style.width);
+        const cssHeight = parseFloat(style.height);
+        set([cssWidth, cssHeight]);
 
-<!--        // If a drag event has already occurred, there is no dragStart.-->
-<!--        dragStart && dragStart.set(frame.translate);-->
-<!--    }}-->
-<!--    on:resize={({ detail: { target, width, height, drag }}) => {-->
-<!--        target.style.width = `${width}px`;-->
-<!--        target.style.height = `${height}px`;-->
+        // If a drag event has already occurred, there is no dragStart.
+        dragStart && dragStart.set(frame.translate);
+    }}
+    on:resize={({ detail: { target, width, height, drag }}) => {
+        target.style.width = `${width}px`;
+        target.style.height = `${height}px`;
 
-<!--        // get drag event-->
-<!--        frame.translate = drag.beforeTranslate;-->
-<!--        target.style.transform-->
-<!--            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;-->
-<!--    }}-->
-<!--    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {-->
-<!--        console.log("onResizeEnd", target, isDrag);-->
-<!--    }}-->
-<!--/>-->
+        // get drag event
+        frame.translate = drag.beforeTranslate;
+        target.style.transform
+            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
+    }}
+    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {
+        console.log("onResizeEnd", target, isDrag);
+    }}
+/>
 
 <style>
 
   .mainBox {
     width: 520px;
     height: 600px;
-    border: #e4e4e4 solid 1px;
+    border: #343F48 solid 0.5px;
     margin: auto;
   }
 
@@ -180,29 +253,41 @@
 
   hr {
     border: 0.05px solid rgba(60, 60, 67, 0.29);
-    width: 95%;
   }
 
   .controlPanel {
     height: 60px;
     width: 100%;
     min-width: 400px;
-    background: #07CC85;
+    background: var(--darkgreen);
+    display: flex;
+    align-items: center;
   }
 
   .settingIcon {
     height: 30px;
     width: 30px;
-    margin-top: 15px;
-    margin-left: 15px;
+  }
+
+  .person-info {
+    align-items: left;
+    text-align: left;
+    line-height: 0;
+  }
+
+  .scrollable p {
+    font-size: calc(8px + (10 - 8) * ((100vw - 300px) / (1440 - 300)));
   }
 
   .settingInput {
     margin-left: 10px;
     width: calc(40% - 60px);
     height: 30px;
-    max-width: 240px;
-    min-width: 140px;
+    background-color: #343F48;
+    outline: none;
+    border: none;
+    border-radius: 10px;
+    color: rgba(255, 255, 255, 0.6);
   }
 
   .infoBox {
@@ -214,7 +299,7 @@
 
   .peopleColumn {
     width: 40%;
-    max-width: 300px;
+    /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
     display: flex;
@@ -223,10 +308,10 @@
 
   .settingsColumn {
     width: 40%;
-    max-width: 300px;
+    /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
-    border-right-color: #eee;
+    border-right-color: #343F48;
     border-right-style: solid; /* Стиль линии */
     border-right-width: 1px;
     display: flex;
@@ -274,11 +359,11 @@
 
   .scrollable::-webkit-scrollbar {
     width: 2px;
-    background-color: #eee;
+    background-color: #343F48;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(168, 168, 168);
+    background-color: #00EA95;
   }
 
   .manBox {
@@ -290,7 +375,7 @@
   }
 
   .manBox:hover {
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
     color: #fff;
   }
 
@@ -299,15 +384,15 @@
   }
 
   .manBox img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;
   }
 
   .manBox * {
-    margin-left: 10px;
+    margin-left: 5px;
   }
 
   .message {

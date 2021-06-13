@@ -76,7 +76,13 @@
     {/each}
   </div>
   <div class="senderPanel">
-    <input on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}>
+    <button class="sendEmoji">
+      <img src="Emoji.svg" class="emoji-icon" alt="emoji-icon" />
+    </button>
+    <button class="sendEmoji">
+      <img src="Audio.svg" class="audio-icon" alt="audio-icon" />
+    </button>
+    <textarea on:keydown={handleKeydown} placeholder="Write a message..." bind:value={messageField}></textarea>
     <button class="sendMessage" on:click={send}>
       <img src="message.svg" class="message-icon" alt="message-icon" />
     </button>
@@ -88,6 +94,7 @@
 
 
 <style>
+
   .chat {
     display: flex;
     flex-direction: column;
@@ -100,12 +107,14 @@
     height: 80px;
     display: flex;
     flex-direction: row;
+    padding: 10px;
     justify-content: space-around;
+    align-items: center;
   }
 
   img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;
@@ -131,11 +140,16 @@
 
   .scrollable::-webkit-scrollbar-thumb {
     border-radius: 20px;
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
   }
 
   article {
     margin: 0.5em 0;
+  }
+  
+  .emoji-icon {
+    height: 24px;
+    width: 24px;
   }
 
   .message-icon {
@@ -143,9 +157,14 @@
     height: 18px;
   }
 
+  .audio-icon {
+    height: 24px;
+    width: 24px;
+  }
+
   .photo-icon {
-    width: 18px;
-    height: 16px;
+    width: 24px;
+    height: 24px;
   }
 
   .user {
@@ -168,16 +187,21 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 10px;
   }
-  .senderPanel input{
+  .senderPanel textarea{
     height: 40px;
-    width: calc(90% - 40px);
+    width: calc(80% - 40px);
     background-color: #343F48;
     color: rgba(255, 255, 255, 0.6);
     border: none;
     outline:none;
     border-radius: 10px;
-    padding: 20px;
+    overflow: hidden;
+    resize:none;
+    padding-right: 40px;
+    padding-left: 10px;
+    font-size: calc(10px + (12 - 10) * ((100vw - 300px) / (1440 - 300)));
   }
 
   .sendPhoto {
@@ -191,17 +215,34 @@
     border-radius: 10px;
     outline: none;
     border: none;
-    background-color: #07CC85;
+    background-color: var(--darkgreen);
     margin-left: 10px;
+  }
+
+  .sendPhoto:hover {
+    background-color: #375EC9;
+  }
+
+  .sendEmoji {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    vertical-align: middle;
+    height: 40px;
+    width: 30px;
+    margin-right: 5px;
+    background-color: transparent;
+    border: none;
+    outline: none;
   }
 
   .sendMessage{
     display: flex;
     align-items: center;
     justify-content: center;
-    text-align: center;
-    vertical-align: middle;
-    margin-left: -40px;
+    margin-top: 1px;
+    margin-left: -37px;
     height: 40px;
     width: 40px;
     border-radius: 10px;
@@ -215,7 +256,7 @@
   }
 
   .user span {
-    background: #07CC85;
+    background: var(--darkgreen);
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
