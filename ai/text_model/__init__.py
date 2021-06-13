@@ -49,8 +49,8 @@ class TextModel:
                 special_symbols += 1
 
         sber_domains = False
-        domain = text.split['.'][-1]
-        email = text.split['@'][-1]
+        domain = text.split('.')[-1]
+        email = text.split('@')[-1]
         if email or domain in SBER_DOMAINS:
             sber_domains = True
 
