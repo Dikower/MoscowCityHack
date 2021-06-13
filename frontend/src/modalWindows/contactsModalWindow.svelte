@@ -34,10 +34,14 @@
   }
 </script>
 
+<div id="TB_overlay"></div>
 <div class="WindowBox">
 
     <div class="mainBoxSecond">
-      <h3>Contacts</h3>
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+      </button>
+      <h3>Контакты</h3>
       <input on:input={searchContact}>
       <div class="peopleColumn">
         <div class="scrollable">
@@ -54,32 +58,57 @@
         </div>
       </div>
       <div class="buttonsBox">
-        <button>Add contact</button>
-        <button on:click={createFunc}>close</button>
+        <button class="main-button">Добавить контакт</button>
       </div>
     </div>
 </div>
 
 <style>
+  #TB_overlay {
+  background-color: #000; /* Чёрный фон */
+  height: 100%; /* Высота максимальна */
+  left: 0; /* Нулевой отступ слева */
+  opacity: 0.50; /* Степень прозрачности */
+  position: fixed; /* Фиксированное положение */
+  top: 0; /* Нулевой отступ сверху */
+  width: 100%; /* Ширина максимальна */
+  z-index: 100; /* Заведомо быть НАД другими элементами */
+}
+
   .WindowBox {
     position: absolute;
     /*background-color: #999999;*/
     /*opacity: 0.7;*/
-    height: 100%;
-    width: 100%;
+    z-index: 101;
     /*z-index:3;*/
   }
 
-  .mainBoxSecond {
-    background-color: whitesmoke;
-    width: 300px;
-    height: 450px;
-    /*margin-top: 20%;*/
-    /*margin-left: calc(50% - 150px);*/
-    margin-top: 4%;
-    margin-left: 6%;
+  .cancel-button {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-end;
+    width: auto;
+    margin-right: 10px;
+    margin-top: 10px;
+    height: 16px;
+    padding: 0;
+    border: none;
+    outline: none;
+    background-color: transparent;
+  }
+
+  .mainBoxSecond {
+    position: absolute;
+    background-color: #343F48;
+    width: 300px;
+    height: 500px;
+    left: 50%;
+    display: flex;
+    align-items: center;
     flex-direction: column;
+    border-radius: 8px;
+    padding: 10px;
   }
 
   h5 {
@@ -98,6 +127,12 @@
 
   input {
     width: 80%;
+    background-color: #1B1B1B;
+    color: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    outline: none;
+    border: none;
+    margin-bottom: 15px;
   }
 
   .peopleColumn {
@@ -136,11 +171,26 @@
   }
 
   .manBox:hover {
-    background-color: whitesmoke;
+    background-color: var(--darkgreenwithopacity);
   }
 
   .manBox:active {
-    background-color: rgb(238, 238, 238);
+    background-color: rgba(245, 245, 245, 0.3);
+  }
+
+  .main-button {
+    background: #07E897;
+    color: #343F48;
+    font-weight: 500;
+    border-radius: 24px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border: none;
+    outline: none;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }
 
   .manBox img {
