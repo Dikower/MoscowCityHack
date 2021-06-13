@@ -49,18 +49,23 @@
 <div class="WindowBox">
   {#if stateWindow}
     <div class="mainBox">
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+      </button>
       <h3>Channel name</h3>
       <input bind:value={channelName}>
       {#if errorMessage !== ""}
         <h5>{errorMessage}</h5>
       {/if}
       <div class="buttons">
-        <button on:click={nextStep}>next</button>
-        <button on:click={closeWindow}>exit</button>
+        <button on:click={nextStep} class="main-button">Далее</button>
       </div>
     </div>
   {:else}
     <div class="mainBoxSecond">
+      <button on:click={closeWindow} class="cancel-button">
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" style="margin-top: 40px"/>
+      </button>
       <h3>Add Members to {channelName}</h3>
       <input on:input={searchContact}>
       <div class="peopleColumn">
@@ -77,116 +82,156 @@
         </div>
       </div>
       <div class="buttonsBox">
-        <button on:click={prevStep}>cancel</button>
-        <button on:click={createFunc}>create</button>
+        <button on:click={createFunc} class="main-button">Создать</button>
+        <button on:click={prevStep} class="second-button">Отмена</button>
       </div>
     </div>
   {/if}
 </div>
-
 <style>
-  .WindowBox {
-    position: absolute;
-    /*background-color: #999999;*/
-    /*opacity: 0.7;*/
-    height: 100%;
-    width: 100%;
-    /*z-index:3;*/
-  }
+.WindowBox {
+  position: absolute;
+  /*background-color: #999999;*/
+  /*opacity: 0.7;*/
+  height: 100%;
+  width: 100%;
+  /*z-index:3;*/
+}
 
-  .mainBox {
-    background-color: whitesmoke;
-    width: 300px;
-    /*margin-top: calc(50% - 60px);*/
-    /*margin-left: calc(50% - 150px);*/
-    margin-top: 10%;
-    margin-left: 6%;
-    display: flex;
-    flex-direction: column;
-  }
+.mainBox {
+  background-color: #343F48;
+  border-radius: 8px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20%;
+  margin-left: calc(50% - 150px);
+}
 
-  .mainBoxSecond {
-    background-color: whitesmoke;
-    width: 300px;
-    height: 450px;
-    /*margin-top: 20%;*/
-    /*margin-left: calc(50% - 150px);*/
-    margin-top: 10%;
-    margin-left: 6%;
-    display: flex;
-    flex-direction: column;
-  }
+.mainBoxSecond {
+  background-color: whitesmoke;
+  width: 300px;
+  height: 450px;
+  background-color: #343F48;
+  margin-top: 20%;
+  margin-left: calc(50% - 150px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
-  h5 {
-    color: #ff3e00;
-    margin-top: 0;
-    margin-bottom: 5px;
-    text-align: center;
-  }
+h5 {
+  color: #E84E58;
+  margin-top: 0;
+  margin-bottom: 5px;
+  text-align: center;
+}
 
-  .buttons {
-    /*background-color: #73b9e8;*/
-    width: 100px;
-    margin-left: auto;
-  }
+.main-button {
+  background: #07E897;
+  color: #343F48;
+  font-weight: 500;
+  border-radius: 24px;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border: none;
+  outline: none;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 
-  input {
-    width: 80%;
-  }
+.second-button {
+  border: 1px solid #07E897;
+  color: #fff;
+  background-color: transparent;
+  padding-left: 12px;
+  padding-right: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  outline: none;
+  border-radius: 24px;
+}
 
-  .peopleColumn {
-    width: 100%;
-    height: 65%;
-    display: flex;
-    flex-direction: column;
-  }
+input {
+  width: 80%;
+  background-color: #1B1B1B;
+  color: rgba(255, 255, 255, 0.6);
+  border-radius: 10px;
+  outline: none;
+  border: none;
+}
 
-  .buttonsBox {
-    height: 20px;
-  }
+.peopleColumn {
+  width: 100%;
+  height: 65%;
+  display: flex;
+  flex-direction: column;
+}
 
-  .scrollable {
-    flex: 1 1 auto;
-    margin: 0 0 0.5em 0;
-    overflow-y: auto;
-  }
+.scrollable {
+  flex: 1 1 auto;
+  margin: 0 0 0.5em 0;
+  overflow-y: auto;
+}
 
-  .scrollable::-webkit-scrollbar-track {
-    background: transparent;
-  }
+.scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  .scrollable::-webkit-scrollbar {
-    width: 2px;
-    background-color: #eee;
-  }
+.scrollable::-webkit-scrollbar {
+  width: 3px;
+  background-color: #1B1B1B;
+}
 
-  .scrollable::-webkit-scrollbar-thumb {
-    background-color: rgb(168, 168, 168);
-  }
+.scrollable::-webkit-scrollbar-thumb {
+  background-color: var(--darkgreen);
+}
 
-  .manBox {
-    height: 64px;
-    display: flex;
-  }
+.manBox {
+  height: 64px;
+  display: flex;
+}
 
-  .manBox:hover {
-    background-color: whitesmoke;
-  }
+.manBox:hover {
+  background-color: var(--darkgreen);
+}
 
-  .manBox:active {
-    background-color: rgb(238, 238, 238);
-  }
+.manBox:active {
+  background-color: rgb(238, 238, 238);
+}
 
-  .manBox img {
-    height: 60px;
-    width: 60px;
-    border-radius: 60px;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+.manBox img {
+  height: 60px;
+  width: 60px;
+  border-radius: 60px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
 
-  .manBox * {
-    margin-left: 10px;
-  }
+.manBox * {
+  margin-left: 10px;
+}
 
+.cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-end;
+  width: auto;
+  margin-right: 10px;
+  margin-top: 10px;
+  height: 16px;
+  padding: 0;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+.buttonsBox{
+  padding-bottom: 20px;
+}
 </style>

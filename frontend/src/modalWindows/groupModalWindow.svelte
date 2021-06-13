@@ -64,7 +64,7 @@
   {:else}
     <div class="mainBoxSecond">
       <button on:click={closeWindow} class="cancel-button">
-        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" />
+        <img src="cancel.svg" class="cancel-icon" alt="cancel-icon" style="margin-top: 40px"/>
       </button>
       <h3>Добавить участников</h3>
       <input on:input={searchContact} placeholder="Поиск">
@@ -107,6 +107,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 20%;
+    margin-left: calc(50% - 150px);
   }
 
   .mainBoxSecond {
@@ -114,8 +116,8 @@
     width: 300px;
     height: 450px;
     background-color: #343F48;
-    /*margin-top: 20%;
-    margin-left: calc(50% - 150px);*/
+    margin-top: 20%;
+    margin-left: calc(50% - 150px);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -229,6 +231,8 @@
     border: none;
     outline: none;
     background-color: transparent;
-}
-
+  }
+  .buttonsBox{
+      padding-bottom: 20px;
+  }
 </style>
