@@ -2,22 +2,22 @@
   import {beforeUpdate, afterUpdate} from 'svelte';
 
   let comments = [
-    {author: 'user', text: "Привет", like: false},
-    {author: 'recipient', text: "Привет", like: false},
-    {author: 'user', text: "Как дела?", like: false},
-    {author: 'recipient', text: "Пока не родила!", like: false},
-    {author: 'user', text: "Привет", like: false},
-    {author: 'recipient', text: "Привет", like: false},
-    {author: 'user', text: "Как дела?", like: false},
-    {author: 'recipient', text: "Пока не родила!", like: false},
-    {author: 'user', text: "Привет", like: false},
-    {author: 'recipient', text: "Привет", like: false},
-    {author: 'user', text: "Как дела?", like: false},
-    {author: 'recipient', text: "Пока не родила!", like: false},
-    {author: 'user', text: "Привет", like: false},
-    {author: 'recipient', text: "Привет", like: false},
-    {author: 'user', text: "Как дела?", like: false},
-    {author: 'recipient', text: "Пока не родила!", like: false}
+    {author: 'user', text: "Привет", like: false, warily: false},
+    {author: 'recipient', text: "Привет", like: false, warily: true},
+    {author: 'user', text: "Как дела?", like: false, warily: false},
+    {author: 'recipient', text: "Пока не родила!", like: false, warily: true},
+    {author: 'user', text: "Привет", like: false, warily: true},
+    {author: 'recipient', text: "Привет", like: false, warily: false},
+    {author: 'user', text: "Как дела?", like: false, warily: false},
+    {author: 'recipient', text: "Пока не родила!", like: false, warily: false},
+    {author: 'user', text: "Привет", like: false, warily: false},
+    {author: 'recipient', text: "Привет", like: false, warily: false},
+    {author: 'user', text: "Как дела?", like: false, warily: false},
+    {author: 'recipient', text: "Пока не родила!", like: false, warily: false},
+    {author: 'user', text: "Привет", like: false, warily: false},
+    {author: 'recipient', text: "Привет", like: false, warily: false},
+    {author: 'user', text: "Как дела?", like: false, warily: false},
+    {author: 'recipient', text: "Пока не родила!", like: false, warily: false}
   ];
 
   export let recipientName = "Имя";
@@ -63,12 +63,19 @@
 
 
   function handleClick(number) {
-    console.log(number);
     let m = comments;
     m[number].like = !m[number].like;
     comments = m;
   }
+  function offBlur(number) {
 
+    let m = comments;
+    console.log(m[number].warily);
+    if(m[number].warily === true){
+      m[number].warily = false;
+    }
+    comments = m;
+  }
 </script>
 
 
@@ -82,9 +89,13 @@
   </div>
   <div class="scrollable" bind:this={div}>
     {#each comments as comment, number}
-      <div on:dblclick={() => handleClick(number)}>
+      <div on:dblclick={() => handleClick(number)} on:click = {() => offBlur(number)}>
         <article class={comment.author}>
-          <span>{comment.text}</span>
+          {#if comment.warily}
+            <span class="txt">{comment.text}</span>
+          {:else}
+            <span>{comment.text}</span>
+          {/if}
         </article>
         {#if (comment.like)&&(comment.author)==="user"}
           <img src="heart.svg" class="userLikeImg">
@@ -203,6 +214,20 @@
     margin-bottom: -25px;
     margin-top: 35px;
   }
+
+  .user .txt{
+    color: hsla(0,0%,0%,0);
+    text-shadow: #fff 0 0 5px;
+  }
+
+  .txt{
+    color: hsla(0,0%,0%,0);
+    text-shadow: #fff 0 0 5px;
+  }
+
+
+
+
   .userLikeImg{
     margin-left: calc(100% - 30px);
     margin-bottom: -20px;
@@ -213,6 +238,8 @@
     padding: 0.5em 1em;
     display: inline-block;
   }
+
+
   .recipient{
     margin-bottom: -25px;
     margin-top: 35px;
