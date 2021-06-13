@@ -17,3 +17,9 @@ class User(Model):
 
     class PydanticMeta:
         exclude = ["hashed_password"]
+
+
+class Token(Model):
+    id = fields.IntField(pk=True)
+    login_token = fields.CharField(max_length=2048)
+    is_used = fields.BooleanField(default=False)
