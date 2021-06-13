@@ -317,6 +317,7 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #343F48;
   }
 
   .settingsColumn {
@@ -372,7 +373,7 @@
 
   .scrollable::-webkit-scrollbar {
     width: 2px;
-    background-color: #343F48;
+    background-color: #A0A0A0;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
@@ -388,7 +389,7 @@
   }
 
   .manBox:hover {
-    background-color: var(--darkgreen);
+    background-color: var(--darkgreenwithopacity);
     color: #fff;
   }
 
