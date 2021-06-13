@@ -78,4 +78,9 @@ def create_app():
     app.add_event_handler("startup", startup)
     app.add_event_handler("shutdown", shutdown)
 
+    if IS_PROD:
+        console.print('Docs link: https://b.sberchat.hackmasters.tech/docs', style='bold blue')
+    else:
+        console.print('Docs link: http://localhost:8000/docs', style='bold blue')
+
     return app
