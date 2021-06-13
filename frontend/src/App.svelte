@@ -99,21 +99,20 @@
     </div>
 
     <div class="controlPanel">
+
       {#if h<w}
-        <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-        {#if !settingState}
-          <input on:input={searchContact} class="settingInput" placeholder="Search">
-        {/if}
+        <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+        <input on:input={searchContact} class="settingInput" placeholder="Search">
       {:else}
         {#if !stateDopTap}
           <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
         {:else}
-          <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-          {#if !settingState}
-            <input on:input={searchContact} class="settingInput" placeholder="Search">
-          {/if}
+          <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
+
         {/if}
       {/if}
+      <img src="logo.svg" class="logo" alt="logo" />
 
     </div>
     <div class="infoBox">
@@ -125,9 +124,9 @@
               {:then data}
                 {#each newPeopleMass as man}
                   <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                    <img src={man.img} alt="Avatar">
+                    <img src={man.img} alt="Avatar" class="man-img-online">
                     <div class="person-info">
-                      <h4>{man.name}</h4>
+                      <h3>{man.name}</h3>
                       <p>Online</p>
                     </div>
                   </div>
@@ -139,20 +138,16 @@
         {:else }
           <div class="settingsColumn">
             <div class="SettingsTab" on:click={openGroupWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>New Group</h3>
+              <h3>Создать группу</h3>
             </div>
             <div class="SettingsTab" on:click={openChannelWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>New Channel</h3>
+              <h3>Создать канал</h3>
             </div>
             <div class="SettingsTab" on:click={openContactsWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>Contacts</h3>
+              <h3>Контакты</h3>
             </div>
             <div class="SettingsTab" on:click={openSettingsWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>Settings</h3>
+              <h3>Настройки</h3>
             </div>
           </div>
         {/if}
@@ -191,20 +186,16 @@
           {:else}
             <div class="settingsColumn" style="width: 100%">
               <div class="SettingsTab" on:click={openGroupWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>New Group</h3>
+                <h3>Создать группу</h3>
               </div>
               <div class="SettingsTab" on:click={openChannelWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>New Channel</h3>
+                <h3>Создать канал</h3>
               </div>
               <div class="SettingsTab" on:click={openContactsWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>Contacts</h3>
+                <h3>Контакты</h3>
               </div>
               <div class="SettingsTab" on:click={openSettingsWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>Settings</h3>
+                <h1>Настройки</h1>
               </div>
             </div>
           {/if}
@@ -215,35 +206,35 @@
 
 </div>
 
-<Moveable
-    target={target}
-    resizable={true}
-    throttleResize={10}
-    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {
-        // Set origin if transform-origin use %.
-		setOrigin(["%", "%"]);
-        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)
-        const style = window.getComputedStyle(target);
-        const cssWidth = parseFloat(style.width);
-        const cssHeight = parseFloat(style.height);
-        set([cssWidth, cssHeight]);
+<!--<Moveable-->
+<!--    target={target}-->
+<!--    resizable={true}-->
+<!--    throttleResize={10}-->
+<!--    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {-->
+<!--        // Set origin if transform-origin use %.-->
+<!--		setOrigin(["%", "%"]);-->
+<!--        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)-->
+<!--        const style = window.getComputedStyle(target);-->
+<!--        const cssWidth = parseFloat(style.width);-->
+<!--        const cssHeight = parseFloat(style.height);-->
+<!--        set([cssWidth, cssHeight]);-->
 
-        // If a drag event has already occurred, there is no dragStart.
-        dragStart && dragStart.set(frame.translate);
-    }}
-    on:resize={({ detail: { target, width, height, drag }}) => {
-        target.style.width = `${width}px`;
-        target.style.height = `${height}px`;
+<!--        // If a drag event has already occurred, there is no dragStart.-->
+<!--        dragStart && dragStart.set(frame.translate);-->
+<!--    }}-->
+<!--    on:resize={({ detail: { target, width, height, drag }}) => {-->
+<!--        target.style.width = `${width}px`;-->
+<!--        target.style.height = `${height}px`;-->
 
-        // get drag event
-        frame.translate = drag.beforeTranslate;
-        target.style.transform
-            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
-    }}
-    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {
-        console.log("onResizeEnd", target, isDrag);
-    }}
-/>
+<!--        // get drag event-->
+<!--        frame.translate = drag.beforeTranslate;-->
+<!--        target.style.transform-->
+<!--            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;-->
+<!--    }}-->
+<!--    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {-->
+<!--        console.log("onResizeEnd", target, isDrag);-->
+<!--    }}-->
+<!--/>-->
 
 <style >
   .mainBox {
@@ -251,6 +242,13 @@
     height: 600px;
     border: #343F48 solid 0.5px;
     margin: auto;
+  }
+
+  .logo {
+    height: 40px;
+    width: 40px;
+    margin-left: auto;
+    margin-right: 10px;
   }
 
   /*.boxForModalWindow{*/
@@ -276,12 +274,22 @@
   .settingIcon {
     height: 30px;
     width: 30px;
+    float: right;
+    margin-left: 10px;
   }
 
   .person-info {
     align-items: left;
     text-align: left;
     line-height: 0;
+  }
+
+  .person-info p {
+    color: var(--darkgreen);
+  }
+
+  .man-img-online {
+    border: 2px solid var(--darkgreen);
   }
 
   .scrollable p {
@@ -291,7 +299,6 @@
   .settingInput {
     margin-left: 10px;
     width: calc(40% - 60px);
-    height: 30px;
     background-color: #343F48;
     outline: none;
     border: none;
@@ -313,10 +320,12 @@
     height: 100%;
     display: flex;
     flex-direction: column;
+    background-color: #343F48;
   }
 
   .settingsColumn {
     width: 40%;
+    background-color: #343F48;
     /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
@@ -331,15 +340,17 @@
     display: flex;
     height: 50px;
     margin-top: 10px;
+    align-items: center;
+    text-align: center;
     /*background-color: #666666;*/
   }
 
   .SettingsTab:hover {
-    background-color: #343F48;
+    background-color: var(--darkgreenwithopacity);
   }
 
   .SettingsTab:active {
-    background-color: #343F48;
+    background-color: rgba(245, 245, 245, 0.3);
   }
 
   .settingsIcon {
@@ -351,9 +362,11 @@
   }
 
   .SettingsTab h3 {
-    color: #727272;
+    color: #f5f5f5;
     margin-left: 15px;
     margin-top: 12px;
+    font-weight: 500;
+    text-align: center;
   }
 
   .scrollable {
@@ -368,11 +381,11 @@
 
   .scrollable::-webkit-scrollbar {
     width: 2px;
-    background-color: #343F48;
+    background-color: #A0A0A0;
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: #00EA95;
+    background-color: var(--darkgreen);
   }
 
   .manBox {
@@ -381,10 +394,11 @@
     text-align: center;
     padding: 2px;
     align-items: center;
+    margin-top: -6px;
   }
 
   .manBox:hover {
-    background-color: var(--darkgreen);
+    background-color: var(--darkgreenwithopacity);
     color: #fff;
   }
 

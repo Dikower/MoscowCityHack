@@ -22,6 +22,7 @@
 
   export let recipientName = "Имя";
   export let recipientImg = "";
+  let userImg = "http://sun9-57.userapi.com/s/v1/ig2/05fFA-EaTmuVYZZr-ffFFe5rerv4-qNX7amMwstHpboPHm3HPWwQruNwP0MkyJNgU3rJxAr-npGMvnFfx0sqK4ng.jpg?size=400x0&quality=96&crop=0,152,960,994&ava=1"
   let div;
   let autoscroll;
   let messageField;
@@ -63,10 +64,10 @@
 
 <div class="chat">
   <div class="header">
-    <h1>{recipientName}</h1>
-    <img
-        src={recipientImg}
-        alt="">
+    <div>
+      <img src={recipientImg} class="recImg">
+      <img src={userImg} class="userImg">
+    </div>
   </div>
   <div class="scrollable" bind:this={div}>
     {#each comments as comment}
@@ -108,16 +109,27 @@
     display: flex;
     flex-direction: row;
     padding: 10px;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
 
   img {
-    height: 50px;
-    width: 50px;
+    height: 60px;
+    width: 60px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;
+  }
+
+  .recImg{
+    z-index: 100;
+    border: #999999 solid 2px;
+  }
+
+  .userImg{
+    margin-left: -20px;
+    border: #12BBA6 solid 2px;
+    z-index: 200;
   }
 
   .scrollable {
@@ -256,7 +268,7 @@
   }
 
   .user span {
-    background: var(--darkgreen);
+    background: var(--darkgreenwithopacity);
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;

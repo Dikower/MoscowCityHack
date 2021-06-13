@@ -1,7 +1,12 @@
 /* Корпоративные шрифты SberCloud */
 @font-face {
-    font-family: SB Sans Interface;
-    src: url(fonts/SBSansUI-Regular.ttf);
+    font-family: SB Sans Text Bold;
+    src: url(fonts/SBSansText-Medium.ttf);
+}
+
+@font-face {
+    font-family: SB Sans Text Regular;
+    src: url(fonts/SBSansText-Regular.ttf);
 }
 
 html, body {
@@ -67,32 +72,32 @@ input:checked + .slider:before {
 }
 
 :root {
-	--darkgreen: #00EA95;
+	--darkgreen: #12BBA6;
+	--darkgreenwithopacity: rgba(18, 187, 166, 0.3);
 }
 
-h2, h3, h4, p {
-	font-family: Roboto;
+h1, h2, h4 {
+	font-family: SB Sans Text Bold;
 }
 
 h1 {
-	font-family: SB Sans Interface;
 	font-size: calc(16px + (18 - 16) * ((100vw - 300px) / (1440 - 300)));
-	font-style: normal;
-	font-weight: normal;
+}
+
+h2 {
+	font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1440 - 300)));
 }
 
 h3 {
-	font-size: calc(14px + (16 - 14) * ((100vw - 300px) / (1440 - 300)));
-	font-weight: 500;
+	font-size: calc(12px + (14 - 12) * ((100vw - 300px) / (1440 - 300)));
 }
 
 h4 {
 	font-size: calc(10px + (12 - 10) * ((100vw - 300px) / (1440 - 300)));
-	font-weight: 500;
 }
 
-p {
-	font-weight: 200;
+h3, p {
+	font-family: SB Sans Text Regular;
 }
 
 body {
@@ -126,7 +131,7 @@ input, button, select, textarea {
 	font-size: inherit;
 	-webkit-padding: 0.4em 0;
 	padding: 0.4em;
-	margin: 0 0 0.5em 0;
+	margin: 0 0 0 0;
 	box-sizing: border-box;
 	border: 1px solid #ccc;
 	border-radius: 2px;
