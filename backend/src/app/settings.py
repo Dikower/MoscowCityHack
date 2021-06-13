@@ -7,22 +7,18 @@ current_path = os.path.dirname(os.path.realpath(__file__))
 
 
 with open(os.path.join(current_path, ".gitignore"), "r", encoding="utf8") as file:
-    exclude = set(("src/app/" + file for file in file.read().split("\n")))
-
+    exclude = set(("src/app/" + file for file in file.read().split("\n") + ["bots", "channels"]))
 
 folders = list(
-    set([folder.replace("\\", "/").strip("/") for folder in glob("src/app/*/")])
-    - exclude
+    set([folder.replace("\\", "/").strip("/") for folder in glob("src/app/*/")]) - exclude
 )
-# model_paths = [f"{}path.replace('/', '.').replace('src.', '')" for path in folders]
-# print(model_paths)
+
 apps = {
     folder.rsplit("/", maxsplit=1)[1]: {
         "models": [f"{folder.replace('/', '.').replace('src.', '')}.models"]
     }
     for folder in folders
 }
-
 
 PROD_TORTOISE_ORM = {
     "connections": {"default": f"sqlite://{current_path}/db/prod/db.sqlite3"},

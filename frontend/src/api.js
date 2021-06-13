@@ -35,6 +35,7 @@ export function storeFetch(url, method, data, token) {
     if (method !== 'get') {
       request.body = JSON.stringify(data)
     }
+    console.log(request)
     const response = await fetch(url, request);
     const rsp = await response.json();
     setCache(url, rsp);
@@ -46,7 +47,8 @@ export function storeFetch(url, method, data, token) {
 }
 
 
-const apiUrl = 'https://b.sberchat.hackmaasters.tech/'
+// const apiUrl = 'https://b.sberchat.hackmaasters.tech/'
+const apiUrl = 'http://localhost:8000/'
 export const fetches = {
   get: (apiPart, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'get', {}, token)
