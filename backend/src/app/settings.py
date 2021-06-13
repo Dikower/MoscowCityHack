@@ -9,8 +9,7 @@ with open(os.path.join(current_path, ".gitignore"), "r", encoding="utf8") as fil
     exclude = set(("src/app/" + file for file in file.read().split("\n")))
 
 folders = list(
-    set([folder.strip("\\").strip("/") for folder in glob("src/app/*/")])
-    - exclude
+    set([folder.strip("\\").strip("/") for folder in glob("src/app/*/")]) - exclude
 )
 
 
@@ -32,6 +31,9 @@ TEST_TORTOISE_ORM = {
 
 
 with open(os.path.join(current_path, "secrets.json")) as file:
-    SECRET_KEY = json.load(file)
+    secrets = json.load(file)
+
+SECRET_KEY = secrets.get("SECRET_KEY")
+MAIL_PASSWORD = secrets.get("password")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30

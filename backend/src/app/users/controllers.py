@@ -12,6 +12,7 @@ from pydantic import BaseModel
 
 from .core import generate_auth_token, get_user_data_by_auth_token
 from .models import User
+from .mailer import send_mail
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -52,7 +53,7 @@ async def login(login_data: LoginData, request: Request):
             expires_date=timedelta(minutes=5),
         )
         login_link = request.url_for("auth", **{"auth_token": user_token})
-        # TODO send to email
+        send_mail(login_link, login_data.email)
         return login_link
     else:
         return "NO known login method"
@@ -115,7 +116,7 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
     user = await User.get_or_none(id_=user_data["id"])
 
     if not user.auth_token:
-        "Found you, evil hacker!"
+        return "Found you, evil hacker!"
         # залогировать злобного хакера
 
     return user
