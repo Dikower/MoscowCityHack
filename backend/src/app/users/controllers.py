@@ -68,6 +68,7 @@ async def auth(auth_token: str):
     except jwt.JWTError:
         raise credentials_exception
 
+    print(await User.all())
     user = await User.get_or_none(email=user_data.get("email"))
 
     # если пользователь и токен уже существуют
