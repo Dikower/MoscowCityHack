@@ -5,6 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from rich.console import COLOR_SYSTEMS, Console
 from tortoise import Tortoise
+from tortoise.contrib.fastapi import register_tortoise
 
 from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM
 from .users.controllers import router as user_router
@@ -20,6 +21,8 @@ origins = [
 
 # config_var = PROD_TORTOISE_ORM
 config_var = TEST_TORTOISE_ORM
+
+# Tortoise.init_models([".users.models"], "models")
 
 
 def prepare_db():
@@ -37,8 +40,9 @@ def prepare_db():
 
 async def startup():
     try:
-        await Tortoise.init(config=config_var)
-        await Tortoise.generate_schemas(safe=True)
+        pass
+        # await Tortoise.init(config=config_var)
+        # await Tortoise.generate_schemas(safe=True)
     except Exception as ex:
         print(ex)
     # await fill_db()
@@ -61,6 +65,25 @@ def create_app():
     )
 
     prepare_db()
+
+    Tortoise.init_models(
+        [
+            "app.users.models"
+        ],
+        "models",
+    )
+
+    register_tortoise(
+        app,
+        db_url="sqlite://src/app/db/test/db.sqlite3",
+        modules={
+            "models": [
+                "app.users.models"
+            ],
+        },
+        generate_schemas=True,
+        add_exception_handlers=True,
+    )
 
     app.include_router(user_router, prefix="/users", tags=["Users"])
 

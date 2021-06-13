@@ -14,6 +14,8 @@ from .core import generate_auth_token, get_user_data_by_auth_token
 from .models import User, Token
 from .mailer import send_mail
 
+from tortoise.contrib.pydantic import pydantic_model_creator
+
 current_path = os.path.dirname(os.path.realpath(__file__))
 
 credentials_exception = HTTPException(
@@ -51,6 +53,9 @@ class LoginData(BaseModel):
 
 @router.post("/login")
 async def login(login_data: LoginData, request: Request):
+
+    test = pydantic_model_creator(User)
+    print(test.schema())
 
     if login_data.login_method == LoginOptions.EMAIL.value:
 
