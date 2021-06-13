@@ -3,7 +3,7 @@ from typing import Optional
 
 from jose import jwt
 
-from ..settings import SECRET_KEY
+from .settings import SECRET_KEY
 
 
 async def generate_auth_token(
@@ -13,7 +13,6 @@ async def generate_auth_token(
         expire = datetime.utcnow() + expires_date
     else:
         expire = datetime.utcnow() + timedelta(minutes=60)
-    print("HERE:", user_id, str(user_id))
     return jwt.encode(
         {"id": str(user_id), "exp": expire, **custom_fileds},
         SECRET_KEY,

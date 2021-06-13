@@ -2,6 +2,7 @@ import json
 import os
 from glob import glob
 from tortoise import Tortoise
+
 current_path = os.path.dirname(os.path.realpath(__file__))
 
 
@@ -10,7 +11,8 @@ with open(os.path.join(current_path, ".gitignore"), "r", encoding="utf8") as fil
 
 
 folders = list(
-    set([folder.replace('\\', '/').strip('/') for folder in glob("src/app/*/")]) - exclude
+    set([folder.replace("\\", "/").strip("/") for folder in glob("src/app/*/")])
+    - exclude
 )
 # model_paths = [f"{}path.replace('/', '.').replace('src.', '')" for path in folders]
 # print(model_paths)
@@ -42,4 +44,4 @@ SECRET_KEY = secrets.get("SECRET_KEY")
 MAIL_PASSWORD = secrets.get("password")
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
-IS_PROD = os.getenv('IS_PROD', False)
+IS_PROD = os.getenv("IS_PROD", False)
