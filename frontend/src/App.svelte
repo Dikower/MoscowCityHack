@@ -337,6 +337,8 @@
     display: flex;
     height: 50px;
     margin-top: 10px;
+    align-items: center;
+    text-align: center;
     /*background-color: #666666;*/
   }
 
@@ -361,6 +363,7 @@
     margin-left: 15px;
     margin-top: 12px;
     font-weight: 500;
+    text-align: center;
   }
 
   .scrollable {
