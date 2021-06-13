@@ -74,6 +74,7 @@
 
 <div class="chat">
   <div class="header">
+    <h2>{recipientName}</h2>
     <div>
       <img src={recipientImg} class="recImg">
       <img src={userImg} class="userImg">
@@ -123,17 +124,17 @@
   }
 
   .header {
-    height: 80px;
+    height: 40px;
     display: flex;
     flex-direction: row;
     padding: 10px;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
   }
 
   .header img {
-    height: 60px;
-    width: 60px;
+    height: 40px;
+    width: 40px;
     border-radius: 60px;
     margin-top: auto;
     margin-bottom: auto;

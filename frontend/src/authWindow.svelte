@@ -1,7 +1,7 @@
 <script>
   import {ID} from "./storage";
   function auth(){
-    // localStorage.setItem("ID", "2e23:de42:de52:aw41");
+    localStorage.setItem("ID", "2e23:de42:de52:aw41");
     ID.set("2e23:de42:de52:aw41");
   }
 </script>
