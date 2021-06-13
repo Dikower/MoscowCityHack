@@ -31,7 +31,7 @@ class PhotoModel:
             T.Normalize((0, 0, 0),(1, 1, 1))
         ])
 
-    def make_prediction(img, device):
+    def make_prediction(self, img, device):
     	img = img.convert("RGB")
     	if img.size != (224, 224):
     		img = img.resize((224, 224))
