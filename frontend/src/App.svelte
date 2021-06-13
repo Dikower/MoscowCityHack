@@ -122,9 +122,9 @@
               {:then data}
                 {#each newPeopleMass as man}
                   <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                    <img src={man.img} alt="Avatar">
+                    <img src={man.img} alt="Avatar" class="man-img-online">
                     <div class="person-info">
-                      <h4>{man.name}</h4>
+                      <h3>{man.name}</h3>
                       <p>Online</p>
                     </div>
                   </div>
@@ -136,20 +136,16 @@
         {:else }
           <div class="settingsColumn">
             <div class="SettingsTab" on:click={openGroupWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>New Group</h3>
+              <h3>Создать группу</h3>
             </div>
             <div class="SettingsTab" on:click={openChannelWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>New Channel</h3>
+              <h3>Создать канал</h3>
             </div>
             <div class="SettingsTab" on:click={openContactsWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>Contacts</h3>
+              <h3>Контакты</h3>
             </div>
             <div class="SettingsTab" on:click={openSettingsWindow}>
-              <img src="settings.svg" class="settingsIcon">
-              <h3>Settings</h3>
+              <h3>Настройки</h3>
             </div>
           </div>
         {/if}
@@ -188,20 +184,16 @@
           {:else}
             <div class="settingsColumn" style="width: 100%">
               <div class="SettingsTab" on:click={openGroupWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>New Group</h3>
+                <h3>Создать группу</h3>
               </div>
               <div class="SettingsTab" on:click={openChannelWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>New Channel</h3>
+                <h3>Создать канал</h3>
               </div>
               <div class="SettingsTab" on:click={openContactsWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>Contacts</h3>
+                <h3>Контакты</h3>
               </div>
               <div class="SettingsTab" on:click={openSettingsWindow}>
-                <img src="settings.svg" class="settingsIcon">
-                <h3>Settings</h3>
+                <h1>Настройки</h1>
               </div>
             </div>
           {/if}
@@ -289,6 +281,14 @@
     line-height: 0;
   }
 
+  .person-info p {
+    color: var(--darkgreen);
+  }
+
+  .man-img-online {
+    border: 2px solid var(--darkgreen);
+  }
+
   .scrollable p {
     font-size: calc(8px + (10 - 8) * ((100vw - 300px) / (1440 - 300)));
   }
@@ -322,6 +322,7 @@
 
   .settingsColumn {
     width: 40%;
+    background-color: #343F48;
     /*max-width: 300px;*/
     min-width: 200px;
     height: 100%;
@@ -340,11 +341,11 @@
   }
 
   .SettingsTab:hover {
-    background-color: #343F48;
+    background-color: var(--darkgreenwithopacity);
   }
 
   .SettingsTab:active {
-    background-color: #343F48;
+    background-color: rgba(245, 245, 245, 0.3);
   }
 
   .settingsIcon {
@@ -356,9 +357,10 @@
   }
 
   .SettingsTab h3 {
-    color: #727272;
+    color: #f5f5f5;
     margin-left: 15px;
     margin-top: 12px;
+    font-weight: 500;
   }
 
   .scrollable {
