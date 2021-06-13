@@ -10,7 +10,7 @@ from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import BaseModel
 from .schemas import PublicUser
-from .core import generate_auth_token, get_user_data_by_auth_token
+from ..auth_helpers import generate_auth_token, get_user_data_by_auth_token
 from .models import User, Token
 from .mailer import send_mail
 
