@@ -99,19 +99,16 @@
     </div>
 
     <div class="controlPanel">
+      <img src="logo.svg" class="logo" alt="logo" />
       {#if h<w}
-        <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-        {#if !settingState}
-          <input on:input={searchContact} class="settingInput" placeholder="Search">
-        {/if}
+        <input on:input={searchContact} class="settingInput" placeholder="Search">
+        <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
       {:else}
         {#if !stateDopTap}
           <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
         {:else}
-          <img src="setting-lines.svg" alt="settings" class="settingIcon" on:click={openSettings}>
-          {#if !settingState}
-            <input on:input={searchContact} class="settingInput" placeholder="Search">
-          {/if}
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
+          <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
         {/if}
       {/if}
 
@@ -253,6 +250,11 @@
     margin: auto;
   }
 
+  .logo {
+    height: 40px;
+    width: 40px;
+  }
+
   /*.boxForModalWindow{*/
   /*  !*background-color: red;*!*/
   /*  position: absolute;*/
@@ -271,11 +273,14 @@
     background: var(--darkgreen);
     display: flex;
     align-items: center;
+    justify-content: center;
   }
 
   .settingIcon {
     height: 30px;
     width: 30px;
+    float: right;
+    margin-left: 50%;
   }
 
   .person-info {
@@ -291,7 +296,6 @@
   .settingInput {
     margin-left: 10px;
     width: calc(40% - 60px);
-    height: 30px;
     background-color: #343F48;
     outline: none;
     border: none;
