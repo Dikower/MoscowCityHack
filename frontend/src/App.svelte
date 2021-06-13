@@ -22,7 +22,16 @@
   let settingState = 0;
   onMount(async () => {
     ID.set(localStorage.getItem("ID"));
+    alert(getParameterByName("q","https://www.google.com/search?q=css+как+загуглить"))
   });
+  function getParameterByName(parameter, url) {
+    parameter = parameter.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + parameter + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
   // let userID = "тут мог быть ваш уникальный ID";
 
   let peoplemass = fetches.get('/users/all');
