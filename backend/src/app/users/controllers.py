@@ -60,7 +60,12 @@ async def get_user(auth_token=Depends(oauth2_scheme)):
     return user
 
 
-@router.post("/login")
+class AfterLogin(BaseModel):
+    url: str
+    token: str
+
+
+@router.post("/login", response_model=AfterLogin)
 async def login(login_data: LoginData, request: Request):
     if login_data.login_method == LoginOptions.EMAIL.value:
 
@@ -75,12 +80,16 @@ async def login(login_data: LoginData, request: Request):
         login_link = request.url_for("auth", **{"auth_token": user_token})
         # send_mail(login_link, login_data.email)
 
-        return login_link
+        return AfterLogin(url=login_link, token=user_token)
     else:
         return "NO known login method"
 
 
-@router.get("/auth/{auth_token}")
+class AuthToken(BaseModel):
+    token: str
+
+
+@router.get("/auth/{auth_token}", response_model=AuthToken)
 async def auth(auth_token: str):
     # если токен уже существует, второй раз он не сработает
     stored_token = await Token.get_or_none(login_token=auth_token)
@@ -109,14 +118,14 @@ async def auth(auth_token: str):
             await user.save()
 
         # возвращаем токен
-        return user.auth_token
+        return AuthToken(token=user.auth_token)
 
     # если юзер есть но токена нет, то генерируем токен
     elif user and not user.auth_token:
         user_auth_token = await generate_auth_token(user.id)
         await user.update_from_dict({"auth_token": user_auth_token})
         await user.save()
-        return user_auth_token
+        return AuthToken(token=user_auth_token)
 
     # создаем нового юзера если его нет в базе
     user_id = uuid4()
@@ -130,7 +139,7 @@ async def auth(auth_token: str):
         avatar=user_data.get("avatar"),
     )
 
-    return user_auth_token
+    return AuthToken(token=user_auth_token)
 
 
 @router.get("/get_me")
@@ -164,8 +173,6 @@ async def logout(auth_token: str = Depends(oauth2_scheme)):
     return user
 
 
-@router.get("/all",
-            response_model=List[PublicUser]
-            )
+@router.get("/all", response_model=List[PublicUser])
 async def all_users():
     return await PublicUser.from_queryset(User.all())

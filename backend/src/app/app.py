@@ -8,6 +8,7 @@ from tortoise import Tortoise
 from randomuser import RandomUser
 from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM, IS_PROD
 from .users.controllers import router as user_router
+from .chats.controllers import router as chat_router
 from .users.models import User
 
 
@@ -44,16 +45,16 @@ async def startup():
     except Exception as ex:
         print(ex)
 
-    if not IS_PROD:
-        users = [
-            {
-                'avatar': user.get_picture(),
-                'fio': user.get_full_name(),
-                'email': user.get_email()
-            } for user in RandomUser.generate_users(10)
-        ]
-        for user in users:
-            await User.create(**user)
+    # if not IS_PROD:
+    users = [
+        {
+            'avatar': user.get_picture(),
+            'fio': user.get_full_name(),
+            'email': user.get_email()
+        } for user in RandomUser.generate_users(10)
+    ]
+    for user in users:
+        await User.create(**user)
 
 
 async def shutdown():
@@ -74,6 +75,7 @@ def create_app():
     prepare_db()
 
     app.include_router(user_router, prefix="/users", tags=["Users"])
+    app.include_router(chat_router, prefix="/chats", tags=["Chats"])
 
     app.add_event_handler("startup", startup)
     app.add_event_handler("shutdown", shutdown)

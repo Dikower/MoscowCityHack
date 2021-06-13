@@ -1,5 +1,6 @@
 from enum import Enum
 from tortoise import Model, Tortoise, fields
+from typing import Union
 
 
 class ChatType(str, Enum):
@@ -14,7 +15,13 @@ class Chat(Model):
     type: ChatType = fields.CharEnumField(ChatType, default=ChatType.PRIVATE)
     members = fields.ManyToManyField('users.User', related_name='chats')
     admins = fields.ManyToManyField('users.ChatAdmin', related_name='chats')
-    # messages: fields.ForeignKeyRelation['chats.Message']
+    last_used = fields.DatetimeField(auto_now=True)
+
+    async def last_message(self) -> Union[str, None]:
+        return (await self.messages.first()).text
+
+    class Meta:
+        ordering = ['last_used']
 
 
 class Message(Model):
@@ -22,7 +29,9 @@ class Message(Model):
     sender = fields.ForeignKeyField('users.User')
     chat = fields.ForeignKeyField('chats.Chat', related_name='messages')
     text = fields.CharField(max_length=1024)
+    like = fields.BooleanField(default=False)
     time = fields.DatetimeField(auto_now=True)
+
     # TODO attachments
 
 

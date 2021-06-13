@@ -5,8 +5,10 @@ from fastapi import Request, Response, WebSocket, WebSocketDisconnect
 from pymemcache.client import base
 from ..users.controllers import oauth2_scheme, get_user
 from ..users.models import User
-from .models import Chat
+from .models import Chat, ChatType, Message
 from ..settings import IS_PROD
+from .schemas import Preview
+
 router = APIRouter()
 
 
@@ -27,27 +29,41 @@ class ConnectionManager:
     def disconnect(self, user_id):
         del self.active_connections[user_id]
 
-    async def send_personal_message(self, message: str, websocket: WebSocket):
-        await websocket.send_text(message)
-
-    async def broadcast_message(self, user, to, message):
-        chat = self.client.get(to)
-        if chat is None:
-            chat = await user.chats.get_or_none(id=to)
+    async def get_members(self, user: User, chat_id: str):
+        members = self.client.get(chat_id)
+        chat = await user.chats.get_or_none(id=chat_id)
+        if members is None:
             if chat is None:
                 await self.active_connections[user.id].send_json({
                     "status": "error",
-                    "reason": f"Chat id: {to} not found"
+                    "reason": f"Chat id: {chat_id} not found"
                 })
+                return
             # chat =
+            members = [member.id for member in await chat.members.all()]
+            self.client.set(chat_id, members)
+        return members
 
-        members = [member.id for member in await chat.members.all()]
-        print(members)
+    async def broadcast(self, user, chat_id, content):
+        members = await self.get_members(user, chat_id)
+        if members is None:
+            return False
+        for member in members:
+            connection = self.active_connections.get(member, None)
+            await connection.send_json(content)
+        return True
 
-        for connection in self.active_connections:
-            await connection.send_text(message)
+    async def send_message(self, user: User, to: str, message: dict):
+        text = message.get('text', 'Текст-заглушка')
+        success = await self.broadcast(user, to, {'event': 'message', 'message': {'text': text}})
+        if not success:
+            return
 
+        message = await Message.create(sender_id=user.id, chat_id=to, text=text)
+        chat = await Chat.get(id=to)  # Checked in get_members
+        await chat.messages.add(message)
 
+        
 manager = ConnectionManager()
 
 
@@ -61,7 +77,10 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
             {
                 type: message,
                 to: chat_id,
-                message: Message model
+                message: {
+                    text: Text
+                    Message model
+                }
             }
             {
                 type: event
@@ -79,6 +98,14 @@ async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user
         print('Disconnected')
 
 
-@router.get('/all')
+@router.post('/create', response_model=Preview)
+async def create_chat(with_user: str, user=Depends(get_user)):
+    another = await User.get_or_none(id=with_user)
+    chat = await Chat.create(name=another.fio, type=ChatType.PRIVATE)
+    await chat.members.add(user, another)
+    return await Preview.from_tortoise_orm(chat)
+
+
+@router.get('/all', response_model=List[Preview])
 async def get_chats():
-    ...
+    return await Preview.from_queryset(Chat.all())
