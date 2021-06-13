@@ -1,7 +1,12 @@
 /* Корпоративные шрифты SberCloud */
 @font-face {
-    font-family: SB Sans Interface;
-    src: url(fonts/SBSansUI-Regular.ttf);
+    font-family: SB Sans Text Bold;
+    src: url(fonts/SBSansText-Bold.ttf);
+}
+
+@font-face {
+    font-family: SB Sans Text Regular;
+    src: url(fonts/SBSansText-Regular.ttf);
 }
 
 html, body {
@@ -67,18 +72,15 @@ input:checked + .slider:before {
 }
 
 :root {
-	--darkgreen: #00EA95;
+	--darkgreen: #12BBA6;
 }
 
-h2, h3, h4, p {
-	font-family: Roboto;
+h1, h2, h3, h4, p {
+	font-family: SB Sans Text Bold;
 }
 
 h1 {
-	font-family: SB Sans Interface;
 	font-size: calc(16px + (18 - 16) * ((100vw - 300px) / (1440 - 300)));
-	font-style: normal;
-	font-weight: normal;
 }
 
 h3 {
@@ -92,7 +94,7 @@ h4 {
 }
 
 p {
-	font-weight: 200;
+	font-family: SB Sans Text Regular;
 }
 
 body {

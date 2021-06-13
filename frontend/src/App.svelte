@@ -363,7 +363,7 @@
   }
 
   .scrollable::-webkit-scrollbar-thumb {
-    background-color: #00EA95;
+    background-color: var(--darkgreen);
   }
 
   .manBox {
