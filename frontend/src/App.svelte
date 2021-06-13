@@ -99,18 +99,20 @@
     </div>
 
     <div class="controlPanel">
-      <img src="logo.svg" class="logo" alt="logo" />
+
       {#if h<w}
-        <input on:input={searchContact} class="settingInput" placeholder="Search">
         <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+        <input on:input={searchContact} class="settingInput" placeholder="Search">
       {:else}
         {#if !stateDopTap}
           <img src="arrow.svg" alt="settings" class="settingIcon" on:click={openDopTap}>
         {:else}
-          <input on:input={searchContact} class="settingInput" placeholder="Search">
           <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
+
         {/if}
       {/if}
+      <img src="logo.svg" class="logo" alt="logo" />
 
     </div>
     <div class="infoBox">
@@ -245,6 +247,8 @@
   .logo {
     height: 40px;
     width: 40px;
+    margin-left: auto;
+    margin-right: 10px;
   }
 
   /*.boxForModalWindow{*/
@@ -265,14 +269,13 @@
     background: var(--darkgreen);
     display: flex;
     align-items: center;
-    justify-content: center;
   }
 
   .settingIcon {
     height: 30px;
     width: 30px;
     float: right;
-    margin-left: 50%;
+    margin-left: 10px;
   }
 
   .person-info {
@@ -391,6 +394,7 @@
     text-align: center;
     padding: 2px;
     align-items: center;
+    margin-top: -6px;
   }
 
   .manBox:hover {
