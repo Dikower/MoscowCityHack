@@ -256,7 +256,7 @@
   }
 
   .user span {
-    background: var(--darkgreen);
+    background: var(--darkgreenwithopacity);
     color: #fff;
     border-radius: 1em 1em 0 1em;
     word-break: break-all;
