@@ -22,8 +22,29 @@
   let settingState = 0;
   onMount(async () => {
     ID.set(localStorage.getItem("ID"));
-    alert(getParameterByName("q","https://www.google.com/search?q=css+как+загуглить"))
+    // alert(getParameterByName("q","https://www.google.com/search?q=css+как+загуглить"))
+
+
+    async function CreateUser() {
+      const response = await fetch("https://b.sberchat.hackmasters.tech/?b=marik", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          a: "MARK"
+        }),
+      })
+      if (response.ok === true) {
+        console.log(await response.json());
+        // console.log("GOOD")
+      }
+    }
+    await CreateUser();
   });
+
+
   function getParameterByName(parameter, url) {
     parameter = parameter.replace(/[\[\]]/g, '\\$&');
     var regex = new RegExp('[?&]' + parameter + '(=([^&#]*)|&|#|$)'),
