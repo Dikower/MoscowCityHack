@@ -126,7 +126,7 @@
                   <div class="manBox" on:click={() => funcChoiceChat(man.fio, man.avatar)}>
                     <img src={man.avatar} alt="Avatar" class="man-img-online">
                     <div class="person-info">
-                      <h3>{man.fio}</h3>
+                      <h4>{man.fio}</h4>
                       <p>Online</p>
                     </div>
                   </div>
@@ -257,7 +257,12 @@
   /*  width: 100%;*/
   /*  height: 100%;*/
   /*}*/
-
+  h4{
+    white-space: nowrap;
+    /*overflow: hidden;*/
+    text-overflow: ellipsis;
+    width: 120px;
+  }
   hr {
     border: 0.05px solid rgba(60, 60, 67, 0.29);
   }
@@ -373,6 +378,7 @@
     flex: 1 1 auto;
     margin: 0 0 0.5em 0;
     overflow-y: auto;
+    overflow-x: hidden;
   }
 
   .scrollable::-webkit-scrollbar-track {
@@ -419,7 +425,9 @@
   }
 
   .message {
-    margin: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 40px;
     color: grey;
   }
 </style>
