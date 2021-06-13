@@ -53,7 +53,7 @@ async def login(login_data: LoginData, request: Request):
             expires_date=timedelta(minutes=5),
         )
         login_link = request.url_for("auth", **{"auth_token": user_token})
-        send_mail(login_link, login_data.email)
+        #send_mail(login_link, login_data.email)
         return login_link
     else:
         return "NO known login method"
@@ -105,7 +105,7 @@ async def auth(auth_token: str):
     return auth_token
 
 
-@router.post("/get_me")
+@router.get("/get_me")
 async def get_me(auth_token: str = Depends(oauth2_scheme)):
 
     try:
