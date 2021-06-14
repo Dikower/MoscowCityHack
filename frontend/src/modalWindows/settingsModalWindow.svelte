@@ -156,17 +156,17 @@
     {:else}
       <div class="BoxForSetting">
         <div class="oneSetForG">
-          <h1>Первый ползунок для x - </h1>
+          <h2>Первый ползунок для x - </h2>
           <input type="number" bind:value={x} on:input={refT}>
         </div>
 
         <div class="oneSetForG">
-          <h1>Первый ползунок для y - </h1>
+          <h2>Первый ползунок для y - </h2>
           <input type="number" bind:value={y} on:input={refT}>
         </div>
 
         <div class="oneSetForG">
-          <h1>Первый ползунок для z - </h1>
+          <h2>Первый ползунок для z - </h2>
           <input type="number" bind:value={z} on:input={refT}>
         </div>
         <Line data={drawData} {options}/>

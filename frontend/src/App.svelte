@@ -450,7 +450,8 @@
   .message {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 40px;
+    text-align: center;
     color: grey;
+    width: 100%;
   }
 </style>
