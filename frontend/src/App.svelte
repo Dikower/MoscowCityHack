@@ -22,7 +22,37 @@
   let settingState = 0;
   onMount(async () => {
     ID.set(localStorage.getItem("ID"));
+    // alert(getParameterByName("q","https://www.google.com/search?q=css+как+загуглить"))
+
+
+    async function CreateUser() {
+      const response = await fetch("https://b.sberchat.hackmasters.tech/?b=marik", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          a: "MARK"
+        }),
+      })
+      if (response.ok === true) {
+        console.log(await response.json());
+        // console.log("GOOD")
+      }
+    }
+    await CreateUser();
   });
+
+
+  function getParameterByName(parameter, url) {
+    parameter = parameter.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + parameter + '(=([^&#]*)|&|#|$)'),
+      results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+  }
   // let userID = "тут мог быть ваш уникальный ID";
 
   let peoplemass = fetches.get('/users/all');
