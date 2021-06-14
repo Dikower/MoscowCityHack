@@ -1,23 +1,12 @@
 <script>
   import {beforeUpdate, afterUpdate} from 'svelte';
 
-  let comments = [
-    {author: 'user', text: "Привет", like: false, warily: false},
-    {author: 'recipient', text: "Привет", like: false, warily: true},
-    {author: 'user', text: "Как дела?", like: false, warily: false},
-    {author: 'recipient', text: "Пока не родила!", like: false, warily: true},
-    {author: 'user', text: "Привет", like: false, warily: true},
-    {author: 'recipient', text: "Привет", like: false, warily: false},
-    {author: 'user', text: "Как дела?", like: false, warily: false},
-    {author: 'recipient', text: "Пока не родила!", like: false, warily: false},
-    {author: 'user', text: "Привет", like: false, warily: false},
-    {author: 'recipient', text: "Привет", like: false, warily: false},
-    {author: 'user', text: "Как дела?", like: false, warily: false},
-    {author: 'recipient', text: "Пока не родила!", like: false, warily: false},
-    {author: 'user', text: "Привет", like: false, warily: false},
-    {author: 'recipient', text: "Привет", like: false, warily: false},
-    {author: 'user', text: "Как дела?", like: false, warily: false},
-    {author: 'recipient', text: "Пока не родила!", like: false, warily: false}
+  export let comments = [
+    {author: 'user', text: "Привет, скинь свою почту", like: false, warily: false},
+    {author: 'recipient', text: "dmitriy1d01@gmail.com", like: false, warily: true},
+    {author: 'user', text: "Можно номер телефона?", like: false, warily: false},
+    {author: 'recipient', text: "+7(953)320-45-27", like: false, warily: true},
+    {author: 'user', text: "Спасибо!", like: false, warily: false},
   ];
 
   export let recipientName = "Имя";

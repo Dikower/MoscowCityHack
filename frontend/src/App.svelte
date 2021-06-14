@@ -7,8 +7,7 @@
   import Group from "./modalWindows/groupModalWindow.svelte";
   // import Group from "./modalWindows/Group.svelte";
   import Auth from './authWindow.svelte';
-  import Moveable from "svelte-moveable";
-  import {fetches} from "./api";
+  import {connect, fetches} from "./api";
   import {onMount} from 'svelte';
   import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState, ID} from './storage.js';
 
@@ -22,26 +21,9 @@
   let settingState = 0;
   onMount(async () => {
     ID.set(localStorage.getItem("ID"));
-    // alert(getParameterByName("q","https://www.google.com/search?q=css+как+загуглить"))
-
-
-    async function CreateUser() {
-      const response = await fetch("https://b.sberchat.hackmasters.tech/?b=marik", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          a: "MARK"
-        }),
-      })
-      if (response.ok === true) {
-        console.log(await response.json());
-        // console.log("GOOD")
-      }
+    if ($ID){
+      connect();
     }
-    await CreateUser();
   });
 
 
@@ -61,7 +43,6 @@
     $peoplemass = v;
     newPeopleMass = $peoplemass;
   })
-  $: console.log('update', $peoplemass)
 
   function funcChoiceChat(name, img) {
     if (h > w) {
@@ -151,7 +132,6 @@
           {#if !settingState}
             <input on:input={searchContact} class="settingInput" placeholder="Search">
           {/if}
-
         {/if}
       {/if}
       <img src="logo.svg" class="logo" alt="logo"/>
@@ -470,7 +450,8 @@
   .message {
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 40px;
+    text-align: center;
     color: grey;
+    width: 100%;
   }
 </style>

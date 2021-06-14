@@ -1,6 +1,6 @@
 import asyncio
-from fastapi import APIRouter, Depends
-from typing import List, Dict
+from fastapi import APIRouter, Depends, Cookie, Query, status
+from typing import List, Dict, Optional
 from fastapi import Request, Response, WebSocket, WebSocketDisconnect
 from pymemcache.client import base
 from ..users.controllers import oauth2_scheme, get_user
@@ -67,8 +67,18 @@ class ConnectionManager:
 manager = ConnectionManager()
 
 
-@router.websocket("/")
-async def websocket_endpoint(websocket: WebSocket, user: User = Depends(get_user)):
+async def get_user_ws(
+    websocket: WebSocket,
+    session: Optional[str] = Cookie(None)):
+    if session is None:
+        await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
+    return session
+
+
+@router.websocket("/{token}")
+async def websocket_endpoint(websocket: WebSocket,  token: str):
+    print(token)
+    user = await User.first()
     user_id = user.id
     await manager.connect(websocket, user_id)
     try:
@@ -104,6 +114,11 @@ async def create_chat(with_user: str, user=Depends(get_user)):
     chat = await Chat.create(name=another.fio, type=ChatType.PRIVATE)
     await chat.members.add(user, another)
     return await Preview.from_tortoise_orm(chat)
+
+
+@router.get('/my', response_model=List[Preview])
+async def my_chats(user=Depends(get_user)):
+    return await Preview.from_queryset(user.chats.all())
 
 
 @router.get('/all', response_model=List[Preview])
