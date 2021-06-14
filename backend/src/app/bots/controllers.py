@@ -24,6 +24,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 class BotData(BaseModel):
     name: str
 
+
 class BotMessage(BaseModel):
     bot_id: str
     chat_id: str

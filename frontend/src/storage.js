@@ -12,8 +12,8 @@ function createCount() {
 }
 
 export const ID = writable("");
-
 export const settingWindowState = createCount();
 export const groupWindowState = createCount();
 export const channelWindowState = createCount();
 export const contactsWindowState = createCount();
+export const transport = {channel: {}, data: writable({})};

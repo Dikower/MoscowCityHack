@@ -1,6 +1,6 @@
+import os
 import shutil
 from pathlib import Path
-import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from rich.console import COLOR_SYSTEMS, Console
@@ -21,20 +21,21 @@ origins = [
     "http://localhost:8000",
 ]
 
-# config_var = PROD_TORTOISE_ORM
-config_var = TEST_TORTOISE_ORM
+config_var = PROD_TORTOISE_ORM
+# config_var = TEST_TORTOISE_ORM
 
 
 def prepare_db():
     # Удаляем папку с тестовой базой данных при запуске и импорте
     current_path = os.path.dirname(os.path.realpath(__file__))
     test_db_path = os.path.join(current_path, "db", "test")
+    prod_db_path = os.path.join(current_path, "db", "prod")
     try:
         shutil.rmtree(test_db_path)
     except FileNotFoundError:
         print("Error during delete")
 
-    for path in [test_db_path]:
+    for path in [test_db_path, prod_db_path]:
         Path(path).mkdir(parents=True, exist_ok=True)
 
 
@@ -63,7 +64,6 @@ async def shutdown():
 
 def create_app():
     app = FastAPI()
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,

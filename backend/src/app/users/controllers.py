@@ -5,7 +5,7 @@ from enum import Enum
 from typing import Optional, List
 from uuid import uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Request, status, Body
 from fastapi.security import OAuth2PasswordBearer
 from jose import jwt
 from pydantic import BaseModel
@@ -13,6 +13,7 @@ from .schemas import PublicUser
 from ..auth_helpers import generate_auth_token, get_user_data_by_auth_token
 from .models import User, Token
 from .mailer import send_mail
+from ..settings import IS_PROD
 
 current_path = os.path.dirname(os.path.realpath(__file__))
 
@@ -66,7 +67,7 @@ class AfterLogin(BaseModel):
 
 
 @router.post("/login", response_model=AfterLogin)
-async def login(login_data: LoginData, request: Request):
+async def login(login_data: LoginData):
     if login_data.login_method == LoginOptions.EMAIL.value:
 
         user_token = await generate_auth_token(
@@ -77,7 +78,10 @@ async def login(login_data: LoginData, request: Request):
 
         await Token.create(login_token=user_token)
 
-        login_link = request.url_for("auth", **{"auth_token": user_token})
+        # login_link = request.url_for("auth", **{"auth_token": user_token})
+        login_link = f'http://localhost:5000/{user_token}'
+        # if IS_PROD:
+        #     login_link = f''
         # send_mail(login_link, login_data.email)
 
         return AfterLogin(url=login_link, token=user_token)
@@ -89,10 +93,10 @@ class AuthToken(BaseModel):
     token: str
 
 
-@router.get("/auth/{auth_token}", response_model=AuthToken)
-async def auth(auth_token: str):
+@router.post("/auth", response_model=AuthToken)
+async def auth(auth_token: AuthToken):
     # если токен уже существует, второй раз он не сработает
-    stored_token = await Token.get_or_none(login_token=auth_token)
+    stored_token = await Token.get_or_none(login_token=auth_token.token)
     if stored_token:
         if stored_token.is_used:
             raise token_expired_exception
@@ -101,7 +105,7 @@ async def auth(auth_token: str):
             await stored_token.save()
 
     try:
-        user_data = await get_user_data_by_auth_token(auth_token)
+        user_data = await get_user_data_by_auth_token(auth_token.token)
     except jwt.JWTError:
         raise credentials_exception
 
