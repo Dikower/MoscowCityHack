@@ -35,10 +35,11 @@ export function storeFetch(url, method, data, token) {
   }));
 
   const setCache = (key, value) => {
-    localStorage.setItem(key, JSON.stringify(value));
+    // localStorage.setItem(key, JSON.stringify(value));
   }
   const getCache = (key) => {
-    let saved = localStorage.getItem(key);
+    // let saved = localStorage.getItem(key);
+    let saved = "key:1231123213";
     return saved && JSON.parse(saved);
   }
 

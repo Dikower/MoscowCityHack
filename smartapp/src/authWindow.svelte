@@ -8,7 +8,7 @@
       "login_method": "email", "email": "eemil.peltola@example.com"
     }))
     let token = await get(fetches.post("/users/auth", {token: data.token}));
-    localStorage.setItem("ID", token);
+    // localStorage.setItem("ID", token);
     ID.set(token);
     connect();
   }
