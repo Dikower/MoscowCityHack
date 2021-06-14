@@ -5,5 +5,4 @@
 .pnp.js
 .DS_Store
 yarn.lock
-public.pem
-public.crx
+package-lock.json
