@@ -5,8 +5,11 @@ from enum import Enum
 from typing import Optional, List
 from uuid import uuid4
 
+import random
+import string
+
 from fastapi import APIRouter, Depends, HTTPException, Request, status
-from fastapi.security import OAuth2PasswordBearer
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
 from pydantic import BaseModel
 from .schemas import PublicUser
@@ -29,7 +32,7 @@ token_expired_exception = HTTPException(
 )
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/token")
 
 
 class LoginOptions(str, Enum):
@@ -37,6 +40,13 @@ class LoginOptions(str, Enum):
     GOOGLE = "google"
     GITHUB = "github"
     SBERID = "sberid"
+
+
+class TokenAndRole(BaseModel):
+    access_token: str
+    token_type: str
+    user_id: int
+    role: str
 
 
 class LoginData(BaseModel):
@@ -56,7 +66,7 @@ async def get_user(auth_token=Depends(oauth2_scheme)):
         raise credentials_exception
     user = await User.get_or_none(id=user_data["id"])
     if user is None:
-        raise HTTPException(404, 'User not found')
+        raise HTTPException(404, "User not found")
     return user
 
 
@@ -151,7 +161,7 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
 
     user = await User.get_or_none(id=user_data["id"])
     if user is None:
-        raise HTTPException(404, 'User not found')
+        raise HTTPException(404, "User not found")
 
     if not user.auth_token:
         return "Found you, evil hacker!"
@@ -171,6 +181,25 @@ async def logout(auth_token: str = Depends(oauth2_scheme)):
         return "already logged out"
 
     return user
+
+
+@router.post("/token")
+async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
+
+    user_id = uuid4()
+    user_auth_token = await generate_auth_token(user_id)
+
+    random_email = "".join((random.choice(string.ascii_letters) for _ in range(5)))
+
+    await User.create(
+        id=user_id,
+        fio=form_data.username,
+        email=f"l{random_email}k@com.org",
+        auth_token=user_auth_token,
+    )
+    return TokenAndRole(
+        access_token=user_auth_token, token_type="bearer", user_id=user_id, role="admin"
+    )
 
 
 @router.get("/all", response_model=List[PublicUser])
