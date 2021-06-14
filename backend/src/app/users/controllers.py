@@ -13,6 +13,7 @@ from fastapi import APIRouter, Depends, HTTPException, Request, status, Body
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import jwt
 from pydantic import BaseModel
+from tortoise.contrib.pydantic.creator import pydantic_model_creator
 from .schemas import PublicUser
 from ..auth_helpers import generate_auth_token, get_user_data_by_auth_token
 from .models import User, Token
@@ -175,6 +176,19 @@ async def get_me(auth_token: str = Depends(oauth2_scheme)):
     return user
 
 
+@router.get("/get_fisrt_user")
+async def get_first_user():
+
+    user = await User.first()
+    if user is None:
+        raise HTTPException(404, "User not found")
+
+    model = pydantic_model_creator(User)
+    res = await model.from_tortoise_orm(user)
+
+    return res
+
+
 @router.post("/logout")
 async def logout(auth_token: str = Depends(oauth2_scheme)):
     user = await User.get_or_none(auth_token=auth_token)
@@ -200,8 +214,6 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 
     user_id = uuid4()
     user_auth_token = await generate_auth_token(user_id)
-
-    random_email = "".join((random.choice(string.ascii_letters) for _ in range(5)))
 
     await User.create(
         id=user_id,
