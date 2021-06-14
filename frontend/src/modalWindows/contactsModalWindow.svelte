@@ -170,6 +170,7 @@
 
   .buttonsBox {
     height: 20px;
+    margin-bottom: 30px;
   }
 
   .scrollable {
