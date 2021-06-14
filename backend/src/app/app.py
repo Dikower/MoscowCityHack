@@ -1,4 +1,5 @@
 import os
+import json
 import shutil
 from pathlib import Path
 from fastapi import FastAPI
@@ -10,17 +11,13 @@ from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM, IS_PROD
 from .users.controllers import router as user_router
 from .chats.controllers import router as chat_router
 from .users.models import User
-from .chats.models import Chat, ChatType
+from .chats.models import Chat, ChatType, Message
 
 
 # print(COLOR_SYSTEMS)
 console = Console(color_system="windows")
 
-origins = [ "*"
-    # "http://localhost:5000",
-    # "http://localhost:3000",
-    # "http://localhost:8000",
-]
+origins = ["*"]
 
 config_var = PROD_TORTOISE_ORM
 # config_var = TEST_TORTOISE_ORM
@@ -47,23 +44,33 @@ async def startup():
     except Exception as ex:
         print(ex)
 
-    # if not IS_PROD:
-    # users = [
-    #     {
-    #         'avatar': user.get_picture(),
-    #         'fio': user.get_full_name(),
-    #         'email': user.get_email()
-    #     } for user in RandomUser.generate_users(10)
-    # ]
-    #
-    # user_inst = []
+    users = [
+        {
+            'avatar': user.get_picture(),
+            'fio': user.get_full_name(),
+            'email': user.get_email()
+        } for user in RandomUser.generate_users(10)
+    ]
+
+    with open('users.json', 'r', encoding='utf8') as file:
+        users = json.load(file)
+
+    test_user = users[0]
+    # with open('users.json', 'w', encoding='utf8') as file:
+        # json.dump(users, file, ensure_ascii=False, indent=2)
+    print(test_user)
+    user_inst = []
+
     # for user in users:
     #     user_inst.append(await User.create(**user))
-    #
-    # for user in user_inst:
-    #     for user2 in user_inst:
-    #         chat = await Chat.create(name=user2.fio, type=ChatType.PRIVATE)
-    #         await chat.members.add(user, user2)
+    # user = await User.get_or_none(email=test_user['email'])
+    # for user2 in user_inst:
+    #     chat = await Chat.create(name=user2.fio, type=ChatType.PRIVATE, avatar=user2.avatar)
+    #     await chat.members.add(user, user2)
+    #     await Message.create(sender=user, chat=chat, text=f'Привет, {user2.fio}! 🤩')
+    #     await Message.create(sender=user2, chat=chat, text=f'Привет, {user.fio}!')
+    #     await Message.create(sender=user, chat=chat, text=f'Как твои дела?')
+    #     await Message.create(sender=user2, chat=chat, text=f'Хоорошо, спасибо 😄')
 
 
 async def shutdown():

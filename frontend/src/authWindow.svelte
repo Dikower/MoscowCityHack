@@ -1,15 +1,20 @@
 <script>
-  import {ID, transport} from "./storage";
+  import {ID, transport, contacts} from "./storage";
   import {fetches, setCookie, setToken, connect} from "./api";
   import {get} from 'svelte/store'
 
+  let email = 'eeli.palo@example.com';
+
   async function auth() {
     let data = await get(fetches.post('/users/login', {
-      "login_method": "email", "email": "eemil.peltola@example.com"
+      "login_method": "email", "email": email, "fio": "Дмитрий Дин", "avatar":
+        "https://randomuser.me/api/portraits/men/68.jpg"
     }))
-    let token = await get(fetches.post("/users/auth", {token: data.token}));
+    data = await get(fetches.post("/users/auth", {token: data.token}));
+    let token = data.token;
     localStorage.setItem("ID", token);
     ID.set(token);
+    contacts.set(await get(fetches.get('/chats/my', token)))
     connect();
   }
 
@@ -28,6 +33,8 @@
       <img src="github.svg" alt="github-icon" on:click={auth}>
       <img src="google.svg" alt="google-icon" on:click={auth}>
     </div>
+    <input bind:value={email}>
+
   </div>
 </div>
 
@@ -35,7 +42,7 @@
   .authBox {
     background-color: #343F48;
     border-radius: 8px;
-    height: 200px;
+    height: 250px;
     width: 300px;
     margin: auto;
     margin-top: calc(50% - 100px);
@@ -43,6 +50,13 @@
     flex-direction: column;
   }
 
+  input {
+    width: 80%;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: center;
+    border-radius: 10px;
+  }
   h1 {
     text-align: center;
     font-size: 24px;

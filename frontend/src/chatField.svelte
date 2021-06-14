@@ -1,6 +1,5 @@
 <script>
   import {beforeUpdate, afterUpdate} from 'svelte';
-
   export let comments = [
     {author: 'user', text: "Привет, скинь свою почту", like: false, warily: false},
     {author: 'recipient', text: "dmitriy1d01@gmail.com", like: false, warily: true},
@@ -114,7 +113,6 @@
 
 
 <style>
-
   .chat {
     display: flex;
     flex-direction: column;

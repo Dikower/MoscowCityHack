@@ -1,0 +1,52 @@
+[
+  {
+    "avatar": "https://randomuser.me/api/portraits/men/36.jpg",
+    "fio": "Tony Hammann",
+    "email": "tony.hammann@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/men/67.jpg",
+    "fio": "Herman Miles",
+    "email": "herman.miles@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/women/86.jpg",
+    "fio": "Driesje Heijink",
+    "email": "driesje.heijink@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/women/33.jpg",
+    "fio": "Elisa Santos",
+    "email": "elisa.santos@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/women/78.jpg",
+    "fio": "Brielle Li",
+    "email": "brielle.li@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/men/77.jpg",
+    "fio": "Alexis Fleury",
+    "email": "alexis.fleury@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/women/20.jpg",
+    "fio": "Elsa Jarvinen",
+    "email": "elsa.jarvinen@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/women/24.jpg",
+    "fio": "Faith Freeman",
+    "email": "faith.freeman@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/men/41.jpg",
+    "fio": "بردیا علیزاده",
+    "email": "brdy.aalyzdh@example.com"
+  },
+  {
+    "avatar": "https://randomuser.me/api/portraits/men/50.jpg",
+    "fio": "Gabriel Macdonald",
+    "email": "gabriel.macdonald@example.com"
+  }
+]

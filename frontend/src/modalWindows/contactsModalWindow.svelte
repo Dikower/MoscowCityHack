@@ -1,11 +1,14 @@
 <script>
   import {contactsWindowState} from '../storage.js';
   import {fetches} from "../api";
-
+  import {ID} from '../storage'
   let errorMessage = "";
   let channelName = "";
   // let stateWindow = true;
-  let peoplemass = fetches.get('/users/all'); //TODO
+  let peoplemass = fetches.get('/users/all', ID); //TODO
+  // export let peoplemass = []; //TODO
+
+
   let newPeopleMass = [];
   $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {
     $peoplemass = v;

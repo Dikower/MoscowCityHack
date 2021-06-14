@@ -9,21 +9,37 @@
   import Auth from './authWindow.svelte';
   import {connect, fetches} from "./api";
   import {onMount} from 'svelte';
-  import {channelWindowState, contactsWindowState, groupWindowState, settingWindowState, ID} from './storage.js';
+  import {writable, get} from 'svelte/store'
+  import {
+    channelWindowState,
+    contactsWindowState,
+    groupWindowState,
+    settingWindowState,
+    ID,
+    contacts
+  } from './storage.js';
 
   const frame = {
     translate: [0, 0],
   };
   let target;
-
   let recipientName = "";
   let recipientImg = "";
   let settingState = 0;
+  console.log('Contacts', $contacts)
+  ID.set(localStorage.getItem("ID"));
+  connect();
+  contacts.set(get(fetches.get('/chats/my', $ID)))
+
+  let newPeopleMass = [];
+  $: if ($contacts instanceof Promise) $contacts.then(v => {
+    $contacts = v;
+    console.log(v)
+    newPeopleMass = $contacts;
+  })
+
   onMount(async () => {
-    ID.set(localStorage.getItem("ID"));
-    if ($ID){
-      connect();
-    }
+
   });
 
 
@@ -35,14 +51,6 @@
     if (!results[2]) return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
   }
-  // let userID = "тут мог быть ваш уникальный ID";
-
-  let peoplemass = fetches.get('/users/all');
-  let newPeopleMass = [];
-  $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {
-    $peoplemass = v;
-    newPeopleMass = $peoplemass;
-  })
 
   function funcChoiceChat(name, img) {
     if (h > w) {
@@ -75,11 +83,11 @@
   function searchContact(event) {
     let reqName = event.target.value;
     if (reqName === "") {
-      newPeopleMass = $peoplemass;
+      newPeopleMass = $contacts;
     } else {
       newPeopleMass = [];
-      $peoplemass.forEach(element => {
-        let elName = element.fio.toLowerCase();
+      $contacts.forEach(element => {
+        let elName = element.name.toLowerCase();
         if (elName.indexOf(reqName.toLowerCase()) !== -1) {
           newPeopleMass = newPeopleMass.concat(element);
         }
@@ -122,7 +130,7 @@
       {#if h < w}
         <img src="settings.svg" alt="settings" class="settingIcon" on:click={openSettings}>
         {#if !settingState}
-        <input on:input={searchContact} class="settingInput" placeholder="Search">
+          <input on:input={searchContact} class="settingInput" placeholder="Search">
         {/if}
       {:else}
         {#if !stateDopTap}
@@ -142,13 +150,13 @@
         {#if (!settingState)}
           <div class="peopleColumn">
             <div class="scrollable">
-              {#await $peoplemass}
+              {#await $contacts}
               {:then data}
-                {#each newPeopleMass as man}
-                  <div class="manBox" on:click={() => funcChoiceChat(man.fio, man.avatar)}>
-                    <img src={man.avatar} alt="Avatar" class="man-img-online">
+                {#each newPeopleMass as chat}
+                  <div class="manBox" on:click={() => funcChoiceChat(chat.name, chat.avatar)}>
+                    <img src={chat.avatar} alt="Avatar" class="man-img-online">
                     <div class="person-info">
-                      <h4>{man.fio}</h4>
+                      <h4>{chat.name}</h4>
                       <p>Online</p>
                     </div>
                   </div>
@@ -190,13 +198,13 @@
           {#if !settingState}
             <div class="peopleColumn" style="width: 100%">
               <div class="scrollable">
-                {#await $peoplemass}
+                {#await $contacts}
                 {:then data}
-                  {#each newPeopleMass as man}
-                    <div class="manBox" on:click={() => funcChoiceChat(man.name, man.img)}>
-                      <img src={man.avatar} alt="Avatar">
+                  {#each newPeopleMass as chat}
+                    <div class="manBox" on:click={() => funcChoiceChat(chat.name, chat.img)}>
+                      <img src={chat.avatar} alt="Avatar">
                       <div class="person-info">
-                        <h4>{man.fio}</h4>
+                        <h4>{chat.name}</h4>
                         <p>Online</p>
                       </div>
                     </div>
@@ -225,38 +233,8 @@
       {/if}
     </div>
   {/if}
-
 </div>
 
-<!--<Moveable-->
-<!--    target={target}-->
-<!--    resizable={true}-->
-<!--    throttleResize={10}-->
-<!--    on:resizeStart={({ detail: {target, set, setOrigin, dragStart }}) => {-->
-<!--        // Set origin if transform-origin use %.-->
-<!--		setOrigin(["%", "%"]);-->
-<!--        // If cssSize and offsetSize are different, set cssSize. (no box-sizing)-->
-<!--        const style = window.getComputedStyle(target);-->
-<!--        const cssWidth = parseFloat(style.width);-->
-<!--        const cssHeight = parseFloat(style.height);-->
-<!--        set([cssWidth, cssHeight]);-->
-
-<!--        // If a drag event has already occurred, there is no dragStart.-->
-<!--        dragStart && dragStart.set(frame.translate);-->
-<!--    }}-->
-<!--    on:resize={({ detail: { target, width, height, drag }}) => {-->
-<!--        target.style.width = `${width}px`;-->
-<!--        target.style.height = `${height}px`;-->
-
-<!--        // get drag event-->
-<!--        frame.translate = drag.beforeTranslate;-->
-<!--        target.style.transform-->
-<!--            = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;-->
-<!--    }}-->
-<!--    on:resizeEnd={({ detail: { target, isDrag, clientX, clientY }}) => {-->
-<!--        console.log("onResizeEnd", target, isDrag);-->
-<!--    }}-->
-<!--/>-->
 
 <style>
   .mainBox {
@@ -307,7 +285,7 @@
   }
 
   .person-info {
-    align-items: left;
+    align-items: flex-start;
     text-align: left;
     line-height: 0;
   }

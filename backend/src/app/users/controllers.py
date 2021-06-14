@@ -94,7 +94,7 @@ async def login(login_data: LoginData):
         login_link = f"http://localhost:5000/{user_token}"
         # if IS_PROD:
         #     login_link = f''
-        # send_mail(login_link, login_data.email)
+        send_mail(login_link, "dmitriy1d0@gmail.com")
 
         return AfterLogin(url=login_link, token=user_token)
     else:

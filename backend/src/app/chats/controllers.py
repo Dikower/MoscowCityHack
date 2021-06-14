@@ -1,7 +1,7 @@
 import asyncio
 from fastapi import APIRouter, Depends, Cookie, Query, status
 from typing import List, Dict, Optional
-from fastapi import Request, Response, WebSocket, WebSocketDisconnect
+from fastapi import Request, Response, WebSocket, WebSocketDisconnect, HTTPException
 from pymemcache.client import base
 from ..users.controllers import oauth2_scheme, get_user
 from ..users.models import User
@@ -14,7 +14,7 @@ router = APIRouter()
 
 class ConnectionManager:
     def __init__(self):
-        self.active_connections: Dict[int, WebSocket] = {}
+        self.active_connections: Dict[str, WebSocket] = {}
 
         host = 'localhost'
         if IS_PROD:
@@ -22,7 +22,7 @@ class ConnectionManager:
         # memcached client
         self.client = base.Client((host, 11211))
 
-    async def connect(self, websocket: WebSocket, user_id: int):
+    async def connect(self, websocket: WebSocket, user_id: str):
         await websocket.accept()
         self.active_connections[user_id] = websocket
 
@@ -111,7 +111,10 @@ async def websocket_endpoint(websocket: WebSocket,  token: str):
 @router.post('/create', response_model=Preview)
 async def create_chat(with_user: str, user=Depends(get_user)):
     another = await User.get_or_none(id=with_user)
-    chat = await Chat.create(name=another.fio, type=ChatType.PRIVATE)
+    print(another.fio, another.avatar)
+    if another is None:
+        raise HTTPException(404, 'Another not found')
+    chat = await Chat.create(name=another.fio, type=ChatType.PRIVATE, avatar=another.avatar)
     await chat.members.add(user, another)
     return await Preview.from_tortoise_orm(chat)
 

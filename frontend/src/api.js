@@ -77,10 +77,12 @@ export function storeFetch(url, method, data, token) {
 }
 
 
-const apiUrl = 'https://b.sberchat.hackmasters.tech/'
-// export const apiUrl = 'http://localhost:8000/'
-// const socketUrl = 'wss://b.sberchat.hackmasters.tech/'
+// export const apiUrl = 'https://b.sberchat.hackmasters.tech/'
+// export const socketUrl = 'wss://b.sberchat.hackmasters.tech/'
+
+export const apiUrl = 'http://localhost:8000/'
 export const socketUrl = 'ws://localhost:8000/'
+
 export const fetches = {
   get: (apiPart, token = null) => {
     return storeFetch(new URL(apiPart, apiUrl), 'GET', {}, token)

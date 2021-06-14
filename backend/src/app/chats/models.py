@@ -13,6 +13,7 @@ class Chat(Model):
     id = fields.UUIDField(pk=True)
     name = fields.CharField(max_length=128)
     type: ChatType = fields.CharEnumField(ChatType, default=ChatType.PRIVATE)
+    avatar = fields.CharField(max_length=512)
     members = fields.ManyToManyField('users.User', related_name='chats')
     admins = fields.ManyToManyField('users.ChatAdmin', related_name='chats')
     last_used = fields.DatetimeField(auto_now=True)
