@@ -9,6 +9,9 @@ from .models import Chat, ChatType, Message
 from ..settings import IS_PROD
 from .schemas import Preview
 
+from pydantic import BaseModel
+from uuid import uuid4
+
 router = APIRouter()
 
 
@@ -16,9 +19,9 @@ class ConnectionManager:
     def __init__(self):
         self.active_connections: Dict[str, WebSocket] = {}
 
-        host = 'localhost'
+        host = "localhost"
         if IS_PROD:
-            host = 'memcached'
+            host = "memcached"
         # memcached client
         self.client = base.Client((host, 11211))
 
@@ -34,10 +37,9 @@ class ConnectionManager:
         chat = await user.chats.get_or_none(id=chat_id)
         if members is None:
             if chat is None:
-                await self.active_connections[user.id].send_json({
-                    "status": "error",
-                    "reason": f"Chat id: {chat_id} not found"
-                })
+                await self.active_connections[user.id].send_json(
+                    {"status": "error", "reason": f"Chat id: {chat_id} not found"}
+                )
                 return
             # chat =
             members = [member.id for member in await chat.members.all()]
@@ -54,8 +56,10 @@ class ConnectionManager:
         return True
 
     async def send_message(self, user: User, to: str, message: dict):
-        text = message.get('text', 'Текст-заглушка')
-        success = await self.broadcast(user, to, {'event': 'message', 'message': {'text': text}})
+        text = message.get("text", "Текст-заглушка")
+        success = await self.broadcast(
+            user, to, {"event": "message", "message": {"text": text}}
+        )
         if not success:
             return
 
@@ -63,20 +67,18 @@ class ConnectionManager:
         chat = await Chat.get(id=to)  # Checked in get_members
         await chat.messages.add(message)
 
-        
+
 manager = ConnectionManager()
 
 
-async def get_user_ws(
-    websocket: WebSocket,
-    session: Optional[str] = Cookie(None)):
+async def get_user_ws(websocket: WebSocket, session: Optional[str] = Cookie(None)):
     if session is None:
         await websocket.close(code=status.WS_1008_POLICY_VIOLATION)
     return session
 
 
 @router.websocket("/{token}")
-async def websocket_endpoint(websocket: WebSocket,  token: str):
+async def websocket_endpoint(websocket: WebSocket, token: str):
     print(token)
     user = await User.first()
     user_id = user.id
@@ -98,32 +100,66 @@ async def websocket_endpoint(websocket: WebSocket,  token: str):
             }
             """
             data = await websocket.receive_json()
-            if data['type'] == 'message':
-                to, message = data['to'], data['message']
+            if data["type"] == "message":
+                to, message = data["to"], data["message"]
                 await manager.broadcast_message(user, to, message)
 
     except WebSocketDisconnect:
         manager.disconnect(user_id)
         # await manager.broadcast(f"Client #{client_id} left the chat")
-        print('Disconnected')
+        print("Disconnected")
 
 
-@router.post('/create', response_model=Preview)
+@router.post("/create", response_model=Preview)
 async def create_chat(with_user: str, user=Depends(get_user)):
     another = await User.get_or_none(id=with_user)
     print(another.fio, another.avatar)
     if another is None:
-        raise HTTPException(404, 'Another not found')
-    chat = await Chat.create(name=another.fio, type=ChatType.PRIVATE, avatar=another.avatar)
+        raise HTTPException(404, "Another not found")
+    chat = await Chat.create(
+        name=another.fio, type=ChatType.PRIVATE, avatar=another.avatar
+    )
     await chat.members.add(user, another)
     return await Preview.from_tortoise_orm(chat)
 
 
-@router.get('/my', response_model=List[Preview])
+# от 1 пользака отправить сообщения - > сохранить в чатс от
+# от другого вернуть это сообщение (чтение)
+
+
+class SendData(BaseModel):
+    to_id: str
+    chat_id: str
+    msg: str
+
+class ReadData(BaseModel):
+    chat_id: str
+
+
+@router.post("/send_message")
+async def send_message(send_data: SendData, user=Depends(get_user)):
+
+    await Message.create(
+        id=uuid4(), sender=send_data.to_id, chat=send_data.chat_id, text=send_data.msg
+    )
+    return {"status":"created"}
+
+
+@router.post("/read_message")
+async def read_message(send_data: ReadData, user=Depends(get_user)):
+
+    chat = await Chat.get_or_none(id=send_data.chat_id)
+
+    all_msgs = ["Test message"] #chat.messages.all()
+
+    return all_msgs[-1]
+
+
+@router.get("/my", response_model=List[Preview])
 async def my_chats(user=Depends(get_user)):
     return await Preview.from_queryset(user.chats.all())
 
 
-@router.get('/all', response_model=List[Preview])
+@router.get("/all", response_model=List[Preview])
 async def get_chats():
     return await Preview.from_queryset(Chat.all())
