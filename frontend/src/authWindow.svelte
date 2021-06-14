@@ -3,7 +3,7 @@
   import {fetches, setCookie, setToken, connect} from "./api";
   import {get} from 'svelte/store'
 
-  let email = 'eeli.palo@example.com';
+  let email = 'tony.hammann@example.com';
 
   async function auth() {
     let data = await get(fetches.post('/users/login', {

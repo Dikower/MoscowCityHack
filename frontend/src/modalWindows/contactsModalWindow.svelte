@@ -11,8 +11,8 @@
 
   let newPeopleMass = [];
   $: if ($peoplemass instanceof Promise) $peoplemass.then(v => {
-    $peoplemass = v;
-    newPeopleMass = $peoplemass;
+    $peoplemass = v.slice(1);
+    newPeopleMass = $peoplemass.slice(1);
   })
 
   function closeWindow() {

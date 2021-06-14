@@ -91,11 +91,11 @@ async def login(login_data: LoginData):
         await Token.create(login_token=user_token)
 
         # login_link = request.url_for("auth", **{"auth_token": user_token})
-        login_link = f"http://localhost:5000/{user_token}"
+        login_link = f"http://localhost:5000?token={user_token}"
         # if IS_PROD:
         #     login_link = f''
-        send_mail(login_link, "dmitriy1d0@gmail.com")
-
+        send_mail(login_link, "dmitriy1d01@gmail.com")
+        print(login_link)
         return AfterLogin(url=login_link, token=user_token)
     else:
         return "NO known login method"
