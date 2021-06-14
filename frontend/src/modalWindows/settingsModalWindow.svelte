@@ -83,7 +83,7 @@
   }
 
   function saveSettings() {
-    alert("Saving...")
+    settingWindowState.decrement();
   }
 
   function changeName() {

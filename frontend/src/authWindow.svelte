@@ -1,6 +1,6 @@
 <script>
   import {ID, transport} from "./storage";
-  import {fetches, setCookie, socketUrl, setToken, connect} from "./api";
+  import {fetches, setCookie, setToken, connect} from "./api";
   import {get} from 'svelte/store'
 
   async function auth() {
