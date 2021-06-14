@@ -10,15 +10,16 @@ from .settings import PROD_TORTOISE_ORM, TEST_TORTOISE_ORM, IS_PROD
 from .users.controllers import router as user_router
 from .chats.controllers import router as chat_router
 from .users.models import User
+from .chats.models import Chat, ChatType
 
 
 # print(COLOR_SYSTEMS)
 console = Console(color_system="windows")
 
-origins = [
-    "http://localhost:5000",
-    "http://localhost:3000",
-    "http://localhost:8000",
+origins = [ "*"
+    # "http://localhost:5000",
+    # "http://localhost:3000",
+    # "http://localhost:8000",
 ]
 
 config_var = PROD_TORTOISE_ORM
@@ -47,15 +48,22 @@ async def startup():
         print(ex)
 
     # if not IS_PROD:
-    users = [
-        {
-            'avatar': user.get_picture(),
-            'fio': user.get_full_name(),
-            'email': user.get_email()
-        } for user in RandomUser.generate_users(10)
-    ]
-    for user in users:
-        await User.create(**user)
+    # users = [
+    #     {
+    #         'avatar': user.get_picture(),
+    #         'fio': user.get_full_name(),
+    #         'email': user.get_email()
+    #     } for user in RandomUser.generate_users(10)
+    # ]
+    #
+    # user_inst = []
+    # for user in users:
+    #     user_inst.append(await User.create(**user))
+    #
+    # for user in user_inst:
+    #     for user2 in user_inst:
+    #         chat = await Chat.create(name=user2.fio, type=ChatType.PRIVATE)
+    #         await chat.members.add(user, user2)
 
 
 async def shutdown():

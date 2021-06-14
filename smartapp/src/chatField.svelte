@@ -1,7 +1,7 @@
 <script>
   import {beforeUpdate, afterUpdate} from 'svelte';
 
-  export let comments = [
+  let comments = [
     {author: 'user', text: "Привет, скинь свою почту", like: false, warily: false},
     {author: 'recipient', text: "dmitriy1d01@gmail.com", like: false, warily: true},
     {author: 'user', text: "Можно номер телефона?", like: false, warily: false},
