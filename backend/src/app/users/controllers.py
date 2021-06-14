@@ -206,7 +206,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     await User.create(
         id=user_id,
         fio=form_data.username,
-        email=f"l{random_email}k@com.org",
+        email=form_data.username,
         auth_token=user_auth_token,
     )
     return TokenAndRole(
